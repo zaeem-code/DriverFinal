@@ -1,123 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Login"
+    android:orientation="vertical"
     android:id="@+id/root"
+    android:weightSum="5"
 
-    >
+    android:layout_marginHorizontal="20dp" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tv_login_title"
-            android:textColor="@android:color/white"
-            android:textSize="32sp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.4"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/truck_blue_sign_up"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tv_login_subtitle"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"/>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/facebookLogin"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            app:fb_radius="4dp"
-            app:fb_iconPosition="left"
-            app:fb_fontIconSize="20sp"
-            app:fb_iconPaddingRight="10dp"
-            app:fb_textSize="16sp"
-            app:fb_text="Facebook Connect"
-            app:fb_textColor="#ffffff"
-            app:fb_defaultColor="#39579B"
-            app:fb_focusColor="#000"
-            app:fb_fontIconResource="&#xf082;"
-            android:layout_gravity="center"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="4dp"/>
-        <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/login_button_Google"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            app:fb_radius="4dp"
-            app:fb_iconPosition="left"
-            app:fb_fontIconSize="20sp"
-            app:fb_iconPaddingRight="10dp"
-            app:fb_textSize="16sp"
-            app:fb_text="Google"
-            app:fb_textColor="#ffffff"
-            app:fb_defaultColor="#DD4B39"
-            app:fb_focusColor="#000"
-            app:fb_fontIconResource="&#xf1a0;"
-            android:layout_gravity="center"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="4dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1.2"
+        android:orientation="vertical">
 
         <TextView
-            android:text="OR"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center"
-            android:layout_marginBottom="4dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/btnSignin"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/btn_sign_in_background"
-            android:text="@string/sign_up"
-            android:textColor="#fff" />
+            android:text="Welcome"
+            android:textSize="25sp"
+            android:textColor="@color/lightgray"
+            android:textStyle="bold"/>
 
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/btn_log_in_backgroud"
-            android:text="@string/login" />
+            android:text="Join the crew of LoadEase"
+            android:textSize="17sp"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/lightgray"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drive and Earn more."
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/red"/>
+
     </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"/>
+
+
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:background="@drawable/background_card_view"
+        android:layout_weight="0.5"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@android:color/white"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/login" />
+    <Button
+        android:id="@+id/btnSignin"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="Don't have Account ? Sign Up"
+
+        android:background="@drawable/background_card_view"
+        android:layout_weight="0.5"/>
+
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:visibility="gone"
+        android:id="@+id/facebookLogin"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:fb_radius="4dp"
+        app:fb_iconPosition="left"
+        app:fb_fontIconSize="20sp"
+        app:fb_iconPaddingRight="10dp"
+        app:fb_textSize="16sp"
+        app:fb_text="Facebook Connect"
+        app:fb_textColor="#ffffff"
+        app:fb_defaultColor="#39579B"
+        app:fb_focusColor="#000"
+        app:fb_fontIconResource="&#xf082;"
+        android:layout_gravity="center"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="4dp"/>
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:visibility="gone"
+        android:id="@+id/login_button_Google"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:fb_radius="4dp"
+        app:fb_iconPosition="left"
+        app:fb_fontIconSize="20sp"
+        app:fb_iconPaddingRight="10dp"
+        app:fb_textSize="16sp"
+        app:fb_text="Google"
+        app:fb_textColor="#ffffff"
+        app:fb_defaultColor="#DD4B39"
+        app:fb_focusColor="#000"
+        app:fb_fontIconResource="&#xf1a0;"
+        android:layout_gravity="center"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="4dp"/>
+</LinearLayout>

@@ -38,6 +38,7 @@ public class Common {
     public static final String pickup_request_tbl="PickupRequest";
     public static final String token_tbl="Tokens";
     public static User currentUser;
+    public static User currentRiderprofile;
     public static String userID;
     public static final int PICK_IMAGE_REQUEST = 9999;
     static String Notification_Chanel_Id="notification_alert";

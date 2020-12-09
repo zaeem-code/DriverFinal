@@ -3,12 +3,18 @@ package com.loadease.uberclone.driverapp.fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.core.widget.ImageViewCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.location.Address;
@@ -17,6 +23,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
@@ -58,6 +66,7 @@ import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -67,6 +76,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.kusu.library.LoadingButton;
 import com.loadease.uberclone.driverapp.Common.Common;
+import com.loadease.uberclone.driverapp.Helpers.FirebaseHelper;
 import com.loadease.uberclone.driverapp.Interfaces.locationListener;
 import com.loadease.uberclone.driverapp.Messages.DriverRequestReceived;
 import com.loadease.uberclone.driverapp.Model.LocationUtils;
@@ -81,6 +91,7 @@ import com.loadease.uberclone.driverapp.Retrofit.RetrofitClient_sep;
 import com.loadease.uberclone.driverapp.Util.Location;
 import com.loadease.uberclone.driverapp.Util.UsersUtill;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -94,13 +105,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class FragmentDriver extends FragmentActivity implements OnMapReadyCallback
+    public class FragmentDriver extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback
         , GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener
 {
@@ -523,8 +535,10 @@ public class FragmentDriver extends FragmentActivity implements OnMapReadyCallba
                                             tripPlaneModel.setDistancePickup(distance);
                                             tripPlaneModel.setDurationPickup(duration);
                                             tripPlaneModel.setCurrentLat(Common.currentLat);
+//                                            tripPlaneModel.setCurrentLng(Common.currentRiderprofile.getRider_pic_Url());
                                             tripPlaneModel.setCurrentLng(Common.currentLng);
-
+                                            tripPlaneModel.setCurrentLng(Common.currentLng);
+//                                            Common.currentRiderprofile
 
                                             tripNumberId=Common.createUniqueTripNumber(timeOffset);
 
@@ -641,15 +655,14 @@ public class FragmentDriver extends FragmentActivity implements OnMapReadyCallba
 
     CountDownTimer waiting_timer;
 
-
+Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment_driver);
+        setContentView(R.layout.activity_drawer_home);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-
 
         snackbarView=findViewById(R.id.snackbarView);
         iGoogleApi_sep = RetrofitClient_sep.getInstance().create(IGoogleApi_sep.class);
@@ -675,6 +688,7 @@ public class FragmentDriver extends FragmentActivity implements OnMapReadyCallba
         txt_estimate_distance=findViewById(R.id.txt_estimate_distance);
 
 
+        initDrawer();
 
 
 
@@ -1164,9 +1178,13 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
 
         if (!TextUtils.isEmpty(city_name))
         {
-                drivers = FirebaseDatabase.getInstance().getReference("Drivers")
-                    .child(Common.currentUser.getCarType())
-                    .child(city_name);
+             try {
+                 drivers = FirebaseDatabase.getInstance().getReference("Drivers")
+                         .child(Common.currentUser.getCarType())
+                         .child(city_name);
+             }catch (Exception e){
+
+             }
 
 
             currentUserRef = drivers.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -1208,7 +1226,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
     }
 
 
-    private void loadDriverInformation(){
+    public void loadDriverInformation(){
         FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
                 .child(Common.userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -1436,6 +1454,92 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
 
     }
 
+    DrawerLayout drawer;
+    public void menueopen(View view) {
+        if (drawer!=null) {
+            drawer.openDrawer(GravityCompat.START);
+        }
+    }
+    public void initDrawer(){
+         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        findViewById(R.id.menue).setOnClickListener(this::menueopen);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View navigationHeaderView=navigationView.getHeaderView(0);
+        TextView tvName=(TextView)navigationHeaderView.findViewById(R.id.tvDriverName);
+        TextView tvStars=(TextView)navigationHeaderView.findViewById(R.id.tvStars);
+        CircleImageView imageAvatar=(CircleImageView) navigationHeaderView.findViewById(R.id.imageAvatar);
+        Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase.getInstance().getReference("RidersProfile")
+                .child( Common.userID)
+
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        Log.v("hassan",   "current user ->>>>"+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        Log.v("hassan",   "data ->>>>"+dataSnapshot.getValue(User.class));
+ Common.currentRiderprofile=dataSnapshot.getValue(User.class);
+
+
+                        Log.v("hassan",   "current user name ->>>>"+Common.currentRiderprofile.getName());
+
+
+                        Log.v("hassan",   "current user name ->>>>"+Common.currentRiderprofile.getName());
+                        Log.v("hassan",   "current user pic ->>>>"+Common.currentRiderprofile.getRider_pic_Url());if (!TextUtils.isEmpty(Common.currentRiderprofile.getName())){
+                            tvName.setText(Common.currentRiderprofile.getName());
+                        }
+                        if (!TextUtils.isEmpty(Common.currentRiderprofile.getRider_pic_Url())){
+                            Picasso.get().load(Common.currentRiderprofile.getRider_pic_Url()).into(imageAvatar);
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+try {
+
+
+    if (Common.currentUser.getRates() != null) {
+        tvStars.setText(Common.currentUser.getRates());
+    }
+}catch (Exception e){
+    //error ha rates empty ka
+
+}
+        if(isLoggedInFacebook)
+            Picasso.get().load("https://graph.facebook.com/" + Common.userID + "/picture?width=500&height=500").into(imageAvatar);
+        else if(account!=null)
+            Picasso.get().load(account.getPhotoUrl()).into(imageAvatar);
+
+
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 
 

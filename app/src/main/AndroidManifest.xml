@@ -33,10 +33,12 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <activity android:name=".Activities.signup_and_profile_Activity"/>
 
         <activity
             android:name=".fragment.FragmentDriver"
             android:label="@string/title_activity_fragment_driver"></activity>
+        <activity android:name=".Activities.LoginMainActivity"/>
         <activity android:name=".Activities.TripHistory" />
 
         <uses-library

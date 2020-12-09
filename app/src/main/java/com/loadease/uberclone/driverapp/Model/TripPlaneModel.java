@@ -10,6 +10,7 @@ public class TripPlaneModel {
     private String destination,destinationString;
     private String distancePickup,distanceDestination;
     private String durationPickup,durationDestination;
+
     private double currentLat,currentLng;
     private boolean isDone,isCancel;
 

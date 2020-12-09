@@ -4,11 +4,12 @@ package com.loadease.uberclone.driverapp.Activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -63,7 +64,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         signInButtonGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                Intent intent= Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
                 startActivityForResult(intent, SIGN_IN_CODE_GOOGLE);
             }
         });
@@ -144,7 +145,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode==SIGN_IN_CODE_GOOGLE) {//Google
-            GoogleSignInResult result=Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            GoogleSignInResult result= Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
         mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);

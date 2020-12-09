@@ -39,17 +39,17 @@
 
 
     <RelativeLayout
+        android:layout_marginTop="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
 
         >
         <androidx.cardview.widget.CardView
             android:padding="16dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true">
+            android:layout_height="60dp"
+            app:cardCornerRadius="70dp"
+            android:layout_alignParentEnd="true">
             <LinearLayout
                 android:orientation="vertical"
                 android:padding="16dp"
@@ -60,9 +60,8 @@
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/locationSwitch"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:thumb="@drawable/ic_location"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_height="match_parent"
+                    android:thumb="@drawable/ic_location" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

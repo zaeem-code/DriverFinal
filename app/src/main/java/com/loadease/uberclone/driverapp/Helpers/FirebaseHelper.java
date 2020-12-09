@@ -1,15 +1,20 @@
 package com.loadease.uberclone.driverapp.Helpers;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -25,6 +30,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.loadease.uberclone.driverapp.Activities.LoginMainActivity;
+import com.loadease.uberclone.driverapp.Activities.signup_and_profile_Activity;
 import com.loadease.uberclone.driverapp.Common.Common;
 import com.loadease.uberclone.driverapp.Model.User;
 import com.loadease.uberclone.driverapp.R;
@@ -41,7 +48,7 @@ public class FirebaseHelper {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference users;
 
-    ConstraintLayout root;
+    LinearLayout root;
 
     public FirebaseHelper(AppCompatActivity activity){
         this.activity=activity;
@@ -51,140 +58,39 @@ public class FirebaseHelper {
         users=firebaseDatabase.getReference(Common.user_driver_tbl);
         if(firebaseAuth.getUid()!=null)loginSuccess();
     }
-    public void showLoginDialog(){
-        AlertDialog.Builder alertDialog=new AlertDialog.Builder(activity);
-        alertDialog.setTitle(activity.getResources().getString(R.string.login));
-        alertDialog.setMessage(activity.getResources().getString(R.string.fill_fields));
 
-        LayoutInflater inflater=LayoutInflater.from(activity);
-        View login_layout=inflater.inflate(R.layout.layout_login, null);
-        final MaterialEditText etEmail=login_layout.findViewById(R.id.etEmail);
-        final MaterialEditText etPassword=login_layout.findViewById(R.id.etPassword);
 
-        alertDialog.setView(login_layout);
-        alertDialog.setPositiveButton(activity.getResources().getString(R.string.login), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
 
-                //btnLogIn.setEnabled(false);
-                if (TextUtils.isEmpty(etEmail.getText().toString())){
-                    Snackbar.make(root, activity.getResources().getString(R.string.enter_email), Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(etPassword.getText().toString())){
-                    Snackbar.make(root, activity.getResources().getString(R.string.enter_password), Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (etPassword.getText().toString().length()<6){
-                    Snackbar.make(root, activity.getResources().getString(R.string.password_short), Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                final android.app.AlertDialog waitingDialog=new SpotsDialog.Builder().setContext(activity).build();
-                waitingDialog.show();
-                firebaseAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+    public FirebaseHelper() {
+    }
+
+
+    public   void LoadRiderProfile(Context context){
+
+        Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase.getInstance().getReference("RidersProfile")
+                .child(Common.userID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onSuccess(AuthResult authResult) {
-                        waitingDialog.dismiss();
-                        goToMainActivity();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.v("hassan",   "data ->>>>"+dataSnapshot.getValue(User.class));
+
+                        Common.currentRiderprofile =dataSnapshot.getValue(User.class);
+                        context.startActivity(new Intent(context, FragmentDriver.class));
+                           }
+
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        waitingDialog.dismiss();
-                        Snackbar.make(root, activity.getResources().getString(R.string.failed)+e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                        //btnLogIn.setEnabled(true);
+                    public void onCancelled(DatabaseError databaseError) {
+
                     }
                 });
-            }
-        });
-        alertDialog.setNegativeButton(activity.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        alertDialog.show();
+    }
+    public void showLoginDialog(){
+        activity.getApplicationContext().startActivity(new Intent(activity, LoginMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
     public void showRegistrerDialog(){
-        AlertDialog.Builder alertDialog=new AlertDialog.Builder(activity);
-        alertDialog.setTitle(activity.getResources().getString(R.string.signin));
-        alertDialog.setMessage(activity.getResources().getString(R.string.fill_fields));
+        activity.getApplicationContext().startActivity(new Intent(activity, signup_and_profile_Activity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
-        LayoutInflater inflater=LayoutInflater.from(activity);
-        View registrer_layout=inflater.inflate(R.layout.layout_register, null);
-        final MaterialEditText etEmail=registrer_layout.findViewById(R.id.etEmail);
-        final MaterialEditText etPassword=registrer_layout.findViewById(R.id.etPassword);
-        final MaterialEditText etName=registrer_layout.findViewById(R.id.etName);
-        final MaterialEditText etPhone=registrer_layout.findViewById(R.id.etPhone);
-
-        alertDialog.setView(registrer_layout);
-        alertDialog.setPositiveButton(activity.getResources().getString(R.string.register), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-
-                if (TextUtils.isEmpty(etEmail.getText().toString())){
-                    Snackbar.make(root, activity.getResources().getString(R.string.enter_email), Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(etPassword.getText().toString())){
-                    Snackbar.make(root, activity.getResources().getString(R.string.enter_password), Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (etPassword.getText().toString().length()<6){
-                    Snackbar.make(root, activity.getResources().getString(R.string.password_short), Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(etName.getText().toString())){
-                    Snackbar.make(root, activity.getResources().getString(R.string.enter_name), Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(etPhone.getText().toString())){
-                    Snackbar.make(root, activity.getResources().getString(R.string.enter_phone), Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                firebaseAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
-                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                            @Override
-                            public void onSuccess(AuthResult authResult) {
-                                User user=new User();
-                                user.setEmail(etEmail.getText().toString());
-                                user.setName(etName.getText().toString());
-                                user.setPassword(etPassword.getText().toString());
-                                user.setPhone(etPhone.getText().toString());
-                                user.setCarType("UberX");
-
-                                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .setValue(user)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Snackbar.make(root, "Registered", Snackbar.LENGTH_SHORT).show();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Snackbar.make(root, activity.getResources().getString(R.string.failed)+e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Snackbar.make(root, activity.getResources().getString(R.string.failed)+e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-
-        alertDialog.setNegativeButton(activity.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        alertDialog.show();
     }
     public void showRegisterPhone(final User user, final GoogleSignInAccount account){
         AlertDialog.Builder alertDialog=new AlertDialog.Builder(activity);

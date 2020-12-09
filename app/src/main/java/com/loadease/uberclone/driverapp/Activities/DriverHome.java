@@ -1332,7 +1332,7 @@
 //                @Override
 //                public void onResult(@NonNull Status status) {
 //                    if (status.isSuccess()) {
-//                        Intent intent = new Intent(DriverHome.this, Login.class);
+//                        Intent intent = new Intent(DriverHome.this, signup_and_profile_Activity.class);
 //                        startActivity(intent);
 //                        finish();
 //                    } else {
@@ -1343,12 +1343,12 @@
 //
 //        }else if(isLoggedInFacebook){
 //            LoginManager.getInstance().logOut();
-//            Intent intent = new Intent(DriverHome.this, Login.class);
+//            Intent intent = new Intent(DriverHome.this, signup_and_profile_Activity.class);
 //            startActivity(intent);
 //            finish();
 //        }else{
 //            FirebaseAuth.getInstance().signOut();
-//            Intent intent=new Intent(DriverHome.this, Login.class);
+//            Intent intent=new Intent(DriverHome.this, signup_and_profile_Activity.class);
 //            startActivity(intent);
 //            finish();
 //        }
