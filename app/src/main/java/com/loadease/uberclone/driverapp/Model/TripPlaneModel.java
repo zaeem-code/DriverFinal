@@ -9,7 +9,15 @@ public class TripPlaneModel {
     private String origin,originString;
     private String destination,destinationString;
     private String distancePickup,distanceDestination;
-    private String durationPickup,durationDestination,pic_url,Fare,name;
+    private String durationPickup,durationDestination,pic_url,Fare,name,FromAddress;
+
+    public String getFromAddress() {
+        return FromAddress;
+    }
+
+    public void setFromAddress(String fromAddress) {
+        FromAddress = fromAddress;
+    }
 
     public String getName() {
         return name;

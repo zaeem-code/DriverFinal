@@ -13,8 +13,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
 import android.animation.ValueAnimator;
-import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.location.Address;
@@ -76,7 +74,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.kusu.library.LoadingButton;
 import com.loadease.uberclone.driverapp.Common.Common;
-import com.loadease.uberclone.driverapp.Helpers.FirebaseHelper;
 import com.loadease.uberclone.driverapp.Interfaces.locationListener;
 import com.loadease.uberclone.driverapp.Messages.DriverRequestReceived;
 import com.loadease.uberclone.driverapp.Model.LocationUtils;
@@ -99,6 +96,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -538,7 +536,7 @@ import io.reactivex.schedulers.Schedulers;
                                             tripPlaneModel.setPic_url(Common.currentRiderprofile.getRider_pic_Url());
                                             tripPlaneModel.setFare("100rs");
                                             tripPlaneModel.setName(Common.currentRiderprofile.getName());
-
+                                             tripPlaneModel.setFromAddress(fromaddressStringget(Common.currentLat,Common.currentLng));
                                             tripNumberId=Common.createUniqueTripNumber(timeOffset);
 
                                             FirebaseDatabase.getInstance().getReference("Trips")
@@ -1539,7 +1537,23 @@ try {
             super.onBackPressed();
         }
     }
+private String fromaddressStringget(Double lat, Double lng){
+    Geocoder geocoder;
 
+    String address="NA";
+    List<Address> addresses;
+    geocoder = new Geocoder(this, Locale.getDefault());
+
+    try {
+        addresses = geocoder.getFromLocation(lat, lng, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+address= addresses.get(0).getAddressLine(0);
+    } catch (IOException e) {
+        Log.v("adddress","eddress error: "+e);
+    }
+
+    Log.v("adddress","eddress error: "+address);
+return address;
+}
 
 
 }
