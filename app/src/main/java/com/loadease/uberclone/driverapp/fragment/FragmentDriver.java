@@ -537,6 +537,7 @@ import io.reactivex.schedulers.Schedulers;
                                             tripPlaneModel.setCurrentLat(Common.currentLat);
                                             tripPlaneModel.setPic_url(Common.currentRiderprofile.getRider_pic_Url());
                                             tripPlaneModel.setFare("100rs");
+                                            tripPlaneModel.setName(Common.currentRiderprofile.getName());
 
                                             tripNumberId=Common.createUniqueTripNumber(timeOffset);
 

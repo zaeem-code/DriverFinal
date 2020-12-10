@@ -5,8 +5,15 @@ public class DriverRequestReceived {
 
     String key;
     String pickupLocation,puckupLocationString;
-    String destinationLocation,destinationLocationString;
+    String destinationLocation,destinationLocationString,FromAddress;
 
+    public String getFromAddress() {
+        return FromAddress;
+    }
+
+    public void setFromAddress(String fromAddress) {
+        FromAddress = fromAddress;
+    }
 
     public DriverRequestReceived() {
     }
