@@ -9,7 +9,23 @@ public class TripPlaneModel {
     private String origin,originString;
     private String destination,destinationString;
     private String distancePickup,distanceDestination;
-    private String durationPickup,durationDestination;
+    private String durationPickup,durationDestination,pic_url,Fare;
+
+    public String getPic_url() {
+        return pic_url;
+    }
+
+    public void setPic_url(String pic_url) {
+        this.pic_url = pic_url;
+    }
+
+    public String getFare() {
+        return Fare;
+    }
+
+    public void setFare(String fare) {
+        Fare = fare;
+    }
 
     private double currentLat,currentLng;
     private boolean isDone,isCancel;
