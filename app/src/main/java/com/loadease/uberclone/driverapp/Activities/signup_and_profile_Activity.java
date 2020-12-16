@@ -55,9 +55,9 @@ private ProgressDialog dialog;
         LinearLayout root;
 
         StorageReference mStorageRef;
-        EditText etEmail, etPassword, etName, etYearofprodtution, etPhone, date, mont, year;
-        String DOB,Roider_phn,Roider_name, gender = "male", RideType = "economy", Rider_CNIC_url, Rider_photo_url, Rider_car_photo_url, Rider_licence_photo_url, Yearofprodtution
-        ,Roider_pass,Roider_email;
+        EditText etEmail, etPassword, etName, etYearofprodtution, etPhone, date, mont, year,edcaarnumber;
+        String DOB,Roider_phn,Roider_name, gender = "male", RideType = "economy", Rider_CNIC_url="", Rider_photo_url, Rider_car_photo_url, Rider_licence_photo_url, Yearofprodtution
+        ,Roider_pass,Roider_email,carnum;
         RadioButton male, female, other,
 
 
@@ -76,6 +76,7 @@ protected void onCreate(Bundle savedInstanceState) {
         }
 
 private void process() {
+        edcaarnumber=findViewById(R.id.carnumber);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etName = findViewById(R.id.etName);
@@ -181,12 +182,12 @@ public void onClick(View view) {
         if (TextUtils.isEmpty(RideType)) {
         Snackbar.make(root,"Error:  All fields needed to be filled", Snackbar.LENGTH_SHORT).show();
         return;
+        }else if (TextUtils.isEmpty(Rider_CNIC_url)) {
+                Snackbar.make(root,"Upload Cnic picture", Snackbar.LENGTH_SHORT).show();
+                return;
         }
         else if (TextUtils.isEmpty(Rider_car_photo_url)) {
         Snackbar.make(root,"Upload Car picture", Snackbar.LENGTH_SHORT).show();
-        return;
-        }else if (TextUtils.isEmpty(Rider_CNIC_url)) {
-        Snackbar.make(root,"Upload Cnic picture", Snackbar.LENGTH_SHORT).show();
         return;
         }else if (TextUtils.isEmpty(Rider_licence_photo_url)) {
         Snackbar.make(root,"Upload Licence picture", Snackbar.LENGTH_SHORT).show();
@@ -206,6 +207,9 @@ public void onClick(View view) {
         } else if (TextUtils.isEmpty(etYearofprodtution.getText().toString())) {
         Snackbar.make(root,"Enter Year of production", Snackbar.LENGTH_SHORT).show();
         return;
+        } else if (TextUtils.isEmpty(edcaarnumber.getText().toString())) {
+                Snackbar.make(root,"Enter number plate", Snackbar.LENGTH_SHORT).show();
+                return;
         }else  {
         DOB=date.getText().toString().trim()+"-"+mont.getText().toString().trim()+"-"+year.getText().toString().trim();
         Yearofprodtution=etYearofprodtution.getText().toString();
@@ -213,6 +217,7 @@ public void onClick(View view) {
         Roider_phn=etPhone.getText().toString().trim();
         Roider_email =etEmail.getText().toString().trim();
         Roider_pass=etPassword.getText().toString().trim();
+        carnum=edcaarnumber.getText().toString();
         profilesignup();
         }
         break;
@@ -556,6 +561,7 @@ private void profilesignup(){
         user.setRider_licence_pic(Rider_licence_photo_url);
         user.setRider_pic_Url(Rider_photo_url);
         user.setRider_vehical_pic(Rider_car_photo_url);
+        user.setCarnum(carnum);
         myRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
 @Override
 public void onComplete(@NonNull Task<Void> task) {

@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
 import android.animation.ValueAnimator;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.location.Address;
@@ -97,6 +98,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -270,6 +279,21 @@ import io.reactivex.schedulers.Schedulers;
     TextView txt_notify_rider;
     ProgressBar progress_notify;
 
+    SharedPreferences prefs;
+
+
+    String user_curr;
+
+    String curr_Time="";
+    SimpleDateFormat _24HourSDF;
+    SimpleDateFormat _12HourSDF;
+    Date _24HourDt;
+    TextView islamic_D_T;
+
+
+
+
+
 
     @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
     public void onNotifyToRider(NotifyToRiderEvent event)
@@ -277,7 +301,8 @@ import io.reactivex.schedulers.Schedulers;
 
         layout_notify_rider.setVisibility(View.VISIBLE);
         progress_notify.setMax(1*60);
-        waiting_timer=new CountDownTimer(1*60*1000,1000) {
+        waiting_timer=new CountDownTimer(1*60*1000,1000)
+        {
             @Override
             public void onTick(long millisUntilFinished)
             {
@@ -311,6 +336,15 @@ import io.reactivex.schedulers.Schedulers;
 
 
         driverRequestReceived=event;
+
+        DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        HashMap hashMap=new HashMap();
+        hashMap.put("Uid",event.getKey());
+
+        db.updateChildren(hashMap);
+
+
+
 
 
 
@@ -433,7 +467,7 @@ import io.reactivex.schedulers.Schedulers;
                                 mMap.moveCamera(CameraUpdateFactory.zoomTo(mMap.getCameraPosition().zoom-1));
 
 
-                                ///show layout
+                                ///show layout when request of user send to driver
 
                                 chip_decline.setVisibility(View.VISIBLE);
                                 layout_accept.setVisibility(View.VISIBLE);
@@ -453,11 +487,6 @@ import io.reactivex.schedulers.Schedulers;
 
 
                                         }).subscribe();
-
-
-
-
-
 
 
 
@@ -514,11 +543,15 @@ import io.reactivex.schedulers.Schedulers;
                         FirebaseDatabase.getInstance().getReference("RidersInformation")
                                 .child(event.getKey())
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @RequiresApi(api = Build.VERSION_CODES.O)
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                                         if (snapshot.exists())
                                         {
+
+
+
                                             RiderModel riderModel=snapshot.getValue(RiderModel.class);
 
                                             TripPlaneModel tripPlaneModel=new TripPlaneModel();
@@ -536,10 +569,56 @@ import io.reactivex.schedulers.Schedulers;
                                             tripPlaneModel.setPic_url(Common.currentRiderprofile.getRider_pic_Url());
                                             tripPlaneModel.setFare("100rs");
                                             tripPlaneModel.setName(Common.currentRiderprofile.getName());
-                                             tripPlaneModel.setFromAddress(fromaddressStringget(Common.currentLat,Common.currentLng));
+                                            tripPlaneModel.setFromAddress(fromaddressStringget(Common.currentLat,Common.currentLng));
+                                            tripPlaneModel.setCarnum(Common.currentRiderprofile.getCarnum());
+
+
+                                            ZoneId z = ZoneId.of("Asia/Karachi") ;
+
+                                            LocalTime localTime = LocalTime.now( z ) ;
+                                            Locale locale_en_US = Locale.forLanguageTag("PK");
+                                            DateTimeFormatter formatterUS = DateTimeFormatter.ofLocalizedTime( FormatStyle.SHORT ).withLocale( locale_en_US ) ;
+                                            String output = localTime.format( formatterUS ) ;
+
+                                            LocalDate locale_date= LocalDate.now(z);
+                                            Locale locale_SAU_date = Locale.forLanguageTag("PK");
+
+                                            DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale( locale_SAU_date ) ;
+                                            String output2 = locale_date.format( formatter ) ;
+
+
+                                            _24HourSDF = new SimpleDateFormat("HH:mm");
+                                            _12HourSDF = new SimpleDateFormat("hh:mm a");
+                                            try {
+                                                _24HourDt = _24HourSDF.parse(output);
+                                                tripPlaneModel.setTime(_12HourSDF.format(_24HourDt));
+                                                tripPlaneModel.setDate(output2);
+
+
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+
+
+
                                             tripNumberId=Common.createUniqueTripNumber(timeOffset);
 
-                                            FirebaseDatabase.getInstance().getReference("Trips")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            FirebaseDatabase.getInstance().getReference("Trips").child(event.getKey())
                                                     .child(tripNumberId)
                                                     .setValue(tripPlaneModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
@@ -587,6 +666,8 @@ import io.reactivex.schedulers.Schedulers;
 
                     }
                 });
+
+
 
     }
 
@@ -660,6 +741,36 @@ Toolbar toolbar;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_home);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+
+
+        DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.hasChildren())
+                {
+                    user_curr=snapshot.child("Uid").getValue().toString();
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+
+
+
+
 
         snackbarView=findViewById(R.id.snackbarView);
         iGoogleApi_sep = RetrofitClient_sep.getInstance().create(IGoogleApi_sep.class);
@@ -787,48 +898,53 @@ Toolbar toolbar;
 
                 Map<String, Object> update_trip = new HashMap<>();
                 update_trip.put("done",true);
-                FirebaseDatabase.getInstance().getReference("Trips")
-                        .child(tripNumberId)
-                        .updateChildren(update_trip)
-                        .addOnSuccessListener(aVoid -> {
-
-                            UsersUtill.sendCompleteTripToRider(snackbarView,getApplicationContext(),driverRequestReceived.getKey(),
-                                    tripNumberId
-                                    );
-
-                            mMap.clear();
-                            tripNumberId="";
-
-                            isTripStart=false;
-                            chip_decline.setVisibility(View.GONE);
-                            layout_accept.setVisibility(View.GONE);
-                            circularProgressBar.setProgress(0);
-
-                            layout_start_uber.setVisibility(View.GONE);
-                            layout_notify_rider.setVisibility(View.GONE);
-                            progress_notify.setProgress(0);
 
 
-                            btn_complete_trip.setEnabled(false);
-                            btn_complete_trip.setVisibility(View.GONE);
+                 FirebaseDatabase.getInstance().getReference("Trips").child(user_curr)
+                         .child(tripNumberId)
+                         .updateChildren(update_trip)
+                         .addOnSuccessListener(aVoid -> {
 
-                            btn_start_uber.setEnabled(false);
-                            btn_start_uber.setVisibility(View.VISIBLE);
+                             UsersUtill.sendCompleteTripToRider(snackbarView,getApplicationContext(),driverRequestReceived.getKey(),
+                                     tripNumberId
+                             );
+
+                             mMap.clear();
+                             tripNumberId="";
+
+                             isTripStart=false;
+                             chip_decline.setVisibility(View.GONE);
+                             layout_accept.setVisibility(View.GONE);
+                             circularProgressBar.setProgress(0);
+
+                             layout_start_uber.setVisibility(View.GONE);
+                             layout_notify_rider.setVisibility(View.GONE);
+                             progress_notify.setProgress(0);
 
 
-                            destinationGeoFire=null;
-                            pickupGeoFire=null;
+                             btn_complete_trip.setEnabled(false);
+                             btn_complete_trip.setVisibility(View.GONE);
 
-                            driverRequestReceived=null;
-
-                            makeDriverOnline();
-
+                             btn_start_uber.setEnabled(false);
+                             btn_start_uber.setVisibility(View.VISIBLE);
 
 
+                             destinationGeoFire=null;
+                             pickupGeoFire=null;
 
-                        }).addOnFailureListener(e -> {
+                             driverRequestReceived=null;
 
-                        });
+                             makeDriverOnline();
+
+
+
+
+                         }).addOnFailureListener(e -> {
+
+                 });
+
+
+
 
 
 
@@ -1045,18 +1161,20 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
                          Map<String,Object> update_data=new HashMap<>();
 
                          update_data.put("currentLat",Common.currentLat);
-                        update_data.put("currentLng",Common.currentLng);
+                         update_data.put("currentLng",Common.currentLng);
 
-                        FirebaseDatabase.getInstance().getReference("Trips")
+
+                              FirebaseDatabase.getInstance().getReference("Trips").child(user_curr)
                                 .child(tripNumberId)
                                 .updateChildren(update_data).addOnSuccessListener(aVoid -> {
-
-
-
 
                                 }).addOnFailureListener(e -> {
 
                                 });
+
+
+
+
 
 
 
@@ -1229,6 +1347,8 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+
+
                         Common.currentUser = dataSnapshot.getValue(User.class);
 
                     }

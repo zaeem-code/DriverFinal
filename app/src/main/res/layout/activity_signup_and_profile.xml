@@ -44,6 +44,7 @@ android:background="@android:color/transparent"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:id="@+id/signupdata"
+            android:visibility="visible"
             android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
@@ -490,6 +491,7 @@ android:id="@+id/female"
                     <EditText
                         android:id="@+id/date"
                         android:layout_width="60dp"
+                        android:inputType="date"
                         android:gravity="center"
                         android:textColorHint="@color/gray"
                         android:layout_height="match_parent"
@@ -522,6 +524,7 @@ android:id="@+id/female"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:hint="MM"
+                        android:inputType="date"
                         android:textColorHint="@color/gray"
                         />
 
@@ -550,6 +553,7 @@ android:id="@+id/female"
                         android:id="@+id/year"
                         android:layout_width="60dp"
                         android:textColorHint="@color/gray"
+                        android:inputType="date"
                         android:layout_height="match_parent"
                         android:hint="yy"/>
 

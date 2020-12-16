@@ -1,7 +1,9 @@
 package com.loadease.uberclone.driverapp.Util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -29,6 +31,8 @@ import java.util.Map;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class UsersUtill {
     public static void sendDeclineRequest(View snackbarView, Context applicationContext, String key) {
@@ -282,82 +286,79 @@ public class UsersUtill {
         IFCMService_sep ifcmServiceSep = RetrofitFCMClient.getInstance().create(IFCMService_sep.class);
 
 
-        FirebaseDatabase.getInstance().getReference("Trips")
-                .child(tripNumberId)
-                .removeValue()
-                .addOnSuccessListener(aVoid -> FirebaseDatabase.getInstance().getReference(Common.token_tbl).child(key)
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        SharedPreferences prefs = applicationContext.getSharedPreferences("ip", MODE_PRIVATE);
+        String user_curr = prefs.getString("user_curr", "");
 
-                                if (dataSnapshot.exists())
-                                {
-
-                                    Token tokenModel=dataSnapshot.getValue(Token.class);
-                                    Map<String, String> notificationData=new HashMap<>();
-
-                                    notificationData.put("title","DeclineAndRemoveTrip");
-                                    notificationData.put("body","Msg from driver decline");
-                                    notificationData.put("DriverKey", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        if (!user_curr.equals("")) {
 
 
+            FirebaseDatabase.getInstance().getReference("Trips").child(user_curr)
+                    .child(tripNumberId)
+                    .removeValue()
+                    .addOnSuccessListener(aVoid -> FirebaseDatabase.getInstance().getReference(Common.token_tbl).child(key)
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                    if (dataSnapshot.exists()) {
+
+                                        Token tokenModel = dataSnapshot.getValue(Token.class);
+                                        Map<String, String> notificationData = new HashMap<>();
+
+                                        notificationData.put("title", "DeclineAndRemoveTrip");
+                                        notificationData.put("body", "Msg from driver decline");
+                                        notificationData.put("DriverKey", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
+                                        FCMSendData fcmSendData = new FCMSendData(tokenModel.getToken(), notificationData);
+                                        compositeDisposable.add(ifcmServiceSep.sendNotification(fcmSendData)
+                                                .subscribeOn(Schedulers.newThread())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(fcmResponse -> {
 
-                                    FCMSendData fcmSendData=new FCMSendData(tokenModel.getToken(),notificationData);
-                                    compositeDisposable.add(ifcmServiceSep.sendNotification(fcmSendData)
-                                            .subscribeOn(Schedulers.newThread())
-                                            .observeOn(AndroidSchedulers.mainThread())
-                                            .subscribe(fcmResponse -> {
+                                                    if (fcmResponse.getSuccess() == 0) {
+                                                        compositeDisposable.clear();
+                                                        Snackbar.make(snackbarView, "fail to decline", Snackbar.LENGTH_SHORT).show();
 
-                                                if (fcmResponse.getSuccess()==0)
-                                                {
+                                                    } else {
+                                                        Snackbar.make(snackbarView, "decline success", Snackbar.LENGTH_SHORT).show();
+
+                                                    }
+
+
+                                                }, throwable -> {
+
                                                     compositeDisposable.clear();
-                                                    Snackbar.make(snackbarView,"fail to decline",Snackbar.LENGTH_SHORT).show();
+                                                    Snackbar.make(snackbarView, throwable.getMessage(), Snackbar.LENGTH_SHORT).show();
 
-                                                }
-                                                else
-                                                {
-                                                    Snackbar.make(snackbarView,"decline success",Snackbar.LENGTH_SHORT).show();
-
-                                                }
+                                                }));
 
 
-                                            }, throwable -> {
+                                    } else {
+                                        Snackbar.make(snackbarView, "driver token not found", Snackbar.LENGTH_SHORT).show();
 
-                                                compositeDisposable.clear();
-                                                Snackbar.make(snackbarView,throwable.getMessage(),Snackbar.LENGTH_SHORT).show();
-
-                                            }));
+                                        compositeDisposable.clear();
+                                    }
 
 
                                 }
-                                else
-                                {
-                                    Snackbar.make(snackbarView,"driver token not found",Snackbar.LENGTH_SHORT).show();
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                                     compositeDisposable.clear();
                                 }
+                            })).addOnFailureListener(e -> {
 
 
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                compositeDisposable.clear();
-                            }
-                        })).addOnFailureListener(e -> {
+            });
 
 
-
-            
-
-                        });
-
-
-
-
+        }
+        else
+        {
+            Toast.makeText(applicationContext, "curr null", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

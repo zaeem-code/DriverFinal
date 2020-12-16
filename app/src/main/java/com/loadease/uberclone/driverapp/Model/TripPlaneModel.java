@@ -9,7 +9,31 @@ public class TripPlaneModel {
     private String origin,originString;
     private String destination,destinationString;
     private String distancePickup,distanceDestination;
-    private String durationPickup,durationDestination,pic_url,Fare,name,FromAddress;
+    private String durationPickup,durationDestination,pic_url,Fare,name,FromAddress, carnum,date,time;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getCarnum() {
+        return carnum;
+    }
+
+    public void setCarnum(String carnum) {
+        this.carnum = carnum;
+    }
 
     public String getFromAddress() {
         return FromAddress;
@@ -45,9 +69,20 @@ public class TripPlaneModel {
 
     private double currentLat,currentLng;
     private boolean isDone,isCancel;
+    private String fare;
+    private String picture_url;
 
 
     public TripPlaneModel() {
+    }
+
+
+    public String getPicture_url() {
+        return picture_url;
+    }
+
+    public void setPicture_url(String picture_url) {
+        this.picture_url = picture_url;
     }
 
     public String getRider() {

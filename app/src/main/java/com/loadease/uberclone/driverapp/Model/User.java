@@ -5,7 +5,15 @@ public class User{
     private String name;
     private String password;
     private String phone;
-    private String rider_pic_Url;
+    private String rider_pic_Url,carnum;
+
+    public String getCarnum() {
+        return carnum;
+    }
+
+    public void setCarnum(String carnum) {
+        this.carnum = carnum;
+    }
 
     public String getRider_cnic_pic_url() {
         return rider_cnic_pic_url;
