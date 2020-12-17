@@ -171,7 +171,7 @@
     android:id="@+id/layout_start_ubber"
     android:background="@drawable/cardview_background"
     android:layout_gravity="bottom"
-    android:visibility="visible"
+    android:visibility="gone"
 
 
     >
