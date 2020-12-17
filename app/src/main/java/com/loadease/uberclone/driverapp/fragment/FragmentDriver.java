@@ -264,10 +264,11 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
 
 
 
-    TextView txt_rating,txt_type_uber,txt_rider_name,txt_start_uber_estimate_distance
-            ,txt_start_uber_estimate_time;
+//    TextView txt_rating,txt_type_uber,txt_rider_name,txt_start_uber_estimate_distance
+//            ,txt_start_uber_estimate_time;
+    TextView txt_rating,txt_type_uber;
     ImageView img_round,img_phone_call;
-    CardView layout_start_uber;
+    LinearLayout layout_start_uber;
     LoadingButton btn_start_uber,btn_complete_trip;
     String tripNumberId="";
     boolean  isTripStart=false,onlineSystemAlreadyRegister=false;
@@ -627,9 +628,9 @@ Log.v("hassan","--->  :"+event.getImageurl());
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
 
-                                                    txt_rider_name.setText(riderModel.getName());
-                                                    txt_start_uber_estimate_time.setText(duration);
-                                                    txt_start_uber_estimate_distance.setText(distance);
+//                                                    txt_rider_name.setText(riderModel.getName());
+//                                                    txt_start_uber_estimate_time.setText(duration);
+//                                                    txt_start_uber_estimate_distance.setText(distance);
 
                                                     setOffLineModForDriver(event,duration,distance);
 
@@ -709,14 +710,14 @@ Log.v("hassan","--->  :"+event.getImageurl());
         if (isProcess) {
             color_dark_grey = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
             circularProgressBar.setIndeterminateMode(true);
-            txt_rating.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_baseline_star_24,0);
+//            txt_rating.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_baseline_star_24,0);
 
         } else
         {
             color_dark_grey = ContextCompat.getColor(getApplicationContext(), android.R.color.white);
             circularProgressBar.setIndeterminateMode(false);
             circularProgressBar.setProgress(0);
-            txt_rating.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_baseline_star_24,0);
+//            txt_rating.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_baseline_star_24,0);
 
 
 
@@ -724,11 +725,11 @@ Log.v("hassan","--->  :"+event.getImageurl());
 
 
 
-        txt_estimate_time.setTextColor(color_dark_grey);
-        txt_estimate_distance.setTextColor(color_dark_grey);
-        ImageViewCompat.setImageTintList(img_round, ColorStateList.valueOf(color_dark_grey));
-        txt_rating.setTextColor(color_dark_grey);
-        txt_type_uber.setTextColor(color_dark_grey);
+//        txt_estimate_time.setTextColor(color_dark_grey);
+//        txt_estimate_distance.setTextColor(color_dark_grey);
+//        ImageViewCompat.setImageTintList(img_round, ColorStateList.valueOf(color_dark_grey));
+//        txt_rating.setTextColor(color_dark_grey);
+//        txt_type_uber.setTextColor(color_dark_grey);
 
 
     }
@@ -786,9 +787,9 @@ Toolbar toolbar;
 
         txt_rating=findViewById(R.id.txt_rating);
         txt_type_uber=findViewById(R.id.txt_type_uber);
-        txt_rider_name=findViewById(R.id.txt_rider_name);
-        txt_start_uber_estimate_distance=findViewById(R.id.txt_start_uber_estimate_distance);
-        txt_start_uber_estimate_time=findViewById(R.id.txt_start_uber_estimate_time);
+//        txt_rider_name=findViewById(R.id.txt_rider_name);
+//        txt_start_uber_estimate_distance=findViewById(R.id.txt_start_uber_estimate_distance);
+//        txt_start_uber_estimate_time=findViewById(R.id.txt_start_uber_estimate_time);
         img_round=findViewById(R.id.img_round);
         img_phone_call=findViewById(R.id.img_phone_call);
         layout_start_uber=findViewById(R.id.layout_start_ubber);

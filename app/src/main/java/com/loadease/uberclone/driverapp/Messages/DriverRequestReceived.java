@@ -5,7 +5,39 @@ public class DriverRequestReceived {
 
     String key;
     String pickupLocation,puckupLocationString;
-    String destinationLocation,destinationLocationString,FromAddress,phone,name,imageurl;
+    String destinationLocation,destinationLocationString,FromAddress,phone,name,imageurl,lsbourdetails,insurancedetails,industry,vehicaltype;
+
+    public String getLsbourdetails() {
+        return lsbourdetails;
+    }
+
+    public void setLsbourdetails(String lsbourdetails) {
+        this.lsbourdetails = lsbourdetails;
+    }
+
+    public String getInsurancedetails() {
+        return insurancedetails;
+    }
+
+    public void setInsurancedetails(String insurancedetails) {
+        this.insurancedetails = insurancedetails;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
+    public String getVehicaltype() {
+        return vehicaltype;
+    }
+
+    public void setVehicaltype(String vehicaltype) {
+        this.vehicaltype = vehicaltype;
+    }
 
     public String getPhone() {
         return phone;

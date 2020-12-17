@@ -58,6 +58,19 @@ public class firebaseMessaging extends FirebaseMessagingService{
                 driverRequestReceived.setPuckupLocationString(datrecover.get("PickupLocationString"));
                 driverRequestReceived.setDestinationLocation(datrecover.get("DestinationLocation"));
                 driverRequestReceived.setDestinationLocationString(datrecover.get("DestinationLocationString"));
+
+
+
+                driverRequestReceived.setImageurl(datrecover.get("imageurl"));
+                driverRequestReceived.setPhone(datrecover.get("phone"));
+                driverRequestReceived.setName(datrecover.get("name"));
+
+
+
+                driverRequestReceived.setIndustry(datrecover.get("insurancedetails"));
+                driverRequestReceived.setLsbourdetails(datrecover.get("Lsbourdetails"));
+                driverRequestReceived.setVehicaltype(datrecover.get("ridetype"));
+                driverRequestReceived.setInsurancedetails(datrecover.get("insurancedetails"));
 //                driverRequestReceived.setFromAddress(datrecover.get("FromAddress"));
 
                 EventBus.getDefault().postSticky(driverRequestReceived);
