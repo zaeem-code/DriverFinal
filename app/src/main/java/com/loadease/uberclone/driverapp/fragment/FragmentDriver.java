@@ -13,11 +13,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -125,11 +127,12 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
         GoogleApiClient.OnConnectionFailedListener {
 
     CircleImageView imagecusavatar;
-    TextView customerName,pickupAddress;
+    TextView customerName,pickupAddress,dropoffAddress;
     Button accept_btn, reject_btn;
     String duration,distance;
     DriverRequestReceived eventX;
     private GoogleMap mMap;
+    String phone="";
     Location location;
     private Marker currentLocationMarket;
     private GoogleApiClient mGoogleApiClient;
@@ -298,30 +301,30 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
     public void onNotifyToRider(NotifyToRiderEvent event)
     {
 
-        layout_notify_rider.setVisibility(View.VISIBLE);
-        progress_notify.setMax(1*60);
-        waiting_timer=new CountDownTimer(1*60*1000,1000)
-        {
-            @Override
-            public void onTick(long millisUntilFinished)
-            {
-
-                progress_notify.setProgress(progress_notify.getProgress()+1);
-                txt_notify_rider.setText(String.format("02d:%02d",
-                        TimeUnit.MILLISECONDS.toMinutes(1)-TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(1)),
-                        TimeUnit.MILLISECONDS.toSeconds(1)-TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(1)))
-
-
-                );
-
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        }.start();
-
+//        layout_notify_rider.setVisibility(View.VISIBLE);
+//        progress_notify.setMax(1*60);
+//        waiting_timer=new CountDownTimer(1*60*1000,1000)
+//        {
+//            @Override
+//            public void onTick(long millisUntilFinished)
+//            {
+//
+//                progress_notify.setProgress(progress_notify.getProgress()+1);
+//                txt_notify_rider.setText(String.format("02d:%02d",
+//                        TimeUnit.MILLISECONDS.toMinutes(1)-TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(1)),
+//                        TimeUnit.MILLISECONDS.toSeconds(1)-TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(1)))
+//
+//
+//                );
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//
+//            }
+//        }.start();
+//
 
 
 
@@ -334,6 +337,7 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
     {
 
         eventX=event;
+        phone=event.getPhone();
 
         driverRequestReceived=event;
 
@@ -470,8 +474,13 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
                                 ///show layout when request of user send to driver
 
                                 layout_accept.setVisibility(View.VISIBLE);
-                                pickupAddress.setText(event.getDestinationLocationString());
+                                pickupAddress.setText(event.getPuckupLocationString());
+                                dropoffAddress.setText(event.getDestinationLocationString());
                                 customerName.setText(event.getName());
+                                txt_type_uber.setText(event.getVehicaltype());
+                                txt_rating.setText("1.7");
+
+
                                     Picasso.get().load(event.getImageurl()).into(imagecusavatar);
 
 
@@ -775,6 +784,7 @@ Toolbar toolbar;
 
 
         pickupAddress=findViewById(R.id.pickupadd);
+        dropoffAddress=findViewById(R.id.dropoffadd);
         customerName=findViewById(R.id.custmername);
         imagecusavatar =findViewById(R.id.imageCus);
 
@@ -806,7 +816,22 @@ Toolbar toolbar;
 
 
         initDrawer();
+        img_phone_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                if (!TextUtils.isEmpty(phone)) {
+
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData(Uri.parse("tel:"+Uri.encode(phone.trim())));
+                    callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(callIntent);
+
+                }else {
+                    Toast.makeText(FragmentDriver.this, "Unable to call driver", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 accept_btn.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
