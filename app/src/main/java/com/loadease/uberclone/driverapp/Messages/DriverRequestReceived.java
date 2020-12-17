@@ -5,7 +5,31 @@ public class DriverRequestReceived {
 
     String key;
     String pickupLocation,puckupLocationString;
-    String destinationLocation,destinationLocationString,FromAddress;
+    String destinationLocation,destinationLocationString,FromAddress,phone,name,imageurl;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
 
     public String getFromAddress() {
         return FromAddress;

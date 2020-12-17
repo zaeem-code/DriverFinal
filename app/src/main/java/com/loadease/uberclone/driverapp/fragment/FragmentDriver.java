@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -64,7 +65,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -119,27 +119,25 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-    public class FragmentDriver extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback
+
+public class FragmentDriver extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback
         , GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener
-{
+        GoogleApiClient.OnConnectionFailedListener {
 
-
-
+    CircleImageView imagecusavatar;
+    TextView customerName,pickupAddress;
+    Button accept_btn, reject_btn;
+    String duration,distance;
+    DriverRequestReceived eventX;
     private GoogleMap mMap;
     Location location;
     private Marker currentLocationMarket;
     private GoogleApiClient mGoogleApiClient;
     private GoogleSignInAccount account;
-
     AccessToken accessToken = AccessToken.getCurrentAccessToken();
     boolean isLoggedInFacebook = accessToken != null && !accessToken.isExpired();
-
-
     GeoFire pickupGeoFire,destinationGeoFire;
     GeoQuery pickupGeoQuery,destinationGeoQuery;
-
-
     GeoQueryEventListener pickupGeoQueryListner=new GeoQueryEventListener() {
         @Override
         public void onKeyEntered(String key, GeoLocation location) {
@@ -148,7 +146,7 @@ import io.reactivex.schedulers.Schedulers;
             UsersUtill.sendNotifyToRider(FragmentDriver.this,snackbarView,key);
 
 
-            if (pickupGeoQuery!=null)
+            if (pickupGeoQuery!=null && pickupGeoFire!=null)
             {
                 pickupGeoFire.removeLocation(key);
                 pickupGeoFire=null;
@@ -255,8 +253,7 @@ import io.reactivex.schedulers.Schedulers;
 
 
 
-    Chip chip_decline;
-    CardView layout_accept;
+    LinearLayout layout_accept;
     CircularProgressBar circularProgressBar;
     TextView txt_estimate_time,txt_estimate_distance;
     CompositeDisposable compositeDisposable=new CompositeDisposable();
@@ -335,6 +332,7 @@ import io.reactivex.schedulers.Schedulers;
     public void onDriverRequestReceive(DriverRequestReceived event)
     {
 
+        eventX=event;
 
         driverRequestReceived=event;
 
@@ -446,11 +444,11 @@ import io.reactivex.schedulers.Schedulers;
                                 JSONObject legObject=legs.getJSONObject(0);
 
                                 JSONObject time=legObject.getJSONObject("duration");
-                                String duration=time.getString("text");
+                                  duration=time.getString("text");
 
 
                                 JSONObject distanceEstimate=legObject.getJSONObject("distance");
-                                String distance=distanceEstimate.getString("text");
+                                  distance=distanceEstimate.getString("text");
 
                                 txt_estimate_time.setText(duration);
                                 txt_estimate_distance.setText(distance);
@@ -470,24 +468,28 @@ import io.reactivex.schedulers.Schedulers;
 
                                 ///show layout when request of user send to driver
 
-                                chip_decline.setVisibility(View.VISIBLE);
                                 layout_accept.setVisibility(View.VISIBLE);
+                                pickupAddress.setText(event.getDestinationLocationString());
+                                customerName.setText(event.getName());
+                                    Picasso.get().load(event.getImageurl()).into(imagecusavatar);
 
+
+Log.v("hassan","--->  :"+event.getImageurl());
 
 //////count down
-                                countDownEvent= Observable.interval(100, TimeUnit.MILLISECONDS)
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .doOnNext(x->{
-                                            circularProgressBar.setProgress(circularProgressBar.getProgress()+1f);
-                                        })
-                                        .takeUntil(aLong->aLong==100)
-                                        .doOnComplete(()->{
-
-
-                                            createTripPlan(event,duration,distance);
-
-
-                                        }).subscribe();
+//                                countDownEvent= Observable.interval(100, TimeUnit.MILLISECONDS)
+//                                        .observeOn(AndroidSchedulers.mainThread())
+//                                        .doOnNext(x->{
+//                                            circularProgressBar.setProgress(circularProgressBar.getProgress()+1f);
+//                                        })
+//                                        .takeUntil(aLong->aLong==100)
+//                                        .doOnComplete(()->{
+//
+//
+////                                            createTripPlan(eventX,duration,distance);
+//
+//
+//                                        }).subscribe();
 
 
 
@@ -744,7 +746,6 @@ Toolbar toolbar;
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
 
-
         DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         db.addValueEventListener(new ValueEventListener() {
@@ -772,6 +773,13 @@ Toolbar toolbar;
 
 
 
+        pickupAddress=findViewById(R.id.pickupadd);
+        customerName=findViewById(R.id.custmername);
+        imagecusavatar =findViewById(R.id.imageCus);
+
+        accept_btn =findViewById(R.id.chip_acpt);
+        reject_btn =findViewById(R.id.chip_decline);
+
 
         snackbarView=findViewById(R.id.snackbarView);
         iGoogleApi_sep = RetrofitClient_sep.getInstance().create(IGoogleApi_sep.class);
@@ -790,7 +798,6 @@ Toolbar toolbar;
         txt_notify_rider=findViewById(R.id.txt_notify_rider);
         progress_notify=findViewById(R.id.progress_notify);
 
-        chip_decline=findViewById(R.id.chip_decline);
         circularProgressBar=findViewById(R.id.circularProgressBar);
         layout_accept=findViewById(R.id.layout_accept);
         txt_estimate_time=findViewById(R.id.txt_estimate_time);
@@ -799,9 +806,15 @@ Toolbar toolbar;
 
         initDrawer();
 
+accept_btn.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
 
+        createTripPlan(eventX,duration,distance);
+    }
+});
 
-        chip_decline.setOnClickListener(new View.OnClickListener() {
+        reject_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -811,7 +824,6 @@ Toolbar toolbar;
                    {
                        if (countDownEvent!=null)
                            countDownEvent.dispose();
-                       chip_decline.setVisibility(View.GONE);
                        layout_accept.setVisibility(View.GONE);
                        mMap.clear();
 
@@ -822,7 +834,6 @@ Toolbar toolbar;
                    }
                    else
                    {
-                       chip_decline.setVisibility(View.GONE);
                        layout_start_uber.setVisibility(View.GONE);
                        mMap.clear();
 
@@ -844,8 +855,6 @@ Toolbar toolbar;
 
             }
         });
-
-
         btn_start_uber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -879,7 +888,6 @@ Toolbar toolbar;
                 }
 
                 btn_start_uber.setVisibility(View.GONE);
-                chip_decline.setVisibility(View.GONE);
                 btn_complete_trip.setVisibility(View.VISIBLE);
 
 
@@ -887,8 +895,6 @@ Toolbar toolbar;
 
             }
         });
-
-
         btn_complete_trip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -914,7 +920,6 @@ Toolbar toolbar;
                              tripNumberId="";
 
                              isTripStart=false;
-                             chip_decline.setVisibility(View.GONE);
                              layout_accept.setVisibility(View.GONE);
                              circularProgressBar.setProgress(0);
 
@@ -1298,9 +1303,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
                  drivers = FirebaseDatabase.getInstance().getReference("Drivers")
                          .child(Common.currentUser.getCarType())
                          .child(city_name);
-             }catch (Exception e){
 
-             }
 
 
             currentUserRef = drivers.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -1331,7 +1334,9 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
             );
 
             registerOnlineSystem();
+             }catch (Exception e){
 
+             }
         }
         else
         {
