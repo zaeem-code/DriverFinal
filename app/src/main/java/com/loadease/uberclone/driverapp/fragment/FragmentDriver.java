@@ -5,17 +5,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
-import androidx.core.widget.ImageViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -32,6 +29,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -112,10 +110,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -129,11 +125,13 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
     CircleImageView imagecusavatar;
     TextView customerName,pickupAddress,dropoffAddress;
     Button accept_btn, reject_btn;
+    RelativeLayout startCancelButtonsLayoutUI;
     String duration,distance;
     DriverRequestReceived eventX;
     private GoogleMap mMap;
     String phone="";
     Location location;
+    Button canceltheongoingRide;
     private Marker currentLocationMarket;
     private GoogleApiClient mGoogleApiClient;
     private GoogleSignInAccount account;
@@ -474,15 +472,7 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
                                 ///show layout when request of user send to driver
 
                                 layout_accept.setVisibility(View.VISIBLE);
-                                pickupAddress.setText(event.getPuckupLocationString());
-                                dropoffAddress.setText(event.getDestinationLocationString());
-                                customerName.setText(event.getName());
-                                txt_type_uber.setText(event.getVehicaltype());
-                                txt_rating.setText("1.7");
-
-
-                                    Picasso.get().load(event.getImageurl()).into(imagecusavatar);
-
+                                loadpessengerdata();
 
 Log.v("hassan","--->  :"+event.getImageurl());
 
@@ -518,6 +508,19 @@ Log.v("hassan","--->  :"+event.getImageurl());
 
         );
 
+
+    }
+
+    private void loadpessengerdata() {
+
+        pickupAddress.setText(eventX.getPuckupLocationString());
+        dropoffAddress.setText(eventX.getDestinationLocationString());
+        customerName.setText(eventX.getName());
+        txt_type_uber.setText(eventX.getVehicaltype());
+        txt_rating.setText("1.7");
+
+
+        Picasso.get().load(eventX.getImageurl()).into(imagecusavatar);
 
     }
 
@@ -701,6 +704,7 @@ Log.v("hassan","--->  :"+event.getImageurl());
             setProcessLayout(false);
             layout_accept.setVisibility(View.GONE);
             layout_start_uber.setVisibility(View.VISIBLE);
+            loadDriverInformation();
 
 
             isTripStart=true;
@@ -782,7 +786,8 @@ Toolbar toolbar;
 
 
 
-
+canceltheongoingRide=findViewById(R.id.canceltrip);
+        startCancelButtonsLayoutUI =findViewById(R.id.startCancelButtonsLayout);
         pickupAddress=findViewById(R.id.pickupadd);
         dropoffAddress=findViewById(R.id.dropoffadd);
         customerName=findViewById(R.id.custmername);
@@ -840,6 +845,13 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
     }
 });
 
+
+        canceltheongoingRide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reject_btn.performClick();
+            }
+        });
         reject_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -912,7 +924,7 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
 
 
                 }
-
+                startCancelButtonsLayoutUI.setVisibility(View.GONE);
                 btn_start_uber.setVisibility(View.GONE);
                 btn_complete_trip.setVisibility(View.VISIBLE);
 
