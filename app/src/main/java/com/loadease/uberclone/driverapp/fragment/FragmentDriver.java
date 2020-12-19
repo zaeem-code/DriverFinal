@@ -74,6 +74,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.kusu.library.LoadingButton;
+import com.loadease.uberclone.driverapp.Activities.RateActivity;
 import com.loadease.uberclone.driverapp.Common.Common;
 import com.loadease.uberclone.driverapp.Interfaces.locationListener;
 import com.loadease.uberclone.driverapp.Messages.DriverRequestReceived;
@@ -121,9 +122,9 @@ import io.reactivex.schedulers.Schedulers;
 public class FragmentDriver extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback
         , GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
-
-    CircleImageView imagecusavatar;
-    TextView customerName,pickupAddress,dropoffAddress;
+boolean dataalredyloaded=false;
+    CircleImageView imagecusavatar,imagecusavatarX;
+    TextView customerName,pickupAddress,dropoffAddress,customerNameX,pickupAddressX,dropoffAddressX;
     Button accept_btn, reject_btn;
     RelativeLayout startCancelButtonsLayoutUI;
     String duration,distance;
@@ -267,7 +268,7 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
 
 //    TextView txt_rating,txt_type_uber,txt_rider_name,txt_start_uber_estimate_distance
 //            ,txt_start_uber_estimate_time;
-    TextView txt_rating,txt_type_uber;
+    TextView txt_rating,txt_ratingX,txt_type_uber,txt_type_uberX;
     ImageView img_round,img_phone_call;
     LinearLayout layout_start_uber;
     LoadingButton btn_start_uber,btn_complete_trip;
@@ -472,7 +473,11 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
                                 ///show layout when request of user send to driver
 
                                 layout_accept.setVisibility(View.VISIBLE);
-                                loadpessengerdata();
+                                if (!dataalredyloaded){
+                                    dataalredyloaded=true;
+                                    Log.v("hassan","---> repeat:  :"+event.getImageurl());
+                                    loadpessengerdata(event);
+                                                    }
 
 Log.v("hassan","--->  :"+event.getImageurl());
 
@@ -511,16 +516,22 @@ Log.v("hassan","--->  :"+event.getImageurl());
 
     }
 
-    private void loadpessengerdata() {
+    private void loadpessengerdata(DriverRequestReceived event) {
 
-        pickupAddress.setText(eventX.getPuckupLocationString());
-        dropoffAddress.setText(eventX.getDestinationLocationString());
-        customerName.setText(eventX.getName());
-        txt_type_uber.setText(eventX.getVehicaltype());
+
+        pickupAddress.setText(event.getPuckupLocationString());
+        dropoffAddress.setText(event.getDestinationLocationString());
+        customerName.setText(event.getName());
+        txt_type_uber.setText(event.getVehicaltype());
         txt_rating.setText("1.7");
+        Picasso.get().load(event.getImageurl()).into(imagecusavatar);
 
 
-        Picasso.get().load(eventX.getImageurl()).into(imagecusavatar);
+        pickupAddressX.setText(event.getPuckupLocationString());
+        customerNameX.setText(event.getName());
+        txt_type_uberX.setText(event.getVehicaltype());
+        txt_ratingX.setText("1.7");
+        Picasso.get().load(event.getImageurl()).into(imagecusavatarX);
 
     }
 
@@ -704,7 +715,6 @@ Log.v("hassan","--->  :"+event.getImageurl());
             setProcessLayout(false);
             layout_accept.setVisibility(View.GONE);
             layout_start_uber.setVisibility(View.VISIBLE);
-            loadDriverInformation();
 
 
             isTripStart=true;
@@ -788,10 +798,17 @@ Toolbar toolbar;
 
 canceltheongoingRide=findViewById(R.id.canceltrip);
         startCancelButtonsLayoutUI =findViewById(R.id.startCancelButtonsLayout);
+
         pickupAddress=findViewById(R.id.pickupadd);
         dropoffAddress=findViewById(R.id.dropoffadd);
         customerName=findViewById(R.id.custmername);
         imagecusavatar =findViewById(R.id.imageCus);
+
+
+        pickupAddressX=findViewById(R.id.pickupaddx);
+        customerNameX=findViewById(R.id.custmernamex);
+        imagecusavatarX=findViewById(R.id.imageCusx);
+
 
         accept_btn =findViewById(R.id.chip_acpt);
         reject_btn =findViewById(R.id.chip_decline);
@@ -802,6 +819,8 @@ canceltheongoingRide=findViewById(R.id.canceltrip);
 
         txt_rating=findViewById(R.id.txt_rating);
         txt_type_uber=findViewById(R.id.txt_type_uber);
+        txt_ratingX=findViewById(R.id.txt_ratingx);
+        txt_type_uberX=findViewById(R.id.txt_type_uberx);
 //        txt_rider_name=findViewById(R.id.txt_rider_name);
 //        txt_start_uber_estimate_distance=findViewById(R.id.txt_start_uber_estimate_distance);
 //        txt_start_uber_estimate_time=findViewById(R.id.txt_start_uber_estimate_time);
@@ -840,7 +859,6 @@ canceltheongoingRide=findViewById(R.id.canceltrip);
 accept_btn.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-
         createTripPlan(eventX,duration,distance);
     }
 });
@@ -855,6 +873,7 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
         reject_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dataalredyloaded=false;
 
                 if (driverRequestReceived!=null)
                 {
@@ -896,7 +915,6 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
         btn_start_uber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 if (blackPolyLine!=null)blackPolyLine.remove();
                 if (greyPolyLine!=null)greyPolyLine.remove();
@@ -941,6 +959,7 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
 
 
 
+                dataalredyloaded=false;
                 Map<String, Object> update_trip = new HashMap<>();
                 update_trip.put("done",true);
 
@@ -978,8 +997,14 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
 
                              driverRequestReceived=null;
 
-                             makeDriverOnline();
+//                             makeDriverOnline();
 
+                             startActivity(new Intent(getApplicationContext(), RateActivity.class).
+                                     putExtra("destination",eventX.getDestinationLocationString()).
+                                     putExtra("imageurl",eventX.getImageurl()).
+                                     putExtra("name",eventX.getName()).
+                                     putExtra("key",eventX.getKey()).
+                                     putExtra("from",eventX.getPuckupLocationString()));
 
 
 

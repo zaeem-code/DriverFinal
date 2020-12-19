@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/offwhite"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+ >
+<LinearLayout
+    android:background="@color/lightgray"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/x"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            tools:ignore="MissingConstraints">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/tool"
+                android:background="@color/lightgray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <ImageView
+                        android:id="@+id/backpress"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_baseline_arrow_back_24"/>
+
+                    <TextView
+                        android:textSize="20dp"
+                        android:textColor="@color/white"
+                        android:id="@+id/home_text"
+                        android:layout_width="190dp"
+                        android:text="Your Trip details"
+                        android:lines="1"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="70dp"
+
+                        />
+
+                </RelativeLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </LinearLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
+        android:layout_marginHorizontal="15dp">
+
+
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/default_dot"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/defult_dot"/>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp">
+
+        <TextView
+            android:id="@+id/ed_current_loc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="10dp"
+            android:hint="from"
+            android:textColor="@color/lightgray"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
+        android:layout_marginHorizontal="15dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/default_dot2"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/defult_dot"/>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp">
+
+
+            <TextView
+                android:id="@+id/ed_drop_loc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/lightgray"
+                android:gravity="center_vertical"
+                android:hint="To"
+                android:paddingHorizontal="10dp"
+                android:lines="1"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Trip Break Down"
+        android:layout_marginHorizontal="20sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:weightSum="2"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="30dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.3"
+            android:text="Total Distance"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:textColor="@color/white">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txt_tot_distance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="8km"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:weightSum="2"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="30dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.3"
+            android:text="Total Time"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:textColor="@color/white">
+        </TextView>
+
+        <TextView
+            android:id="@+id/ed_tot_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="15m 32s"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:weightSum="2"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="30dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.3"
+            android:text="Fare"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:textColor="@color/white">
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/txt_fare_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="$25.00"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"/>
+
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:background="@drawable/cardview_background"
+
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="PLEASE RATE YOUR DRIVER"
+            android:textColor="@color/lightgray"
+
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="100dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/img_driver"
+            android:layout_below="@+id/l"
+
+            android:layout_centerHorizontal="true"
+            android:layout_height="100dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_launcher_foreground"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@android:color/holo_red_light"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:id="@+id/txt_driver_name"
+            android:layout_below="@+id/img_driver"
+            android:textStyle="bold"
+            android:paddingHorizontal="7dp"
+            android:background="@drawable/backbgred"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/white"
+
+
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="name  yaha ay ga"/>
+
+
+  <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/etComment"
+
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/txt_driver_name"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginStart="8dp"
+
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp"
+            android:hint="Comments"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+            app:met_baseColor="@color/colorPrimary"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@color/colorPrimary"
+            app:met_singleLineEllipsis="false" />
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:id="@+id/ratingBar"
+            android:rating="1"
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/etComment"
+
+            app:mrb_progressTint="@color/lightgray"
+            app:mrb_secondaryProgressTint="@color/lightgray"
+            style="@style/Widget.MaterialRatingBar.RatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_below="@+id/ratingBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/backbgblue"
+            android:text="SUBMIT"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etComment" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/btnSubmit"
+            android:layout_alignParentBottom="true"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:text="Had any problem ?"
+                android:gravity="center|right"
+                android:textSize="15sp"
+                android:textColor="@color/lightgray"/>
+
+            <TextView
+
+                android:id="@+id/report"
+                android:onClick="Report"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="Report"
+                android:gravity="center"
+
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/lightgray"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>
+
+
+</ScrollView>

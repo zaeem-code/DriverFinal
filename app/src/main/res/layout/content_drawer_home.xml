@@ -179,7 +179,7 @@
 
 
     <include
-        layout="@layout/activity_passenger_ride_details"
+        layout="@layout/activity_passenger_ride_detailstwo"
         />
 
     <TextView
