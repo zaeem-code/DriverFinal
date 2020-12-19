@@ -40,6 +40,7 @@ import com.google.firebase.storage.UploadTask;
 import com.loadease.uberclone.driverapp.Common.Common;
 import com.loadease.uberclone.driverapp.Helpers.FirebaseHelper;
 import com.loadease.uberclone.driverapp.Model.User;
+import com.loadease.uberclone.driverapp.Model.UserX;
 import com.loadease.uberclone.driverapp.R;
 
 import java.io.ByteArrayOutputStream;
@@ -49,7 +50,7 @@ private ProgressDialog dialog;
         String imguri="";
         FirebaseAuth firebaseAuth;
         FirebaseDatabase firebaseDatabase;
-        DatabaseReference users;
+        DatabaseReference users,users_X;
         Button signup,uploadprofile;
         FirebaseUser currentuser=null;
         LinearLayout root;
@@ -481,6 +482,7 @@ public void onFailure(@NonNull Exception exception) {
         }
 
         User user1 = new User();
+UserX userX=new UserX();
 
 
 
@@ -492,6 +494,7 @@ private void firebaseSignup(String chk) {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         users = firebaseDatabase.getReference(Common.user_driver_tbl);
+        users_X=FirebaseDatabase.getInstance().getReference("chatIntegration");
         firebaseAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
 @Override
@@ -502,6 +505,7 @@ public void onSuccess(AuthResult authResult) {
         user1.setPhone(Roider_phn);
         user1.setName(Roider_name);
         user1.setCarType("UberX");
+        ///
 
 
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -562,6 +566,19 @@ private void profilesignup(){
         user.setRider_pic_Url(Rider_photo_url);
         user.setRider_vehical_pic(Rider_car_photo_url);
         user.setCarnum(carnum);
+
+
+        userX.setEmail(Roider_email);
+        userX.setName(Roider_name);
+        userX.setPhone(Roider_phn);
+        userX.setIndustry("car");
+        userX.setAvatarUrl("default");
+        userX.setImageURL(Rider_photo_url);
+        userX.setStatus("offline");
+        userX.setSearch(Roider_name.toLowerCase());
+        userX.setId(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        users_X.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userX);
+
         myRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
 @Override
 public void onComplete(@NonNull Task<Void> task) {

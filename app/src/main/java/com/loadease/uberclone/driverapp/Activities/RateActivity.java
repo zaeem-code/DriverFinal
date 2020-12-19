@@ -50,29 +50,28 @@ ImageView call,chat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rate_trip);
-fromadresstv=findViewById(R.id.ed_current_loc);
-toaddresstv=findViewById(R.id.ed_drop_loc);
-totaldest =findViewById(R.id.txt_tot_distance);
-totaltime=findViewById(R.id.ed_tot_time);
-totalfare=findViewById(R.id.txt_fare_price);
-driverpic=findViewById(R.id.img_driver);
-drivername=findViewById(R.id.txt_driver_name);
 
+        setContentView(R.layout.activity_rate_trip);
+
+
+        fromadresstv=findViewById(R.id.ed_current_loc);
+        toaddresstv=findViewById(R.id.ed_drop_loc);
+        totaldest =findViewById(R.id.txt_tot_distance);
+        totaltime=findViewById(R.id.ed_tot_time);
+        totalfare=findViewById(R.id.txt_fare_price);
+        driverpic=findViewById(R.id.img_driver);
+        drivername=findViewById(R.id.txt_driver_name);
         btnSubmit=findViewById(R.id.btnSubmit);
         ratingBar=(MaterialRatingBar)findViewById(R.id.ratingBar);
         etComment=(MaterialEditText) findViewById(R.id.etComment);
-
         database= FirebaseDatabase.getInstance();
         rateDetailRef=database.getReference(Common.rate_detail_tbl);
         driverInformationRef=database.getReference(Common.user_driver_tbl);
-
         Currentpassengerid =this.getIntent().getStringExtra("key");
         from=this.getIntent().getStringExtra("destination");
         To=this.getIntent().getStringExtra("from");
         Namepessenge =this.getIntent().getStringExtra("name");
         Imagurl =this.getIntent().getStringExtra("imageurl");
-
         ratingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
@@ -85,10 +84,10 @@ drivername=findViewById(R.id.txt_driver_name);
                 submitRateDetails();
             }
         });
-
-
         gettingRideDetails();
+
     }
+
 
     private void submitRateDetails() {
         final AlertDialog alertDialog=new SpotsDialog.Builder().setContext(this).build();
@@ -158,7 +157,6 @@ drivername=findViewById(R.id.txt_driver_name);
 
 
     }
-
     public void Report(View view) {
 
 

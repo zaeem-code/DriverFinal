@@ -74,6 +74,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.kusu.library.LoadingButton;
+import com.loadease.uberclone.chatIntegration.Activity.MainChatActivity;
 import com.loadease.uberclone.driverapp.Activities.RateActivity;
 import com.loadease.uberclone.driverapp.Common.Common;
 import com.loadease.uberclone.driverapp.Interfaces.locationListener;
@@ -249,7 +250,7 @@ boolean dataalredyloaded=false;
     private static final int REQUEST_CODE_PERMISSION=100;
     private static final int PLAY_SERVICES_REQUEST_CODE=2001;
     DriverRequestReceived driverRequestReceived;
-    Disposable countDownEvent;
+//    Disposable countDownEvent;
     View snackbarView;
 
 
@@ -339,7 +340,6 @@ boolean dataalredyloaded=false;
         phone=event.getPhone();
 
         driverRequestReceived=event;
-
         DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         HashMap hashMap=new HashMap();
         hashMap.put("Uid",event.getKey());
@@ -758,7 +758,7 @@ Log.v("hassan","--->  :"+event.getImageurl());
     }
 
 
-    CountDownTimer waiting_timer;
+//    CountDownTimer waiting_timer;
 
 Toolbar toolbar;
 
@@ -879,8 +879,8 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
                 {
                    if(TextUtils.isEmpty(tripNumberId))
                    {
-                       if (countDownEvent!=null)
-                           countDownEvent.dispose();
+//                       if (countDownEvent!=null)
+//                           countDownEvent.dispose();
                        layout_accept.setVisibility(View.GONE);
                        mMap.clear();
 
@@ -918,7 +918,7 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
 
                 if (blackPolyLine!=null)blackPolyLine.remove();
                 if (greyPolyLine!=null)greyPolyLine.remove();
-                if (waiting_timer!=null)waiting_timer.cancel();
+//                if (waiting_timer!=null)waiting_timer.cancel();
 
                 layout_notify_rider.setVisibility(View.GONE);
                 if (driverRequestReceived!=null)
@@ -1716,7 +1716,16 @@ try {
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+//        int id = item.getItemId();
+//        switch (id) {
+//            case R.id.nav_trip_history:
+//                showTripHistory();
+                startActivity(new Intent(this, MainChatActivity.class));
+//                break;
+//        }
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
     @Override
     public void onBackPressed() {
