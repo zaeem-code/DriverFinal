@@ -3,6 +3,8 @@ package com.loadease.uberclone.driverapp.recyclerViewHistory;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +36,11 @@ public class historyAdapter extends RecyclerView.Adapter<historyAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.tvRiderName.setText("Rider Name: "+items.get(i).getName());
-        viewHolder.tvTripDate.setText("Date: "+items.get(i).getTripDate());
+        viewHolder.toadd.setText("From: "+items.get(i).getFromAddress());
+        viewHolder.fromadd.setText("TP: "+items.get(i).getDestinationString());
+        viewHolder.tvdate.setText(items.get(i).getDate());
+        Log.v("hassan","---> :"+items.get(i).getDate());
+        viewHolder.tvfare.setText(items.get(i).getFare());
     }
     @Override
     public int getItemCount() {
@@ -43,12 +48,15 @@ public class historyAdapter extends RecyclerView.Adapter<historyAdapter.ViewHold
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView tvRiderName, tvTripDate;
+        TextView toadd, fromadd,tvdate,tvfare;
         ClickListener listener;
         public ViewHolder(View itemView, ClickListener listener) {
             super(itemView);
-            tvRiderName=itemView.findViewById(R.id.tvRiderName);
-            tvTripDate=itemView.findViewById(R.id.tvTripDate);
+            toadd=itemView.findViewById(R.id.toadd);
+            fromadd=itemView.findViewById(R.id.fromadd);
+
+            tvdate=itemView.findViewById(R.id.tvdate);
+            tvfare=itemView.findViewById(R.id.tvfare);
             this.listener=listener;
             itemView.setOnClickListener(this);
         }

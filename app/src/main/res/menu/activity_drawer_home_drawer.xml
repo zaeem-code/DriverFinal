@@ -22,6 +22,16 @@
             android:icon="@drawable/setting"
             android:title="Settings" />
 
+        <item
+            android:id="@+id/profile"
+            android:icon="@drawable/ic_baseline_person_24"
+            android:title="Update Profile" />
+
+        <item
+            android:id="@+id/Vehocaltype"
+            android:icon="@drawable/truck"
+            android:title="Vehical Type" />
+
 
 
         <item

@@ -25,6 +25,7 @@
       android:layout_width="20dp"
       android:layout_height="20dp"
     android:id="@+id/add"
+      android:onClick="uploadDP"
       android:layout_gravity="right"
       android:layout_marginTop="60dp"
     android:src="@drawable/ic_baseline_add_circle_outline_24" />

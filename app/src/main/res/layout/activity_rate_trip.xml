@@ -177,7 +177,8 @@
             android:id="@+id/txt_tot_distance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_weight="0.7"
+            android:gravity="right|center_vertical"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:text="8km"/>
@@ -195,7 +196,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.3"
+            android:layout_weight="1.2"
             android:text="Total Time"
             android:gravity="center_vertical"
             android:textSize="20sp"
@@ -209,6 +210,7 @@
             android:layout_weight="0.8"
             android:textColor="@color/white"
             android:textSize="20sp"
+            android:gravity="right|center_vertical"
             android:text="15m 32s"/>
 
     </LinearLayout>
@@ -226,7 +228,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.3"
+            android:layout_weight=".5"
             android:text="Fare"
             android:gravity="center_vertical"
             android:textSize="20sp"
@@ -238,9 +240,10 @@
             android:id="@+id/txt_fare_price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
+            android:layout_weight="1.5"
             android:textColor="@color/white"
             android:textSize="20sp"
+            android:gravity="right|center_vertical"
             android:text="$25.00"/>
 
     </LinearLayout>

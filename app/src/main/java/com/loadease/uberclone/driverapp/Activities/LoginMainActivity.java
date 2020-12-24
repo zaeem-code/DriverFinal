@@ -2,11 +2,15 @@ package com.loadease.uberclone.driverapp.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,8 +44,8 @@ public class LoginMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.layout_login);
-firebaseAuth = FirebaseAuth.getInstance();
-dialog = new ProgressDialog(this);
+        firebaseAuth = FirebaseAuth.getInstance();
+        dialog = new ProgressDialog(this);
         dialog.setMessage("Validating...");
         pass = findViewById(R.id.etPassword);
         email = findViewById(R.id.etEmail);
@@ -93,14 +97,35 @@ dialog = new ProgressDialog(this);
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Common.currentRiderprofile = dataSnapshot.child("RidersProfile")
-                                .child( Common.userID).getValue(User.class);
+//
 
-                        if (dialog.isShowing()){
-                            dialog.dismiss();
+
+
+                        Log.v("Hassan","Satust at server :"+ dataSnapshot.child("profile_status").getValue());
+
+
+                        if(dataSnapshot.child("profile_status").getValue().equals("incomplete")) {
+                            Log.v("Hassan","Status incomplete");
+                            if (dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+
+                            startActivity(new Intent(getApplicationContext(),signup_and_profile_Activity.class).putExtra("chk","Redirect")
+                            .putExtra("name",dataSnapshot.child("name").getValue().toString())
+                                    .putExtra("email",dataSnapshot.child("email").getValue().toString())
+                                    .putExtra("pass",dataSnapshot.child("password").getValue().toString())
+
+
+
+                                    .putExtra("phone",dataSnapshot.child("phone").getValue().toString()));
+                        }
+                        else
+                            {  Log.v("Hassan","Status complete");
+                                DriverApproveStatus();
                         }
 
-                        new FirebaseHelper().LoadRiderProfile(getApplicationContext());
+//
+
                     }
 
                     @Override
@@ -109,4 +134,48 @@ dialog = new ProgressDialog(this);
                     }
                 });
     }
+
+
+
+
+
+    private void DriverApproveStatus() {
+        if (!TextUtils.isEmpty(Common.userID)) {
+            FirebaseDatabase.getInstance().getReference(Common.user_driver_profile)
+                    .child(Common.userID)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Common.currentRiderprofile = dataSnapshot.getValue(User.class);
+
+                            if (dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+
+                            if (Common.currentRiderprofile.getProfile_status().equals("Nverified")) {
+
+pass.setVisibility(View.GONE);
+email.setVisibility(View.GONE);
+                                Button signin=findViewById(R.id.signin);
+                                signin.setBackgroundColor(Color.RED);
+                                signin.setClickable(false);
+                                TextView note=findViewById(R.id.note);
+                                note.setText("Please Note :\nA Request Against Your Id is Sent to the LoadEase Office, You will soon be contacted by one of our officials, Please wait for verification process to complete, It may take a while to process");
+                            } else if (Common.currentRiderprofile.getProfile_status().equals("verified")) {
+                                new FirebaseHelper().LoadRiderProfile(getApplicationContext());
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+        }
+    }
+
+
+
+
 }

@@ -5,14 +5,19 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
 import android.animation.ValueAnimator;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -20,12 +25,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -33,6 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.HttpResponse;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -63,19 +71,29 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.local.LruGarbageCollector;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 import com.kusu.library.LoadingButton;
 import com.loadease.uberclone.chatIntegration.Activity.MainChatActivity;
+import com.loadease.uberclone.driverapp.Activities.Login;
 import com.loadease.uberclone.driverapp.Activities.RateActivity;
+import com.loadease.uberclone.driverapp.Activities.TripHistory;
 import com.loadease.uberclone.driverapp.Common.Common;
 import com.loadease.uberclone.driverapp.Interfaces.locationListener;
 import com.loadease.uberclone.driverapp.Messages.DriverRequestReceived;
@@ -88,6 +106,7 @@ import com.loadease.uberclone.driverapp.Model.User;
 import com.loadease.uberclone.driverapp.R;
 import com.loadease.uberclone.driverapp.Retrofit.IGoogleApi_sep;
 import com.loadease.uberclone.driverapp.Retrofit.RetrofitClient_sep;
+import com.loadease.uberclone.driverapp.SelectRideType;
 import com.loadease.uberclone.driverapp.Util.Location;
 import com.loadease.uberclone.driverapp.Util.UsersUtill;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
@@ -99,7 +118,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -124,14 +146,18 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
         , GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 boolean dataalredyloaded=false;
+
+    String ads ="NA";
     CircleImageView imagecusavatar,imagecusavatarX;
-    TextView customerName,pickupAddress,dropoffAddress,customerNameX,pickupAddressX,dropoffAddressX;
+    TextView customerName,pickupAddress,dropoffAddress,customerNameX,pickupAddressX,dropoffAddressX,distancex,timex;
     Button accept_btn, reject_btn;
     RelativeLayout startCancelButtonsLayoutUI;
     String duration,distance;
     DriverRequestReceived eventX;
+    FrameLayout root;
     private GoogleMap mMap;
     String phone="";
+    CircleImageView Driverdp;
     Location location;
     Button canceltheongoingRide;
     private Marker currentLocationMarket;
@@ -145,7 +171,6 @@ boolean dataalredyloaded=false;
         @Override
         public void onKeyEntered(String key, GeoLocation location) {
 
-            btn_start_uber.setEnabled(true);
             UsersUtill.sendNotifyToRider(FragmentDriver.this,snackbarView,key);
 
 
@@ -161,7 +186,6 @@ boolean dataalredyloaded=false;
         public void onKeyExited(String key) {
 
 
-            btn_start_uber.setEnabled(false);
         }
 
         @Override
@@ -270,7 +294,7 @@ boolean dataalredyloaded=false;
 //    TextView txt_rating,txt_type_uber,txt_rider_name,txt_start_uber_estimate_distance
 //            ,txt_start_uber_estimate_time;
     TextView txt_rating,txt_ratingX,txt_type_uber,txt_type_uberX;
-    ImageView img_round,img_phone_call;
+    ImageView img_round,img_phone_call,chat;
     LinearLayout layout_start_uber;
     LoadingButton btn_start_uber,btn_complete_trip;
     String tripNumberId="";
@@ -457,6 +481,11 @@ boolean dataalredyloaded=false;
                                 txt_estimate_time.setText(duration);
                                 txt_estimate_distance.setText(distance);
 
+
+
+                                distancex.setText(duration);
+                                timex.setText(distance);
+
                                 mMap.addMarker(new MarkerOptions()
                                         .position(destination)
                                         .icon(BitmapDescriptorFactory.defaultMarker())
@@ -521,6 +550,10 @@ Log.v("hassan","--->  :"+event.getImageurl());
 
         pickupAddress.setText(event.getPuckupLocationString());
         dropoffAddress.setText(event.getDestinationLocationString());
+
+
+
+
         customerName.setText(event.getName());
         txt_type_uber.setText(event.getVehicaltype());
         txt_rating.setText("1.7");
@@ -806,6 +839,8 @@ canceltheongoingRide=findViewById(R.id.canceltrip);
 
 
         pickupAddressX=findViewById(R.id.pickupaddx);
+        distancex=findViewById(R.id.txt_estimate_distancex);
+                timex=findViewById(R.id.txt_estimate_time);
         customerNameX=findViewById(R.id.custmernamex);
         imagecusavatarX=findViewById(R.id.imageCusx);
 
@@ -826,6 +861,7 @@ canceltheongoingRide=findViewById(R.id.canceltrip);
 //        txt_start_uber_estimate_time=findViewById(R.id.txt_start_uber_estimate_time);
         img_round=findViewById(R.id.img_round);
         img_phone_call=findViewById(R.id.img_phone_call);
+        chat=findViewById(R.id.msg);
         layout_start_uber=findViewById(R.id.layout_start_ubber);
         btn_start_uber=findViewById(R.id.btn_start_uber);
         btn_complete_trip=findViewById(R.id.btn_complete_trip);
@@ -840,6 +876,12 @@ canceltheongoingRide=findViewById(R.id.canceltrip);
 
 
         initDrawer();
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chat();
+            }
+        });
         img_phone_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -959,6 +1001,7 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
 
 
 
+                finaltripendDetails();
                 dataalredyloaded=false;
                 Map<String, Object> update_trip = new HashMap<>();
                 update_trip.put("done",true);
@@ -972,7 +1015,6 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
                              UsersUtill.sendCompleteTripToRider(snackbarView,getApplicationContext(),driverRequestReceived.getKey(),
                                      tripNumberId
                              );
-
                              mMap.clear();
                              tripNumberId="";
 
@@ -985,10 +1027,9 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
                              progress_notify.setProgress(0);
 
 
-                             btn_complete_trip.setEnabled(false);
+//                             btn_complete_trip.setEnabled(false);
                              btn_complete_trip.setVisibility(View.GONE);
 
-                             btn_start_uber.setEnabled(false);
                              btn_start_uber.setVisibility(View.VISIBLE);
 
 
@@ -997,15 +1038,8 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
 
                              driverRequestReceived=null;
 
-//                             makeDriverOnline();
 
-                             startActivity(new Intent(getApplicationContext(), RateActivity.class).
-                                     putExtra("destination",eventX.getDestinationLocationString()).
-                                     putExtra("imageurl",eventX.getImageurl()).
-                                     putExtra("name",eventX.getName()).
-                                     putExtra("key",eventX.getKey()).
-                                     putExtra("from",eventX.getPuckupLocationString()));
-
+//
 
 
                          }).addOnFailureListener(e -> {
@@ -1068,7 +1102,13 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
                                 {
                                     JSONObject route=jsonArray.getJSONObject(i);
                                     JSONObject poly=route.getJSONObject("overview_polyline");
+
+
+
+
+
                                     String polyline=poly.getString("points");
+
                                     polyLineList=Common.decodePoly(polyline);
 
 
@@ -1108,6 +1148,31 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
                                         .build();
 
 
+                                //////
+                                JSONObject object=jsonArray.getJSONObject(0);
+                                JSONArray legs=object.getJSONArray("legs");
+                                JSONObject legObject=legs.getJSONObject(0);
+
+                                JSONObject time=legObject.getJSONObject("duration");
+                                duration=time.getString("text");
+
+
+                                JSONObject distanceEstimate=legObject.getJSONObject("distance");
+                                distance=distanceEstimate.getString("text");
+
+
+
+                                distancex.setText(distance);
+                                timex.setText(duration);
+
+                                /////
+                               DatabaseReference fdb= FirebaseDatabase.getInstance().getReference("Trips").child(user_curr)
+                                        .child(tripNumberId);
+                               fdb.child("time").setValue(duration);
+                                fdb.child("durationPickup").setValue(duration);
+
+                                fdb.child("distancePickup").setValue(distance);
+                                ////
 
                                 createGeoFireDestinationLocation(driverRequestReceived.getKey(),destination);
 
@@ -1517,25 +1582,27 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        location.remove_location();
-        geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        onlineRef.removeEventListener(onlineValueEventLisner);
+try {
 
 
-        if (EventBus.getDefault().hasSubscriberForEvent(DriverRequestReceived.class))
-            EventBus.getDefault().removeStickyEvent(DriverRequestReceived.class);
-
-        if (EventBus.getDefault().hasSubscriberForEvent(NotifyToRiderEvent.class))
-            EventBus.getDefault().removeStickyEvent(NotifyToRiderEvent.class);
+    location.remove_location();
+    geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
+    onlineRef.removeEventListener(onlineValueEventLisner);
 
 
+    if (EventBus.getDefault().hasSubscriberForEvent(DriverRequestReceived.class))
+        EventBus.getDefault().removeStickyEvent(DriverRequestReceived.class);
+
+    if (EventBus.getDefault().hasSubscriberForEvent(NotifyToRiderEvent.class))
+        EventBus.getDefault().removeStickyEvent(NotifyToRiderEvent.class);
 
 
-        EventBus.getDefault().unregister(this );
-        compositeDisposable.clear();
-        onlineSystemAlreadyRegister=false;
+    EventBus.getDefault().unregister(this);
+    compositeDisposable.clear();
+    onlineSystemAlreadyRegister = false;
+}catch (Exception e){
 
+}
 
 
     }
@@ -1552,7 +1619,6 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
     protected void onStart() {
         super.onStart();
         location.inicializeLocation();
-
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
 
@@ -1606,11 +1672,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        location.onRequestPermissionResult(requestCode, permissions, grantResults);
-    }
+
 
     @Override
     protected void onStop() {
@@ -1647,6 +1709,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
         }
     }
     public void initDrawer(){
+        root=findViewById(R.id.bg);
          drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -1659,7 +1722,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
         View navigationHeaderView=navigationView.getHeaderView(0);
         TextView tvName=(TextView)navigationHeaderView.findViewById(R.id.tvDriverName);
         TextView tvStars=(TextView)navigationHeaderView.findViewById(R.id.tvStars);
-        CircleImageView imageAvatar=(CircleImageView) navigationHeaderView.findViewById(R.id.imageAvatar);
+          Driverdp=(CircleImageView) navigationHeaderView.findViewById(R.id.imageAvatar);
         Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseDatabase.getInstance().getReference("RidersProfile")
                 .child( Common.userID)
@@ -1667,25 +1730,27 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        Log.v("hassan",   "current user ->>>>"+FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        Log.v("hassan",   "data ->>>>"+dataSnapshot.getValue(User.class));
- Common.currentRiderprofile=dataSnapshot.getValue(User.class);
+                        try {
 
 
-                        Log.v("hassan",   "current user name ->>>>"+Common.currentRiderprofile.getName());
+                        Common.currentRiderprofile=dataSnapshot.getValue(User.class);
 
+    Log.v("hassan", "current user ->>>>" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+    Log.v("hassan", "data ->>>>" + dataSnapshot.getValue(User.class));
+    Log.v("hassan", "current user name ->>>>" + Common.currentRiderprofile.getName());
+    Log.v("hassan", "current user name ->>>>" + Common.currentRiderprofile.getName());
+    Log.v("hassan", "current user pic ->>>>" + Common.currentRiderprofile.getRider_pic_Url());
+    if (!TextUtils.isEmpty(Common.currentRiderprofile.getName())) {
+        tvName.setText(Common.currentRiderprofile.getName());
+    }
+    if (!TextUtils.isEmpty(Common.currentRiderprofile.getRider_pic_Url())) {
+        Picasso.get().load(Common.currentRiderprofile.getRider_pic_Url()).into(Driverdp);
 
-                        Log.v("hassan",   "current user name ->>>>"+Common.currentRiderprofile.getName());
-                        Log.v("hassan",   "current user pic ->>>>"+Common.currentRiderprofile.getRider_pic_Url());if (!TextUtils.isEmpty(Common.currentRiderprofile.getName())){
-                            tvName.setText(Common.currentRiderprofile.getName());
-                        }
-                        if (!TextUtils.isEmpty(Common.currentRiderprofile.getRider_pic_Url())){
-                            Picasso.get().load(Common.currentRiderprofile.getRider_pic_Url()).into(imageAvatar);
+    }
 
-                        }
+}catch (Exception e){
 
-
+}
                     }
 
                     @Override
@@ -1707,24 +1772,47 @@ try {
 
 }
         if(isLoggedInFacebook)
-            Picasso.get().load("https://graph.facebook.com/" + Common.userID + "/picture?width=500&height=500").into(imageAvatar);
+            Picasso.get().load("https://graph.facebook.com/" + Common.userID + "/picture?width=500&height=500").into(Driverdp);
         else if(account!=null)
-            Picasso.get().load(account.getPhotoUrl()).into(imageAvatar);
+            Picasso.get().load(account.getPhotoUrl()).into(Driverdp);
 
 
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        switch (id) {
-//            case R.id.nav_trip_history:
-//                showTripHistory();
-                startActivity(new Intent(this, MainChatActivity.class));
-//                break;
-//        }
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.nav_trip_history:
+                startActivity(new Intent(this, TripHistory.class));
+
+                break;
+            case R.id.setting:
+
+                break;
+
+            case R.id.nav_sign_out:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this, Login.class));
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+                finish();
+                break;
+            case R.id.notification:
+                break;
+            case R.id.wallet:
+                break;
+
+            case R.id.Vehocaltype:
+                startActivity(new Intent(this, SelectRideType.class));
+                break;
+
+
+            case R.id.profile:
+                startActivity(new Intent(this, UpdateProfile.class));
+                break;
+        }
         return true;
     }
     @Override
@@ -1754,4 +1842,288 @@ return address;
 }
 
 
+    public void chat() {
+
+        startActivity(new Intent(this, MainChatActivity.class));
+    }
+
+    private  void finaltripendDetails(){
+
+        compositeDisposable.add(iGoogleApi_sep.getDirection("driving",
+                "less_driving",
+
+                eventX.getPickupLocation(),
+                new StringBuilder()
+                        .append(Common.currentLat)
+                        .append(",")
+                        .append(Common.currentLng)
+                        .toString(),
+                "AIzaSyCFMRJrFq6OajUBDKd42R3t783B0-Rbzdg")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(returnResult->{
+
+
+
+
+                            try {
+
+
+                                JSONObject jsonObject=new JSONObject(returnResult);
+                                JSONArray jsonArray=jsonObject.getJSONArray("routes");
+                                for (int i=0;i<jsonArray.length();i++)
+                                {
+                                    JSONObject route=jsonArray.getJSONObject(i);
+                                    JSONObject poly=route.getJSONObject("overview_polyline");
+                                    String polyline=poly.getString("points");
+                                    polyLineList=Common.decodePoly(polyline);
+
+
+                                }
+
+
+                                JSONObject object=jsonArray.getJSONObject(0);
+                                JSONArray legs=object.getJSONArray("legs");
+                                JSONObject legObject=legs.getJSONObject(0);
+
+                                JSONObject time=legObject.getJSONObject("duration");
+                                duration=time.getString("text");
+
+
+                                JSONObject distanceEstimate=legObject.getJSONObject("distance");
+                                distance=distanceEstimate.getString("text");
+
+                                 ads = legObject.getString("end_address");
+
+
+
+
+                                Log.v("FinalTrip","Distance final: "+distance);
+                                Log.v("FinalTrip","Time final: "+duration);
+                                Log.v("FinalTrip","current user final: "+user_curr);
+                                Log.v("FinalTrip","trip final: "+tripNumberId);
+                                Log.v("FinalTrip","add final: "+ads);
+                                Log.v("FinalTrip","add current lat: "+Common.currentLng);
+
+
+                                DatabaseReference fdb= FirebaseDatabase.getInstance().getReference("Trips").child(user_curr)
+                                        .child(tripNumberId);
+
+                                HashMap hashMap= new HashMap();
+                                hashMap.put("time",duration);
+                                hashMap.put("durationPickup",duration);
+                                hashMap.put("distancePickup",distance);
+                                hashMap.put("destinationString",ads);
+//                                fdb.child("time").setValue(duration);
+//                                fdb.child("durationPickup").setValue(duration);
+//
+//                                fdb.child("distancePickup").setValue(distance);
+                                fdb.updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                                    @Override
+                                    public void onComplete(@NonNull Task task) {
+                                        startActivity(new Intent(getApplicationContext(), RateActivity.class).
+                                                putExtra("destination",ads).
+                                                putExtra("distance",distance).
+                                                putExtra("duration",duration).
+                                                putExtra("imageurl",eventX.getImageurl()).
+                                                putExtra("name",eventX.getName()).
+                                                putExtra("key",eventX.getKey()).
+                                                putExtra("price",calculatefare(distance,(duration))).
+                                                putExtra("from",eventX.getDestinationLocationString()));
+                                    }
+                                });
+
+
+
+                            }
+
+                            catch (Exception e)
+                            {
+                                Log.v("FinalTrip","adexpd final: "+e);
+
+                            }
+
+
+
+
+                        })
+
+        );
+
+
+
+
+    }
+
+    private String calculatefare(String distance,String time ){
+        Log.v("dis"," =dis --->"+distance);
+        Log.v("dis"," =dis --->"+time);
+
+        Log.v("dis"," =dis length --->"+distance.length());
+        Log.v("dis"," =time length --->"+time.length());
+
+        Log.v("dis"," =sub length - --->"+distance.substring(0,distance.length()-2));
+        Log.v("dis"," =sub length - --->"+time.substring(0,time.length()-4));
+
+        Log.v("dis"," =dis repla - --->"+distance.replace("Km"," "));
+        Log.v("dis"," =mins repla - --->"+time.replace("mins"," "));
+
+        Log.v("dis"," =--->"+ String.format("%s + %s = $%.2f", distance, time, Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
+                Integer.parseInt(time.substring(0,time.length()-4).trim()))));
+
+        return String.format("%s + %s = $%.2f", distance, time, Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
+                Integer.parseInt(time.substring(0,time.length()-4).trim())));
+
+    }
+    /////dp uplod
+    public void uploadDP(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 007);
+            } else {
+                opencamera(1);
+            }
+        }else {
+
+            opencamera(1);
+        }
+    }
+
+    private void opencamera(int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_CANCELED) {
+
+            if (data != null) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                ///ask for permissions
+                String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "pic", null);
+
+                 Driverdp.setImageBitmap(photo);
+                uploadpic( Uri.parse(path));
+
+            } else {
+                Snackbar.make(root, "Failed: try again", Snackbar.LENGTH_SHORT).show();
+            }
+
+
+        } else {
+            Snackbar.make(root, "Failed: try again", Snackbar.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                storagepermission();
+            }
+
+        } else {
+            location.onRequestPermissionResult(requestCode, permissions, grantResults);
+
+        }
+    }
+    private void storagepermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 007);
+            }
+        }
+
+
+}
+
+    ProgressDialog dialog;
+
+    private void uploadpic(Uri img){
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Validating...");
+        dialog.show();
+        String folder="Rider DP";
+
+        StorageReference mStorageRef;
+
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        StorageReference REF = mStorageRef.child("Rider:"+Common.currentRiderprofile.getName()+", "+Common.currentRiderprofile.getPhone()+"/"+folder+"/"+folder+".jpg");
+
+        REF.putFile(img)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        REF.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Log.v("Hassan", "onSuccess: uri= "+ uri.toString());
+
+                                profileupdating1(  uri.toString());
+                            }
+                        });
+//         imguri = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.v("hassan","exp: "+exception);
+                           if (dialog.isShowing()){
+                            dialog.dismiss();
+                        }
+                    }
+                });
+
+    }
+
+    private void profileupdating1(String url){
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("RidersProfile").child(Common.userID);
+
+        myRef.child("rider_pic_Url").setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                profileupdating2(url);
+            }
+        });
+
+
+    }
+
+    private void profileupdating2(String url){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("chatIntegration").child(Common.userID);
+
+        myRef.child("imageURL").setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (dialog.isShowing()){
+                    dialog.dismiss();
+                }
+            }
+        });
+
+
+    }
 }

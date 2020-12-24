@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -37,12 +38,12 @@ public class TripHistory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_history);
-        initToolbar();
+
         initRecyclerView();
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        riderHistory = database.getReference(Common.history_driver);
+        riderHistory = database.getReference("Trips");
         listData = new ArrayList<>();
         adapter = new historyAdapter(this, listData, new ClickListener() {
             @Override
@@ -54,21 +55,30 @@ public class TripHistory extends AppCompatActivity {
         getHistory();
     }
     private void getHistory(){
-        riderHistory.child(Common.userID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                    History history = postSnapshot.getValue(History.class);
-                    listData.add(history);
-                }
-                adapter.notifyDataSetChanged();
-            }
+      try {
+          riderHistory.child(Common.userID).addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                  for(DataSnapshot postSnapshot: dataSnapshot.getChildren())
+                  {
+                      History history = postSnapshot.getValue(History.class);
+                      listData.add(history);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+//                    Toast.makeText(TripHistory.this, "array"+listData, Toast.LENGTH_SHORT).show();
+
+                  }
+                  adapter.notifyDataSetChanged();
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError databaseError) {
+
+//                Toast.makeText(TripHistory.this, "error", Toast.LENGTH_SHORT).show();
+              }
+          });
+      }catch (Exception e){}
+        Toast.makeText(this, "You haven't took a ride yet!", Toast.LENGTH_SHORT).show();
 
     }
     private void initRecyclerView(){
@@ -78,13 +88,5 @@ public class TripHistory extends AppCompatActivity {
         rvHistory.setLayoutManager(layoutManager);
         rvHistory.setItemAnimator(new DefaultItemAnimator());
         rvHistory.addItemDecoration(new DividerItemDecoration(getApplicationContext(),LinearLayoutManager.VERTICAL));
-    }
-    private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Register");
-
-        ActionBar actionBar=getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 }

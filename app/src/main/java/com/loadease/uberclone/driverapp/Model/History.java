@@ -1,38 +1,28 @@
 package com.loadease.uberclone.driverapp.Model;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+import java.util.HashMap;
+import java.util.Map;
+@IgnoreExtraProperties
 public class History {
-    private String startAddress,endAddress,time,distance,locationStart,locationEnd,tripDate,name;
+    private String fromAddress, destinationString, durationPickup, distancePickup,date,time,fare;
     private double total;
-    public History(){
 
+    public String getFare() {
+        return fare;
     }
 
-    public History(String startAddress, String endAddress, String time, String distance, String locationStart, String locationEnd, String tripDate, String name, double total) {
-        this.startAddress = startAddress;
-        this.endAddress = endAddress;
-        this.time = time;
-        this.distance = distance;
-        this.locationStart = locationStart;
-        this.locationEnd = locationEnd;
-        this.tripDate = tripDate;
-        this.name = name;
-        this.total = total;
+    public void setFare(String fare) {
+        this.fare = fare;
     }
 
-    public String getStartAddress() {
-        return startAddress;
+    public String getDate() {
+        return date;
     }
 
-    public void setStartAddress(String startAddress) {
-        this.startAddress = startAddress;
-    }
-
-    public String getEndAddress() {
-        return endAddress;
-    }
-
-    public void setEndAddress(String endAddress) {
-        this.endAddress = endAddress;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getTime() {
@@ -43,50 +33,95 @@ public class History {
         this.time = time;
     }
 
-    public String getDistance() {
-        return distance;
+    public History(){
+    }
+    @Exclude
+    public Map<String, Object> toMap(){
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("distance", distancePickup);
+        result.put("endAddress", destinationString);
+        result.put("time", durationPickup);
+//        result.put("locationEnd", locationEnd);
+//        result.put("locationStart", locationStart);
+//        result.put("name", name);
+        result.put("startAddress", fromAddress);
+//        result.put("total", total);
+//        result.put("tripDate", tripDate);
+        return result;
     }
 
-    public void setDistance(String distance) {
-        this.distance = distance;
-    }
 
-    public String getLocationStart() {
-        return locationStart;
-    }
 
-    public void setLocationStart(String locationStart) {
-        this.locationStart = locationStart;
-    }
 
-    public String getLocationEnd() {
-        return locationEnd;
+    public History(String startAddress, String endAddress, String time, String distance, String locationStart, String locationEnd, String tripDate, String name, double total) {
+        this.fromAddress = startAddress;
+        this.destinationString = endAddress;
+        this.durationPickup = time;
+        this.distancePickup = distance;
+//        this.locationStart = locationStart;
+//        this.locationEnd = locationEnd;
+//        this.tripDate = tripDate;
+//        this.name = name;
+//        this.total = total;
     }
-
-    public void setLocationEnd(String locationEnd) {
-        this.locationEnd = locationEnd;
+    public String getFromAddress() {
+        return fromAddress;
     }
-
-    public String getTripDate() {
-        return tripDate;
+    public void setFromAddress(String fromAddress) {
+        this.fromAddress = fromAddress;
     }
-
-    public void setTripDate(String tripDate) {
-        this.tripDate = tripDate;
+    public String getDestinationString() {
+        return destinationString;
     }
-
-    public String getName() {
-        return name;
+    public void setDestinationString(String destinationString) {
+        this.destinationString = destinationString;
     }
-
-    public void setName(String name) {
-        this.name = name;
+    public String getDurationPickup() {
+        return durationPickup;
     }
-
+    public void setDurationPickup(String durationPickup) {
+        this.durationPickup = durationPickup;
+    }
+    public String getDistancePickup() {
+        return distancePickup;
+    }
+    public void setDistancePickup(String distancePickup) {
+        this.distancePickup = distancePickup;
+    }
+    //    public String getLocationStart() {
+//        return locationStart;
+//    }
+//
+//    public void setLocationStart(String locationStart) {
+//        this.locationStart = locationStart;
+//    }
+//
+//    public String getLocationEnd() {
+//        return locationEnd;
+//    }
+//
+//    public void setLocationEnd(String locationEnd) {
+//        this.locationEnd = locationEnd;
+//    }
+//
+//    public String getTripDate() {
+//        return tripDate;
+//    }
+//
+//    public void setTripDate(String tripDate) {
+//        this.tripDate = tripDate;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
     public double getTotal() {
         return total;
     }
-
     public void setTotal(double total) {
         this.total = total;
     }

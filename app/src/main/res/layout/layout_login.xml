@@ -54,25 +54,43 @@
             app:met_baseColor="@color/colorPrimary"
             app:met_floatingLabel="highlight"
             app:met_primaryColor="@color/colorPrimary"/>
-
-
-        <Button
-
-            android:id="@+id/signin"
+        <TextView
+            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginHorizontal="10dp"
-            android:gravity="center"
-            android:background="@color/lightgray"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:id="@+id/note"
+
+            android:textColor="@color/lightgray"
+            android:textSize="14sp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginHorizontal="50dp"
+            app:cardBackgroundColor="@color/lightgray"
             android:layout_gravity="bottom"
-            android:layout_marginTop="30dp"
+            android:visibility="visible"
+
+
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="20dp"
 
+
+            >
+        <Button
+            android:id="@+id/signin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@android:color/transparent"
             android:textStyle="bold"
             android:textSize="23sp"
             android:textColor="@color/white"
             android:text="Sign in"
             />
+        </androidx.cardview.widget.CardView>
     </RelativeLayout>
 </LinearLayout>

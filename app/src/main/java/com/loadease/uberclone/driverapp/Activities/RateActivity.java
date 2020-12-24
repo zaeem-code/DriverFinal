@@ -38,12 +38,12 @@ public class RateActivity extends AppCompatActivity {
     Button btnSubmit;
     MaterialRatingBar ratingBar;
     MaterialEditText etComment;
-
+String price="",duration="",KMS="";
     FirebaseDatabase database;
-    TextView drivername;
+    TextView passengername;
     DatabaseReference rateDetailRef, driverInformationRef;
 TextView fromadresstv,toaddresstv, totaldest,totaltime,totalfare;
-de.hdodenhof.circleimageview.CircleImageView driverpic;
+de.hdodenhof.circleimageview.CircleImageView passengerPic;
 ImageView call,chat;
     double ratingStars=1.0;
     String Currentpassengerid ="",Namepessenge="",Imagurl="",from="",To="";
@@ -59,19 +59,16 @@ ImageView call,chat;
         totaldest =findViewById(R.id.txt_tot_distance);
         totaltime=findViewById(R.id.ed_tot_time);
         totalfare=findViewById(R.id.txt_fare_price);
-        driverpic=findViewById(R.id.img_driver);
-        drivername=findViewById(R.id.txt_driver_name);
+        passengerPic =findViewById(R.id.img_driver);
+        passengername =findViewById(R.id.txt_driver_name);
         btnSubmit=findViewById(R.id.btnSubmit);
         ratingBar=(MaterialRatingBar)findViewById(R.id.ratingBar);
         etComment=(MaterialEditText) findViewById(R.id.etComment);
         database= FirebaseDatabase.getInstance();
         rateDetailRef=database.getReference(Common.rate_detail_tbl);
         driverInformationRef=database.getReference(Common.user_driver_tbl);
-        Currentpassengerid =this.getIntent().getStringExtra("key");
-        from=this.getIntent().getStringExtra("destination");
-        To=this.getIntent().getStringExtra("from");
-        Namepessenge =this.getIntent().getStringExtra("name");
-        Imagurl =this.getIntent().getStringExtra("imageurl");
+
+        gettingRideDetails();
         ratingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
@@ -84,7 +81,6 @@ ImageView call,chat;
                 submitRateDetails();
             }
         });
-        gettingRideDetails();
 
     }
 
@@ -166,13 +162,24 @@ ImageView call,chat;
     private void gettingRideDetails() {
 
 
+        Currentpassengerid =this.getIntent().getStringExtra("key");
+        To=this.getIntent().getStringExtra("destination");
+        from=this.getIntent().getStringExtra("from");
 
-                    totaldest.setText("NA");
+        Namepessenge =this.getIntent().getStringExtra("name");
+        Imagurl =this.getIntent().getStringExtra("imageurl");
+        price =this.getIntent().getStringExtra("price");
+        duration =this.getIntent().getStringExtra("duration");
+        KMS =this.getIntent().getStringExtra("distance");
 
-                    totaltime.setText("NA");
-                    totalfare.setText("NA");
-                           Picasso.get().load(Imagurl).into(driverpic);
-                        drivername.setText(Namepessenge);
+        fromadresstv.setText(from);
+        toaddresstv.setText(To);
+        totaltime.setText(duration);
+        totaldest.setText(KMS);
+        totalfare.setText(price);
+        passengername.setText(Namepessenge);
+
+        Picasso.get().load(Imagurl).into(passengerPic);
 
                 }
 

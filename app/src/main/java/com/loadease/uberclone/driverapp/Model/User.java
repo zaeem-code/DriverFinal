@@ -5,7 +5,18 @@ public class User{
     private String name;
     private String password;
     private String phone;
-    private String rider_pic_Url,carnum;
+    private String rider_pic_Url;
+    private String carnum;
+
+    public String getProfile_status() {
+        return profile_status;
+    }
+
+    public void setProfile_status(String profile_status) {
+        this.profile_status = profile_status;
+    }
+
+    private String profile_status;
 
     public String getCarnum() {
         return carnum;

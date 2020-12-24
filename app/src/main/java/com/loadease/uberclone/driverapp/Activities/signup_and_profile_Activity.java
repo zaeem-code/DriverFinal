@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.loadease.uberclone.driverapp.Common.Common;
 import com.loadease.uberclone.driverapp.Helpers.FirebaseHelper;
+import com.loadease.uberclone.driverapp.Model.FCM_send_msg;
 import com.loadease.uberclone.driverapp.Model.User;
 import com.loadease.uberclone.driverapp.Model.UserX;
 import com.loadease.uberclone.driverapp.R;
@@ -46,17 +48,21 @@ import com.loadease.uberclone.driverapp.R;
 import java.io.ByteArrayOutputStream;
 
 public class signup_and_profile_Activity extends  AppCompatActivity implements View.OnClickListener {
-private ProgressDialog dialog;
-        String imguri="";
-        FirebaseAuth firebaseAuth;
-        FirebaseDatabase firebaseDatabase;
+private ProgressDialog dialog; FirebaseDatabase firebaseDatabase;
         DatabaseReference users,users_X;
-        Button signup,uploadprofile;
-        FirebaseUser currentuser=null;
-        LinearLayout root;
 
-        StorageReference mStorageRef;
-        EditText etEmail, etPassword, etName, etYearofprodtution, etPhone, date, mont, year,edcaarnumber;
+        String imguri="";
+        TextView greetings;
+        Button signup,uploadprofile;   FirebaseAuth firebaseAuth;
+
+        FirebaseUser currentuser=null; StorageReference mStorageRef;
+
+        LinearLayout root;
+String chk="",name="";
+
+        User user1 = new User();
+        UserX userX=new UserX();
+          EditText etEmail, etPassword, etName, etYearofprodtution, etPhone, date, mont, year,edcaarnumber;
         String DOB,Roider_phn,Roider_name, gender = "male", RideType = "economy", Rider_CNIC_url="", Rider_photo_url, Rider_car_photo_url, Rider_licence_photo_url, Yearofprodtution
         ,Roider_pass,Roider_email,carnum;
         RadioButton male, female, other,
@@ -77,6 +83,7 @@ protected void onCreate(Bundle savedInstanceState) {
         }
 
 private void process() {
+        greetings=findViewById(R.id.greetings);
         edcaarnumber=findViewById(R.id.carnumber);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
@@ -123,7 +130,34 @@ private void process() {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         users = firebaseDatabase.getReference(Common.user_driver_tbl);
+        users_X=FirebaseDatabase.getInstance().getReference("chatIntegration");
 
+///// specila case
+try {
+        Roider_pass=this.getIntent().getStringExtra("pass");
+        etPassword.setText(Roider_pass);
+        Roider_email=this.getIntent().getStringExtra("email");
+        etEmail.setText(Roider_email);
+        Roider_phn=this.getIntent().getStringExtra("phone");
+        etPhone.setText(Roider_phn);
+        name=this.getIntent().getStringExtra("name");
+        Roider_name=name;
+        etName.setText(name);
+
+        chk=this.getIntent().getStringExtra("chk");
+        if (chk.equals("Redirect")){
+
+                currentuser = firebaseAuth.getCurrentUser();
+                findViewById(R.id.profiledata).setVisibility(View.VISIBLE);
+                findViewById(R.id.signupdata).setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(name)){
+                        greetings.setText("Welcome back "+"\n"+       name+"\n"+greetings.getText());
+                }
+        }
+}catch (Exception e){
+
+}
+////// special case end
 
         }
 
@@ -328,9 +362,8 @@ public void onRadioButtonClicked(View view) {
         drone.setChecked(false);
         van.setChecked(false);
         }
-        user1.setCarType(RideType);
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .setValue(user1);
+        users.child( Common.userID).child("carType")
+                .setValue(RideType);
         }
 
 public void onCheckedChanged(View view) {
@@ -481,8 +514,6 @@ public void onFailure(@NonNull Exception exception) {
 
         }
 
-        User user1 = new User();
-UserX userX=new UserX();
 
 
 
@@ -491,11 +522,8 @@ private void firebaseSignup(String chk) {
         dialog.show();
 
         firebaseAuth = FirebaseAuth.getInstance();
-
         firebaseDatabase = FirebaseDatabase.getInstance();
-        users = firebaseDatabase.getReference(Common.user_driver_tbl);
-        users_X=FirebaseDatabase.getInstance().getReference("chatIntegration");
-        firebaseAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
+       firebaseAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
 @Override
 public void onSuccess(AuthResult authResult) {
@@ -505,6 +533,8 @@ public void onSuccess(AuthResult authResult) {
         user1.setPhone(Roider_phn);
         user1.setName(Roider_name);
         user1.setCarType("UberX");
+
+        user1.setProfile_status("incomplete");
         ///
 
 
@@ -523,6 +553,8 @@ public void onSuccess(Void aVoid) {
         currentuser = firebaseAuth.getCurrentUser();
         findViewById(R.id.profiledata).setVisibility(View.VISIBLE);
         findViewById(R.id.signupdata).setVisibility(View.GONE);
+
+                greetings.setText("Welcome "+name+"\n"+greetings.getText());
 
         } }
 
@@ -561,6 +593,7 @@ private void profilesignup(){
         user.setYear_of_prodution(Yearofprodtution);
         user.setCarType(RideType);
 
+        user.setProfile_status("Nverified");
         user.setRider_cnic_pic_url(Rider_CNIC_url);
         user.setRider_licence_pic(Rider_licence_photo_url);
         user.setRider_pic_Url(Rider_photo_url);
@@ -576,16 +609,31 @@ private void profilesignup(){
         userX.setImageURL(Rider_photo_url);
         userX.setStatus("offline");
         userX.setSearch(Roider_name.toLowerCase());
-        userX.setId(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        users_X.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userX);
+        userX.setId( Common.userID);
+        users_X.child(Common.userID).setValue(userX);
 
         myRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
 @Override
 public void onComplete(@NonNull Task<Void> task) {
 
         if (dialog.isShowing()){
-        dialog.dismiss();
+
+
+
+        ///
+
+                users.child( Common.userID).child("profile_status")
+                        .setValue("complete");
+                ///
+                getSharedPreferences("Login",MODE_PRIVATE).edit().putBoolean("chk",true).apply();
+        new FCM_send_msg(getApplicationContext(),FirebaseAuth.getInstance().getCurrentUser().getUid(),root);
+
+                dialog.dismiss();
+        if (chk.equals("Redirect")){
+                finish();
+        }else {
        new FirebaseHelper().LoadRiderProfile(getApplicationContext());
+        }
         }
         }
         });

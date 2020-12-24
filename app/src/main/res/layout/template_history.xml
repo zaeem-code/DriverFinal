@@ -1,39 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="?attr/selectableItemBackground"
     android:elevation="5dp"
-    android:layout_marginBottom="4dp"
-    android:layout_marginTop="4dp">
-    <LinearLayout
+    app:cardElevation="5dp"
+
+    app:cardCornerRadius="10dp"
+    android:padding="5dp"
+    android:layout_marginBottom="7dp" >
+    <LinearLayout  android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tvTripDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"/>
+        android:background="@android:color/transparent"
+
+  >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:id="@+id/tvdate"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:layout_marginLeft="5dp"
+                android:maxLines="1"
+                android:textColor="@color/lightgray"
+                android:text=" 9 May 2020"
+                android:textSize="14sp"
+                android:layout_marginStart="5dp" />
+
+
+            <TextView
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:id="@+id/tvfare"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+
+                android:layout_marginRight="5dp"
+                android:maxLines="1"
+                android:textColor="@color/lightgray"
+                android:text=" 449 Rs"
+                android:layout_alignParentRight="true"
+                android:textSize="14sp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="5dp" />
+
+
+        </RelativeLayout>
+
         <LinearLayout
             android:orientation="horizontal"
+            android:background="@android:color/transparent"
             android:layout_width="match_parent"
+
+            android:weightSum="1"
+
             android:layout_height="wrap_content">
+            <ImageView
+                android:visibility="visible"
+                android:layout_gravity="center"
+                android:layout_weight=".1"
+                android:src="@drawable/circ"
+                app:tint="@color/lightgray"
+                android:layout_width="10dp"
+                android:layout_height="10dp" />
             <TextView
-                android:id="@+id/tvRiderName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:id="@+id/fromadd"
+                android:layout_width="0dp"
+                android:layout_weight=".9"
+                android:layout_height="40dp"
+
+                android:text="From: addresss"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:layout_marginLeft="5dp"
+                android:maxLines="1"
+                android:textColor="@color/lightgray"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:layout_marginStart="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:weightSum="1"
+
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:visibility="visible"
+                android:layout_weight=".1"
+                android:src="@drawable/circ"
+                android:layout_width="10dp"
+                android:layout_gravity="center"
+                app:tint="@color/lightgray"
+                android:layout_height="10dp" />
+            <TextView
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:id="@+id/toadd"
+                android:layout_width="0dp"
+                android:layout_weight=".9"
+                android:layout_height="40dp"
+                android:maxLines="1"
+                android:textColor="@color/lightgray"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:layout_marginLeft="5dp"
+
+                android:text="To: addresss"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginStart="5dp" />
+
         </LinearLayout>
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

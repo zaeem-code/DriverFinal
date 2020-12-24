@@ -86,6 +86,7 @@ public class FirebaseHelper {
                 });
     }
     public void showLoginDialog(){
+
         activity.getApplicationContext().startActivity(new Intent(activity, LoginMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
     public void showRegistrerDialog(){

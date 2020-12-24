@@ -32,6 +32,7 @@ import java.util.Random;
 public class Common {
     public static final String driver_tbl="Drivers";
     public static final String user_driver_tbl="DriversInformation";
+    public static final String user_driver_profile="RidersProfile";
     public static final String history_driver = "DriverHistory";
     public static final String history_rider = "RiderHistory";
     public static final String user_rider_tbl="RidersInformation";
@@ -43,6 +44,8 @@ public class Common {
     public static String userID;
     public static final int PICK_IMAGE_REQUEST = 9999;
     static String Notification_Chanel_Id="notification_alert";
+
+
 
     public static Double currentLat;
     public static Double currentLng;
@@ -56,6 +59,9 @@ public class Common {
 
     public static double formulaPrice(double km, double min){
         return baseFare+(distanceRate*km)+(timeRate*min);
+    }
+    public static double getPrice(double km, int min){
+        return (baseFare+(timeRate*min)+(distanceRate*km));
     }
     public static googleAPIInterface getGoogleAPI(){
         return RetrofitClient.getClient(baseURL).create(googleAPIInterface.class);
