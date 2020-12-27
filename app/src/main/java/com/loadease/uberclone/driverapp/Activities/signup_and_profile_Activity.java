@@ -605,7 +605,7 @@ private void profilesignup(){
         userX.setName(Roider_name);
         userX.setPhone(Roider_phn);
         userX.setIndustry("car");
-        userX.setAvatarUrl("default");
+        userX.setAvatarUrl(Rider_photo_url);
         userX.setImageURL(Rider_photo_url);
         userX.setStatus("offline");
         userX.setSearch(Roider_name.toLowerCase());
