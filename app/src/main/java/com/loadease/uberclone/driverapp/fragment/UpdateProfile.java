@@ -101,7 +101,7 @@ public class UpdateProfile extends AppCompatActivity {
     }
     public void UpdateProfile(View view) {
         Roider_name=etName.getText().toString().trim();
-        Roider_phn=etPhone.getText().toString().trim();
+//        Roider_phn=etPhone.getText().toString().trim();
     if (TextUtils.isEmpty(gender)) {
             Snackbar.make(root,"select Gender", Snackbar.LENGTH_SHORT).show();
             return;
@@ -224,7 +224,7 @@ myRef.addValueEventListener(new ValueEventListener() {
 
         DOB=dataSnapshot.child("dob").getValue().toString();
 
-
+        Roider_phn=dataSnapshot.child("phone").getValue().toString();
 
 
 
@@ -235,7 +235,7 @@ myRef.addValueEventListener(new ValueEventListener() {
         year.setText(separated[2]);
 
         etName.setText(dataSnapshot.child("name").getValue().toString());
-        etPhone.setText(dataSnapshot.child("phone").getValue().toString());
+        etPhone.setText(Roider_phn);
 
         if (dialog.isShowing()){
 
