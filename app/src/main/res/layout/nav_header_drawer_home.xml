@@ -13,22 +13,31 @@
     android:layout_width="110dp"
     android:layout_centerVertical="true"
     android:layout_height="110dp">
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageAvatar"
-        android:layout_width="100dp"
-        android:src="@drawable/ic_baseline_add_circle_outline_24"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        app:srcCompat="@mipmap/ic_launcher_round" />
-  <ImageView
+  <de.hdodenhof.circleimageview.CircleImageView
+      android:layout_width="match_parent"
 
-      android:layout_width="20dp"
-      android:layout_height="20dp"
-    android:id="@+id/add"
+      android:id="@+id/imageAvatar"
+      android:padding="5dp"
+      android:layout_height="match_parent"
+      android:background="@android:color/transparent"
+      android:src="@drawable/ic_launcher_foreground"
+      app:civ_border_width="1dp"
+      app:civ_border_color="#FF000000"/>
+
+     <ImageView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+
+
+      android:layout_gravity="right|bottom"
+      android:layout_marginEnd="3dp"
+      android:id="@+id/add"
       android:onClick="uploadDP"
-      android:layout_gravity="right"
-      android:layout_marginTop="60dp"
-    android:src="@drawable/ic_baseline_add_circle_outline_24" />
+      android:layout_marginRight="3dp"
+      android:layout_marginBottom="15dp"
+      android:background="@drawable/backbg"
+      android:src="@drawable/ic_baseline_add_circle_outline_24"
+      app:tint="@android:color/black" />
 
 </FrameLayout>
   <TextView
@@ -39,6 +48,11 @@
       android:layout_width="match_parent"
       android:layout_toEndOf="@+id/frame"
       android:layout_marginTop="70dp"
+      app:autoSizeTextType="uniform"
+      app:autoSizeMinTextSize="14sp"
+      app:autoSizeMaxTextSize="17sp"
+      app:autoSizeStepGranularity="2sp"
+      android:textStyle="bold"
       android:layout_height="wrap_content"
       android:textColor="@android:color/white"/>
 
@@ -55,10 +69,13 @@
         android:text="@string/rated"
         android:textColor="@android:color/white"
         android:layout_width="wrap_content"
+        android:textSize="12sp"
+        android:textStyle="bold"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/tvStars"
         android:text="@string/_4_5"
+        android:textSize="12sp"
         android:layout_marginStart="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

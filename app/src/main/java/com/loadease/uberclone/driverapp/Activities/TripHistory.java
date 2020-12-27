@@ -59,8 +59,7 @@ public class TripHistory extends AppCompatActivity {
           riderHistory.child(Common.userID).addValueEventListener(new ValueEventListener() {
               @Override
               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                  for(DataSnapshot postSnapshot: dataSnapshot.getChildren())
-                  {
+                  for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                       History history = postSnapshot.getValue(History.class);
                       listData.add(history);
 
@@ -68,18 +67,23 @@ public class TripHistory extends AppCompatActivity {
 //                    Toast.makeText(TripHistory.this, "array"+listData, Toast.LENGTH_SHORT).show();
 
                   }
-                  adapter.notifyDataSetChanged();
+                  if (listData != null) {
+                      if (listData.size() < 1) {
+                          Toast.makeText(getApplicationContext(), "You haven't took a ride yet!", Toast.LENGTH_SHORT).show();
+                      } else {
+                          adapter.notifyDataSetChanged();
+                      }
+                  }
               }
-
               @Override
               public void onCancelled(@NonNull DatabaseError databaseError) {
 
 //                Toast.makeText(TripHistory.this, "error", Toast.LENGTH_SHORT).show();
               }
           });
-      }catch (Exception e){}
-        Toast.makeText(this, "You haven't took a ride yet!", Toast.LENGTH_SHORT).show();
-
+      }catch (Exception e) {
+          Toast.makeText(this, "You haven't took a ride yet!", Toast.LENGTH_SHORT).show();
+      }
     }
     private void initRecyclerView(){
         rvHistory = findViewById(R.id.rvHistory);

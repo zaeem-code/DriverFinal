@@ -538,7 +538,7 @@ public void onSuccess(AuthResult authResult) {
         ///
 
 
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        users.child(Common.userID)
         .setValue(user1)
         .addOnSuccessListener(new OnSuccessListener<Void>() {
 @Override
@@ -629,9 +629,10 @@ public void onComplete(@NonNull Task<Void> task) {
         new FCM_send_msg(getApplicationContext(),FirebaseAuth.getInstance().getCurrentUser().getUid(),root);
 
                 dialog.dismiss();
+                if (!TextUtils.isEmpty(chk)){
         if (chk.equals("Redirect")){
                 finish();
-        }else {
+        }}else {
        new FirebaseHelper().LoadRiderProfile(getApplicationContext());
         }
         }

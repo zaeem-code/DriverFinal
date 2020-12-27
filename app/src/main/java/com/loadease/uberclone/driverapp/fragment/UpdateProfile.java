@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,9 +29,10 @@ import com.loadease.uberclone.driverapp.Common.Common;
 import com.loadease.uberclone.driverapp.R;
 
 public class UpdateProfile extends AppCompatActivity {
-    EditText etEmail, etPassword, etName, etYearofprodtution, etPhone, date, mont, year,edcaarnumber;
+    EditText etEmail, etPassword, etName, etYearofprodtution, date, mont, year,edcaarnumber;
     String DOB,Roider_phn,Roider_name, gender = "male", RideType = "economy";
     RadioButton male, female, other;
+    TextView etPhone;
     LinearLayout root;
     private ProgressDialog dialog; FirebaseDatabase firebaseDatabase;
     DatabaseReference users,users_X;
