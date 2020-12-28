@@ -533,12 +533,14 @@ public void onSuccess(AuthResult authResult) {
         user1.setPhone(Roider_phn);
         user1.setName(Roider_name);
         user1.setCarType("UberX");
+        user1.setId(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
 
         user1.setProfile_status("incomplete");
         ///
 
 
-        users.child(Common.userID)
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
         .setValue(user1)
         .addOnSuccessListener(new OnSuccessListener<Void>() {
 @Override
@@ -581,7 +583,8 @@ private void profilesignup(){
         dialog.show();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("RidersProfile").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        DatabaseReference myRef = database.getReference("RidersProfile")
+                .child(Common.userID);
         User user = new User();
         user.setEmail(Roider_email);
         user.setPassword(Roider_pass);

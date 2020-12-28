@@ -20,7 +20,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".fragment.UpdateProfile"></activity>
+        <activity android:name=".Activities.CreatePassword"></activity>
+        <activity android:name=".Activities.ForgetPasswordActivity" />
+        <activity android:name=".fragment.UpdateProfile" />
         <activity android:name=".SelectRideType" />
         <activity android:name="com.loadease.uberclone.chatIntegration.Activity.MessageActivity" />
         <activity android:name="com.loadease.uberclone.chatIntegration.Activity.MainChatActivity" />
@@ -54,8 +56,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-<!--        <activity android:name=".Activities.CustommerCall" /> &lt;!&ndash; <service android:name="com.loadease.uberclone.driverapp.Service.FirebaseIdService"> &ndash;&gt;-->
+        </activity> <!-- <activity android:name=".Activities.CustommerCall" /> &lt;!&ndash; <service android:name="com.loadease.uberclone.driverapp.Service.FirebaseIdService"> &ndash;&gt; -->
         <!-- <intent-filter> -->
         <!-- <action android:name="com.google.firebase.INSTANCE_ID_EVENT" /> -->
         <!-- </intent-filter> -->
@@ -73,11 +74,9 @@
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
-        </service>
-
-<!--        <activity-->
-<!--            android:name=".Activities.DriverTracking"-->
-<!--            android:label="@string/title_activity_driver_tracking" />-->
+        </service> <!-- <activity -->
+        <!-- android:name=".Activities.DriverTracking" -->
+        <!-- android:label="@string/title_activity_driver_tracking" /> -->
         <activity
             android:name=".Activities.TripDetail"
             android:label="@string/title_activity_trip_detail" /> <!-- <activity -->
@@ -86,6 +85,7 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
     </application>
 
 </manifest>

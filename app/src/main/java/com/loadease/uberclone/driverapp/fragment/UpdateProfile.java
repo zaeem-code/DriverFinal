@@ -184,65 +184,67 @@ public class UpdateProfile extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("RidersProfile").child(Common.userID);
-myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         // This method is called once with the initial value and again
         // whenever data at this location is updated.
 
-        switch (dataSnapshot.child("gender").getValue().toString()) {
 
-            case "Male":
+
+            switch (dataSnapshot.child("gender").getValue().toString()) {
+
+                case "Male":
 //                Toast.makeText(UpdateProfile.this, "M", Toast.LENGTH_SHORT).show();
-                gender = "Male";
-                female.setChecked(false);
-                other.setChecked(false);
-                male.setChecked(true);
+                    gender = "Male";
+                    female.setChecked(false);
+                    other.setChecked(false);
+                    male.setChecked(true);
 
-                break;
+                    break;
 
-            case "Female":
+                case "Female":
 
 //                Toast.makeText(UpdateProfile.this, "F", Toast.LENGTH_SHORT).show();
-                gender = "Female";
-                male.setChecked(false);
-                female.setChecked(true);
-                other.setChecked(false);
+                    gender = "Female";
+                    male.setChecked(false);
+                    female.setChecked(true);
+                    other.setChecked(false);
 
-                break;
+                    break;
 
-            case "Other":
+                case "Other":
 
 //                Toast.makeText(UpdateProfile.this, "O", Toast.LENGTH_SHORT).show();
-                gender = "Other";
+                    gender = "Other";
 
-                other.setChecked(true);
-                female.setChecked(false);
-                male.setChecked(false);
+                    other.setChecked(true);
+                    female.setChecked(false);
+                    male.setChecked(false);
 
-                break;
+                    break;
 
-        }
+            }
 
-        DOB=dataSnapshot.child("dob").getValue().toString();
-
-        Roider_phn=dataSnapshot.child("phone").getValue().toString();
-
+            DOB = dataSnapshot.child("dob").getValue().toString();
+            Roider_phn = dataSnapshot.child("phone").getValue().toString();
 
 
+            String[] separated = DOB.split("-");
+            date.setText(separated[0]);
+            mont.setText(separated[1]);
+            year.setText(separated[2]);
 
-        String[] separated = DOB.split("-");
-        date.setText(separated[0]);
-        mont.setText(separated[1]);
-        year.setText(separated[2]);
+            etName.setText(dataSnapshot.child("name").getValue().toString());
+            etPhone.setText(Roider_phn);
 
-        etName.setText(dataSnapshot.child("name").getValue().toString());
-        etPhone.setText(Roider_phn);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
 
-        if (dialog.isShowing()){
 
-            dialog.dismiss();
-                 }
+
+
     }
 
     @Override
@@ -254,6 +256,9 @@ myRef.addValueEventListener(new ValueEventListener() {
         // Failed to read value
     }
 });
+
+
+
 
     }
 

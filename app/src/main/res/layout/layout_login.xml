@@ -54,6 +54,23 @@
             app:met_baseColor="@color/colorPrimary"
             app:met_floatingLabel="highlight"
             app:met_primaryColor="@color/colorPrimary"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forget Password"
+            android:textSize="22sp"
+            android:layout_below="@+id/etPassword"
+            android:id="@+id/forgetpass"
+            />
+
+
+
+
+
+
         <TextView
             android:layout_alignParentTop="true"
             android:layout_width="match_parent"
