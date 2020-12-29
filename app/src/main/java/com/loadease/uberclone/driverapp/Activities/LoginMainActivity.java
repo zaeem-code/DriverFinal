@@ -38,6 +38,7 @@ public class LoginMainActivity extends AppCompatActivity {
 
     LinearLayout root;
     FirebaseHelper fh;
+    TextView forgetPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,29 @@ public class LoginMainActivity extends AppCompatActivity {
         email = findViewById(R.id.etEmail);
         root = findViewById(R.id.bg);
         fh=new FirebaseHelper(this);
+        forgetPass=findViewById(R.id.forgetpass);
+
+
+
+
+
+
+        forgetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getApplicationContext(),ForgetPasswordActivity.class));
+
+            }
+        });
+
+
+
+
+
+
+
+
         findViewById(R.id.signin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -7,6 +7,15 @@ public class User{
     private String phone;
     private String rider_pic_Url;
     private String carnum;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getProfile_status() {
         return profile_status;

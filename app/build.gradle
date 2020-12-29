@@ -85,6 +85,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
 
+    implementation 'com.hbb20:ccp:2.4.0'
 
     implementation "com.github.koushikcse:loading-button-android:1.0"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
