@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +33,7 @@ import com.loadease.uberclone.driverapp.fragment.FragmentDriver;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class LoginMainActivity extends AppCompatActivity {
-    MaterialEditText pass, email;
+    EditText pass, email;
     FirebaseAuth firebaseAuth;
     private ProgressDialog dialog;
 
@@ -178,8 +179,8 @@ public class LoginMainActivity extends AppCompatActivity {
 
                             if (Common.currentRiderprofile.getProfile_status().equals("Nverified")) {
 
-pass.setVisibility(View.GONE);
-email.setVisibility(View.GONE);
+findViewById(R.id.l1).setVisibility(View.GONE);
+                                findViewById(R.id.l2).setVisibility(View.GONE);
                                 Button signin=findViewById(R.id.signin);
                                 signin.setBackgroundColor(Color.RED);
                                 signin.setClickable(false);

@@ -61,7 +61,7 @@ public class MainChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserX user = dataSnapshot.getValue(UserX.class);
                 username.setText(user.getName());
-                if (user.getImageURL().equals("default")){
+                if (user.getAvatarUrl().equals("default")){
                     profile_image.setImageResource(R.mipmap.ic_launcher);
                 } else {
 
