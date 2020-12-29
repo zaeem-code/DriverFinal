@@ -183,8 +183,8 @@ boolean dataalredyloaded=false;
         }
 
         @Override
-        public void onKeyExited(String key) {
-
+        public void onKeyExited(String key)
+        {
 
         }
 
@@ -1344,10 +1344,10 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
 
     private void makeDriverOnline() {
 
-
-
         String saveCityName=city_name;
         city_name= LocationUtils.getAddressFromLocation(getApplicationContext());
+
+
 
         if (!city_name.equals(saveCityName))
         {

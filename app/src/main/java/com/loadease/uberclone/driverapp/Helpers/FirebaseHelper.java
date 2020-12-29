@@ -76,7 +76,7 @@ public class FirebaseHelper {
                         Log.v("hassan",   "data ->>>>"+dataSnapshot.getValue(User.class));
 
                         Common.currentRiderprofile =dataSnapshot.getValue(User.class);
-                        context.startActivity(new Intent(context, FragmentDriver.class));
+                        context.startActivity(new Intent(context, FragmentDriver.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                            }
 
                     @Override

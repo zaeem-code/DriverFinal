@@ -2,6 +2,7 @@ package com.loadease.uberclone.driverapp.Activities;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,7 +13,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,6 +28,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,11 +50,19 @@ import com.loadease.uberclone.driverapp.Model.UserX;
 import com.loadease.uberclone.driverapp.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class signup_and_profile_Activity extends  AppCompatActivity implements View.OnClickListener {
 private ProgressDialog dialog; FirebaseDatabase firebaseDatabase;
         DatabaseReference users,users_X;
+        private static final int REQUEST_CAPTURE_IMAGE = 100;
 
+
+        Uri pdf_uri;
         String imguri="";
         TextView greetings;
         Button signup,uploadprofile;   FirebaseAuth firebaseAuth;
@@ -264,7 +276,9 @@ public void onClick(View view) {
         Snackbar.make(root,"Enter Phone number first", Snackbar.LENGTH_SHORT).show();
         return;
         }else {
-        opencamera(1);
+//        opencamera(1);
+         choosePic(1);
+
         }
         break;
         case R.id.ADDRIDERPIC:
@@ -275,7 +289,11 @@ public void onClick(View view) {
         Snackbar.make(root,"Enter Phone number first", Snackbar.LENGTH_SHORT).show();
         return;
         }else {
-        opencamera(2);}
+//        opencamera(2);
+                choosePic(2);
+
+
+        }
         break;
         case R.id.ADDvehical:
         if (TextUtils.isEmpty(etName.getText().toString())) {
@@ -285,7 +303,11 @@ public void onClick(View view) {
         Snackbar.make(root,"Enter Phone number first", Snackbar.LENGTH_SHORT).show();
         return;
         }else {
-        opencamera(3);}
+//        opencamera(3);
+
+                choosePic(3);
+
+        }
         break;
         case R.id.ADDlicence:
         if (TextUtils.isEmpty(etName.getText().toString())) {
@@ -295,7 +317,13 @@ public void onClick(View view) {
         Snackbar.make(root,"Enter Phone number first", Snackbar.LENGTH_SHORT).show();
         return;
         }else {
-        opencamera(4);}
+
+//        opencamera(4);
+//                opencamera(4);
+
+                choosePic(4);
+
+        }
         break;
         }
 
@@ -399,33 +427,35 @@ private void opencamera(int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
         startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
 
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode != RESULT_CANCELED) {
+//
+//        if (data != null) {
+//        Bitmap photo = (Bitmap) data.getExtras().get("data");
+//
+//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//        photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//        ///ask for permissions
+//        String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "pic", null);
+//
+//
+//        uploadpic(requestCode,   Uri.parse(path));
+//        } else {
+//        Snackbar.make(root, "Failed: try again", Snackbar.LENGTH_SHORT).show();
+//        }
+//
+//
+//        } else {
+//        Snackbar.make(root, "Failed: try again", Snackbar.LENGTH_SHORT).show();
+//        }
+//
+//
+//        }
 
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_CANCELED) {
 
-        if (data != null) {
-        Bitmap photo = (Bitmap) data.getExtras().get("data");
-
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        ///ask for permissions
-        String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "pic", null);
-
-
-        uploadpic(requestCode,   Uri.parse(path));
-        } else {
-        Snackbar.make(root, "Failed: try again", Snackbar.LENGTH_SHORT).show();
-        }
-
-
-        } else {
-        Snackbar.make(root, "Failed: try again", Snackbar.LENGTH_SHORT).show();
-        }
-
-
-        }
-private void uploadpic(int chk, Uri img){
+        private void uploadpic(int chk, Uri img){
 
         dialog.show();
         String folder="";
@@ -517,6 +547,86 @@ public void onFailure(@NonNull Exception exception) {
 
 
 
+
+
+
+public void choosePic(int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE)
+{
+        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "select image"), CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+}
+
+
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+                super.onActivityResult(requestCode, resultCode, data);
+                if (requestCode == 1 && resultCode == -1 && data != null)
+                {
+                        pdf_uri = data.getData();
+                        String imageName = new File(pdf_uri.getPath()).getName();
+
+
+                        Uri uri = pdf_uri;
+                        if (uri != null) {
+//                                Upload_file(uri, imageName, uri.getPath());
+                                Toast.makeText(this, ""+uri, Toast.LENGTH_SHORT).show();
+                                uploadpic(1,uri);
+                        }
+                }
+
+               else if (requestCode == 2 && resultCode == -1 && data != null)
+                {
+                        pdf_uri = data.getData();
+                        String imageName = new File(pdf_uri.getPath()).getName();
+
+
+                        Uri uri = pdf_uri;
+                        if (uri != null) {
+//                                Upload_file(uri, imageName, uri.getPath());
+                                Toast.makeText(this, ""+uri, Toast.LENGTH_SHORT).show();
+                                uploadpic(2,uri);
+                        }
+                }
+                else if (requestCode == 3 && resultCode == -1 && data != null)
+                {
+                        pdf_uri = data.getData();
+                        String imageName = new File(pdf_uri.getPath()).getName();
+
+
+                        Uri uri = pdf_uri;
+                        if (uri != null) {
+//                                Upload_file(uri, imageName, uri.getPath());
+                                Toast.makeText(this, ""+uri, Toast.LENGTH_SHORT).show();
+                                uploadpic(3,uri);
+                        }
+                }
+                else if (requestCode == 4 && resultCode == -1 && data != null)
+                {
+                        pdf_uri = data.getData();
+                        String imageName = new File(pdf_uri.getPath()).getName();
+
+
+                        Uri uri = pdf_uri;
+                        if (uri != null) {
+//                                Upload_file(uri, imageName, uri.getPath());
+                                Toast.makeText(this, ""+uri, Toast.LENGTH_SHORT).show();
+                                uploadpic(4,uri);
+                        }
+                }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
 private void firebaseSignup(String chk) {
 
         dialog.show();
@@ -584,7 +694,7 @@ private void profilesignup(){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("RidersProfile")
-                .child(Common.userID);
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         User user = new User();
         user.setEmail(Roider_email);
         user.setPassword(Roider_pass);
@@ -612,8 +722,8 @@ private void profilesignup(){
         userX.setImageURL(Rider_photo_url);
         userX.setStatus("offline");
         userX.setSearch(Roider_name.toLowerCase());
-        userX.setId( Common.userID);
-        users_X.child(Common.userID).setValue(userX);
+        userX.setId( FirebaseAuth.getInstance().getCurrentUser().getUid());
+        users_X.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userX);
 
         myRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
 @Override
@@ -625,7 +735,7 @@ public void onComplete(@NonNull Task<Void> task) {
 
         ///
 
-                users.child( Common.userID).child("profile_status")
+                users.child( FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profile_status")
                         .setValue("complete");
                 ///
                 getSharedPreferences("Login",MODE_PRIVATE).edit().putBoolean("chk",true).apply();
