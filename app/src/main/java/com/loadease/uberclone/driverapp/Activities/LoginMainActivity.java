@@ -186,7 +186,7 @@ public class LoginMainActivity extends AppCompatActivity {
 
                                 getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
 
-findViewById(R.id.l1).setVisibility(View.GONE);
+                                findViewById(R.id.l1).setVisibility(View.GONE);
                                 findViewById(R.id.l2).setVisibility(View.GONE);
                                 Button signin=findViewById(R.id.signin);
                                 signin.setBackgroundColor(Color.RED);
