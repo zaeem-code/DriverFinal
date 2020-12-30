@@ -109,15 +109,17 @@ public class Login extends AppCompatActivity {
             }
         });
 
-
-        if (isLoggedIn) {
+boolean chk3=
+        getSharedPreferences("profile", MODE_PRIVATE).getBoolean("chk", false) ;
+       boolean chk2=
+               getSharedPreferences("Nverified", MODE_PRIVATE).getBoolean("chk", false);
             boolean chk = getSharedPreferences("Login", MODE_PRIVATE).getBoolean("chk", false);
-            if (chk) {
-                Toast.makeText(this, "in", Toast.LENGTH_SHORT).show();
+            if (chk && chk2 && chk3) {
+//                Toast.makeText(this, "in", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(Login.this, FragmentDriver.class));
                 finish();
 
-            }
+
         }
     }
 

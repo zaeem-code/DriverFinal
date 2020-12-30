@@ -1788,6 +1788,7 @@ try {
 
                 break;
             case R.id.setting:
+                startActivity(new Intent(this, MainChatActivity.class));
 
                 break;
 

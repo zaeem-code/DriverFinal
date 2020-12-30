@@ -656,7 +656,8 @@ public void onSuccess(AuthResult authResult) {
 @Override
 public void onSuccess(Void aVoid) {
         Snackbar.make(root, "Registered", Snackbar.LENGTH_SHORT).show();
-
+        getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+//        getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", true);
         if (dialog.isShowing()){
         dialog.dismiss();
         }
@@ -673,6 +674,8 @@ public void onSuccess(Void aVoid) {
         }).addOnFailureListener(new OnFailureListener() {
 @Override
 public void onFailure(@NonNull Exception e) {
+        getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+//        getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", false);
 
         if (dialog.isShowing()){
         dialog.dismiss();
@@ -731,14 +734,17 @@ public void onComplete(@NonNull Task<Void> task) {
 
         if (dialog.isShowing()){
 
+                getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
 
 
-        ///
+                ///
 
                 users.child( FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profile_status")
                         .setValue("complete");
+                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+
                 ///
-                getSharedPreferences("Login",MODE_PRIVATE).edit().putBoolean("chk",true).apply();
+//                getSharedPreferences("Login",MODE_PRIVATE).edit().putBoolean("chk",true).apply();
         new FCM_send_msg(getApplicationContext(),FirebaseAuth.getInstance().getCurrentUser().getUid(),root);
 
                 dialog.dismiss();

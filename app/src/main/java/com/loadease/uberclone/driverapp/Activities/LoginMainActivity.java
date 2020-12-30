@@ -101,13 +101,14 @@ public class LoginMainActivity extends AppCompatActivity {
             public void onSuccess(AuthResult authResult) {
 
                 Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+                getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
                 loadata();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
 
                 Snackbar.make(root, getResources().getString(R.string.failed) + e.getMessage(), Snackbar.LENGTH_SHORT).show();
                 if (dialog.isShowing()){
@@ -135,6 +136,7 @@ public class LoginMainActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
 
+                            getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
                             startActivity(new Intent(getApplicationContext(),signup_and_profile_Activity.class).putExtra("chk","Redirect")
                             .putExtra("name",dataSnapshot.child("name").getValue().toString())
                                     .putExtra("email",dataSnapshot.child("email").getValue().toString())
@@ -146,6 +148,8 @@ public class LoginMainActivity extends AppCompatActivity {
                         }
                         else
                             {  Log.v("Hassan","Status complete");
+
+                                getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
                                 DriverApproveStatus();
                         }
 
@@ -179,6 +183,9 @@ public class LoginMainActivity extends AppCompatActivity {
 
                             if (Common.currentRiderprofile.getProfile_status().equals("Nverified")) {
 
+
+                                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+
 findViewById(R.id.l1).setVisibility(View.GONE);
                                 findViewById(R.id.l2).setVisibility(View.GONE);
                                 Button signin=findViewById(R.id.signin);
@@ -187,6 +194,9 @@ findViewById(R.id.l1).setVisibility(View.GONE);
                                 TextView note=findViewById(R.id.note);
                                 note.setText("Please Note :\nA Request Against Your Id is Sent to the LoadEase Office, You will soon be contacted by one of our officials, Please wait for verification process to complete, It may take a while to process");
                             } else if (Common.currentRiderprofile.getProfile_status().equals("verified")) {
+
+
+                                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
                                 new FirebaseHelper().LoadRiderProfile(getApplicationContext());
                             }
 
