@@ -803,7 +803,7 @@ Toolbar toolbar;
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
 
-        DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(Common.userID);
 
         db.addValueEventListener(new ValueEventListener() {
             @Override
@@ -2098,7 +2098,7 @@ return address;
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("RidersProfile").child(Common.userID);
+        DatabaseReference myRef = database.getReference("RidersProfile").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         myRef.child("rider_pic_Url").setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

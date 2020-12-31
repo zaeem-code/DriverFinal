@@ -163,6 +163,7 @@ ImageView call,chat;
 
 
         Currentpassengerid =this.getIntent().getStringExtra("key");
+        rateDetailRef.child(Currentpassengerid);
         To=this.getIntent().getStringExtra("destination");
         from=this.getIntent().getStringExtra("from");
 

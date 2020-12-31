@@ -7,7 +7,15 @@ public class User{
     private String phone;
     private String rider_pic_Url;
     private String carnum;
-    private String id;
+    private String id,blocked;
+
+    public String getBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(String blocked) {
+        this.blocked = blocked;
+    }
 
     public String getId() {
         return id;

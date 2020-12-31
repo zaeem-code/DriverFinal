@@ -108,16 +108,21 @@ public class Login extends AppCompatActivity {
                 firebaseHelper.showLoginDialog();
             }
         });
+boolean blocked= getSharedPreferences("blocked", MODE_PRIVATE).getBoolean("chk", false);
 
-boolean chk3=
+        boolean chk3=
         getSharedPreferences("profile", MODE_PRIVATE).getBoolean("chk", false) ;
        boolean chk2=
                getSharedPreferences("Nverified", MODE_PRIVATE).getBoolean("chk", false);
             boolean chk = getSharedPreferences("Login", MODE_PRIVATE).getBoolean("chk", false);
+
             if (chk && chk2 && chk3) {
 //                Toast.makeText(this, "in", Toast.LENGTH_SHORT).show();
+                if (!blocked){
                 startActivity(new Intent(Login.this, FragmentDriver.class));
-                finish();
+                finish();}else {
+                    Toast.makeText(this, "Your Account is Blocked, Contact Head office for more Details", Toast.LENGTH_SHORT).show();
+                }
 
 
         }

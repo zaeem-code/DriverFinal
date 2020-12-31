@@ -117,6 +117,47 @@ public class LoginMainActivity extends AppCompatActivity {
             }
         });
     }
+    private void BlockedCHK(){
+
+        FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
+                .child(Common.userID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+//
+
+
+
+                        Log.v("Hassan","blick at server :"+ dataSnapshot.child("RidersProfile").getValue());
+
+
+                        if(dataSnapshot.child("blocked").getValue().equals("true")) {
+                            Log.v("Hassan","Status incomplete");
+                            if (dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+
+                            getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+
+
+                        }
+                        else
+                        {  Log.v("Hassan","not blocked complete");
+
+                            getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                            new FirebaseHelper().LoadRiderProfile(getApplicationContext());
+                        }
+
+//
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
     private  void loadata(){
         FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
                 .child(Common.userID)
@@ -197,7 +238,7 @@ public class LoginMainActivity extends AppCompatActivity {
 
 
                                 getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
-                                new FirebaseHelper().LoadRiderProfile(getApplicationContext());
+                                BlockedCHK();
                             }
 
                         }

@@ -703,18 +703,18 @@ private void profilesignup(){
         user.setPassword(Roider_pass);
         user.setPhone(Roider_phn);
         user.setName(Roider_name);
-
         user.setGender(gender);
         user.setDOB(DOB);
         user.setYear_of_prodution(Yearofprodtution);
         user.setCarType(RideType);
-
+        user.setId(FirebaseAuth.getInstance().getCurrentUser().getUid());
         user.setProfile_status("Nverified");
         user.setRider_cnic_pic_url(Rider_CNIC_url);
         user.setRider_licence_pic(Rider_licence_photo_url);
         user.setRider_pic_Url(Rider_photo_url);
         user.setRider_vehical_pic(Rider_car_photo_url);
         user.setCarnum(carnum);
+        user.setBlocked("false");
 
 
         userX.setEmail(Roider_email);
