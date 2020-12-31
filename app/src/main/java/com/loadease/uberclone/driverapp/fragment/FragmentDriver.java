@@ -85,6 +85,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.local.LruGarbageCollector;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -802,7 +804,7 @@ Toolbar toolbar;
         setContentView(R.layout.activity_drawer_home);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
-
+        SuscribingTOfcm();
         DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(Common.userID);
 
         db.addValueEventListener(new ValueEventListener() {
@@ -2127,4 +2129,24 @@ return address;
 
 
     }
-}
+
+    private void SuscribingTOfcm(){
+
+
+
+
+        FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult)
+            {
+//            String newToken = instanceIdResult.getToken();
+//
+//            Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+
+                FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+            }
+        });
+
+
+    }}
