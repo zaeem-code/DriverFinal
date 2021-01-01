@@ -8,6 +8,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:250838473072:android:90f8d3e1c71edd3df5d7b5",
+        "android_client_info": {
+          "package_name": "com.loadease.uberclone.adminpanels"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "250838473072-ubnm2gifbn1rnejlddnl7lgopu6q19dv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.loadease.uberclone.adminpanels",
+            "certificate_hash": "930ac738dc4d3f7f763468e0dfff27de1b5900f2"
+          }
+        },
+        {
+          "client_id": "250838473072-1fv9ko7q13norbs40ekc69qgot86adl2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0x0tim4F1NYp8_HVTrrRpRxkWWqKN33U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "250838473072-1fv9ko7q13norbs40ekc69qgot86adl2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:250838473072:android:c868ea51fddf6f09f5d7b5",
         "android_client_info": {
           "package_name": "com.loadease.uberclone.driverapp"
@@ -43,6 +80,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "250838473072-noodmmobk0esd0dj3hfhirkt6hhlv3uj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.loadease.uberclone.riderappp",
+            "certificate_hash": "55ed715ab1afaeffb142ec380d4d4462c8137c6b"
+          }
+        },
         {
           "client_id": "250838473072-pljf4k6k64pv4absao7b6iddmnbdqotd.apps.googleusercontent.com",
           "client_type": 1,
