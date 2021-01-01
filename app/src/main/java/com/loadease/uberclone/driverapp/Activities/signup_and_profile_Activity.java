@@ -727,6 +727,7 @@ private void profilesignup(){
         userX.setSearch(Roider_name.toLowerCase());
         userX.setId( FirebaseAuth.getInstance().getCurrentUser().getUid());
         users_X.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userX);
+        new FCM_send_msg(getApplicationContext(),FirebaseAuth.getInstance().getCurrentUser().getUid(),root);
 
         myRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
 @Override
@@ -745,7 +746,6 @@ public void onComplete(@NonNull Task<Void> task) {
 
                 ///
 //                getSharedPreferences("Login",MODE_PRIVATE).edit().putBoolean("chk",true).apply();
-        new FCM_send_msg(getApplicationContext(),FirebaseAuth.getInstance().getCurrentUser().getUid(),root);
 
                 dialog.dismiss();
                 if (!TextUtils.isEmpty(chk)){

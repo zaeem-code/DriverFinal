@@ -18,6 +18,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 public class FCM_send_msg {
 
 
@@ -52,7 +54,7 @@ key=uid;
 
 
     private void sendNotification(JSONObject notification, Context context, LinearLayout root) {
-
+Log.v("FCMMMM","ok");
        RequestQueue requestQueue = null;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
@@ -61,9 +63,9 @@ key=uid;
                     public void onResponse(JSONObject response) {
                         Log.i("hassan", "onResponse: " + response.toString());
 
-                        Snackbar.make(root,"A Request Against Your Id is Sent to the LoadEase Office\n" +
+                        Toast.makeText(context,"A Request Against Your Id is Sent to the LoadEase Office\n" +
                                 "You will soon be contacted by our Staff\n" +
-                                "Please wait for verification", Snackbar.LENGTH_SHORT).show();
+                                "Please wait for verification", Toast.LENGTH_LONG).show();
 
 
                     }
