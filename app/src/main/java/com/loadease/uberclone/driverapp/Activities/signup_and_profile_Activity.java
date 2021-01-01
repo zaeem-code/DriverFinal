@@ -715,6 +715,7 @@ private void profilesignup(){
         user.setRider_vehical_pic(Rider_car_photo_url);
         user.setCarnum(carnum);
         user.setBlocked("false");
+        user.setBlockedComments("null");
 
 
         userX.setEmail(Roider_email);
@@ -753,6 +754,7 @@ public void onComplete(@NonNull Task<Void> task) {
                 finish();
         }}else {
        new FirebaseHelper().LoadRiderProfile(getApplicationContext());
+       finish();
         }
         }
         }

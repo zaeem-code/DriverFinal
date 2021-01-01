@@ -7,7 +7,15 @@ public class User{
     private String phone;
     private String rider_pic_Url;
     private String carnum;
-    private String id,blocked;
+    private String id,blocked,blockedComments;
+
+    public String getBlockedComments() {
+        return blockedComments;
+    }
+
+    public void setBlockedComments(String blockedComments) {
+        this.blockedComments = blockedComments;
+    }
 
     public String getBlocked() {
         return blocked;
