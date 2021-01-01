@@ -803,7 +803,7 @@ Toolbar toolbar;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_home);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-
+Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
         SuscribingTOfcm();
         DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(Common.userID);
 
@@ -928,6 +928,7 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
                        layout_accept.setVisibility(View.GONE);
                        mMap.clear();
 
+                       Log.v("newError","cancel clicked sendDeclineRequest");
                        UsersUtill.sendDeclineRequest(snackbarView,getApplicationContext(),driverRequestReceived.getKey());
 
                        driverRequestReceived=null;
@@ -935,6 +936,9 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
                    }
                    else
                    {
+
+
+                       Log.v("newError","cancel clicked sendDeclineAndRemoveTripRequest");
                        layout_start_uber.setVisibility(View.GONE);
                        mMap.clear();
 

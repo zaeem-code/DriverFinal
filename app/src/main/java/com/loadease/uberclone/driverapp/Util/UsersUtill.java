@@ -2,6 +2,7 @@ package com.loadease.uberclone.driverapp.Util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class UsersUtill {
     public static void sendDeclineRequest(View snackbarView, Context applicationContext, String key) {
 
 
+        Log.v("newError","cancel clicked sendDeclineRequest called");
 
 
 
@@ -283,6 +285,7 @@ public class UsersUtill {
     public static void sendDeclineAndRemoveTripRequest(View snackbarView, Context applicationContext, String key, String tripNumberId) {
 
 
+        Log.v("newError","cancel clicked sendDeclineAndRemoveTripRequest called");
         CompositeDisposable compositeDisposable=new CompositeDisposable();
         IFCMService_sep ifcmServiceSep = RetrofitFCMClient.getInstance().create(IFCMService_sep.class);
 
