@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -93,63 +94,63 @@ ImageView call,chat;
         rate.setRates(String.valueOf(ratingStars));
         rate.setComment(etComment.getText().toString());
         rate.setCustomername(Common.currentUser.getName());
+        rate.setCustomerID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        rate.setCustomerID(Currentpassengerid);
-        rateDetailRef.child(Common.userID)
 
-        .push()
-        .setValue(rate)
-        .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+
+        DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        db.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                rateDetailRef.child(Common.userID)
-                        .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                double averageStars=0.0;
-                                int count=0;
-                                for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                                    Rate rate=postSnapshot.getValue(Rate.class);
-                                    averageStars+=Double.parseDouble(rate.getRates());
-                                    count++;
-                                }
-                                double finalAverge=averageStars/count;
-                                DecimalFormat df=new DecimalFormat("#.#");
-                                String valueUpdate=df.format(finalAverge);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                                Map<String, Object> driverUpdateRate=new HashMap<>();
-                                driverUpdateRate.put("rates", valueUpdate);
+                String UserID=snapshot.child("Uid").getValue().toString();
 
-                                driverInformationRef.child(Common.userID)
-                                        .updateChildren(driverUpdateRate)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                alertDialog.dismiss();
-                                                Toast.makeText(getApplicationContext(), "Thank you for submit", Toast.LENGTH_SHORT).show();
-                                                finish();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                alertDialog.dismiss();
-                                                Toast.makeText(getApplicationContext(), "Rate updated but can't write to driver information", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            }
+                rateDetailRef.child(UserID)
+                        .push()
+                        .setValue(rate)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            public void onComplete(@NonNull Task<Void> task) {
+
+
+
+                                if (alertDialog.isShowing())
+                                    alertDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Thank you for submit", Toast.LENGTH_SHORT).show();
+                                finish();
+
+
+
+
+
+
 
                             }
-                        });
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        alertDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Rate failed!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                //////////...............
+
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                alertDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Rate failed!", Toast.LENGTH_SHORT).show();
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
+
+
+
+
 
 
     }

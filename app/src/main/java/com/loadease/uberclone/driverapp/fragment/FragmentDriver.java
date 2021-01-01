@@ -366,7 +366,11 @@ boolean dataalredyloaded=false;
         phone=event.getPhone();
 
         driverRequestReceived=event;
-        DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").
+                child(Common.userID);
+//                 child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+
         HashMap hashMap=new HashMap();
         hashMap.put("Uid",event.getKey());
 
@@ -912,6 +916,9 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 reject_btn.performClick();
+
+                Log.v("trip","home3");
+
             }
         });
         reject_btn.setOnClickListener(new View.OnClickListener() {
@@ -932,6 +939,8 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
                        UsersUtill.sendDeclineRequest(snackbarView,getApplicationContext(),driverRequestReceived.getKey());
 
                        driverRequestReceived=null;
+                       Log.v("trip","home2");
+
 
                    }
                    else
@@ -944,6 +953,8 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
 
                        UsersUtill.sendDeclineAndRemoveTripRequest(snackbarView,getApplicationContext()
                                ,driverRequestReceived.getKey(),tripNumberId );
+
+                       Log.v("trip","home");
 
                        tripNumberId="";
 
