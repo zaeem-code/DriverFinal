@@ -244,7 +244,7 @@ public class LoginMainActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                             FirebaseAuth.getInstance().signOut();
-                            note.setText("Please Note :\nyou have been blocked");
+                            note.setText("Please Note :\nyou have been blocked\n Reason: "+dataSnapshot.child("blockedComments").getValue().toString());
 
                             getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
 
