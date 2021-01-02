@@ -40,6 +40,7 @@ public class LoginMainActivity extends AppCompatActivity {
     LinearLayout root;
     FirebaseHelper fh;
     TextView forgetPass;
+    TextView note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class LoginMainActivity extends AppCompatActivity {
         fh=new FirebaseHelper(this);
         forgetPass=findViewById(R.id.forgetpass);
 
+          note=findViewById(R.id.note);
 
 
 
@@ -124,49 +126,6 @@ public class LoginMainActivity extends AppCompatActivity {
 
 
     }
-    private void BlockedCHK(){
-
-        FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-//
-
-
-
-                        Log.v("Hassan","blick at server :"+ dataSnapshot.child("RidersProfile").getValue());
-
-
-                        if(dataSnapshot.child("blocked").getValue().equals("true")) {
-                            Log.v("Hassan","Status incomplete");
-                            if (dialog.isShowing()){
-                                dialog.dismiss();
-                            }
-                            FirebaseAuth.getInstance().signOut();
-
-                            getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
-
-
-                        }
-                        else
-                        {  Log.v("Hassan","not blocked complete");
-
-                            Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
-                            new FirebaseHelper().LoadRiderProfile(getApplicationContext());
-                        }
-
-//
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
     private  void loadata(){
 
         FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
@@ -182,7 +141,7 @@ public class LoginMainActivity extends AppCompatActivity {
                         Log.v("Hassan","Satust at server :"+ dataSnapshot.child("profile_status").getValue());
 
 
-                        if(dataSnapshot.child("profile_status").getValue().equals("incomplete")) {
+                        if(dataSnapshot.child("profile_status").getValue().toString().equals("incomplete")) {
                             Log.v("Hassan","Status incomplete");
                             if (dialog.isShowing()){
                                 dialog.dismiss();
@@ -219,9 +178,6 @@ public class LoginMainActivity extends AppCompatActivity {
     }
 
 
-
-
-
     private void DriverApproveStatus() {
         if (!TextUtils.isEmpty(FirebaseAuth.getInstance().getCurrentUser().getUid().toString())) {
             FirebaseDatabase.getInstance().getReference(Common.user_driver_profile)
@@ -235,7 +191,7 @@ public class LoginMainActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
 
-                            if (Common.currentRiderprofile.getProfile_status().equals("Nverified")) {
+                            if (Common.currentRiderprofile.getProfile_status().toString().equals("Nverified")) {
 
 
                                 getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
@@ -246,7 +202,6 @@ public class LoginMainActivity extends AppCompatActivity {
                                 Button signin=findViewById(R.id.signin);
                                 signin.setBackgroundColor(Color.RED);
                                 signin.setClickable(false);
-                                TextView note=findViewById(R.id.note);
 
                                 FirebaseAuth.getInstance().signOut();
                                 note.setText("Please Note :\nA Request Against Your Id is Sent to the LoadEase Office, You will soon be contacted by one of our officials, Please wait for verification process to complete, It may take a while to process");
@@ -269,5 +224,49 @@ public class LoginMainActivity extends AppCompatActivity {
 
 
 
+    private void BlockedCHK(){
+
+        FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+//
+
+
+
+                        Log.v("Hassan","blick at server :"+ dataSnapshot.child("RidersProfile").getValue());
+
+
+                        if(dataSnapshot.child("blocked").getValue().toString().equals("true")) {
+                            Log.v("Hassan","Status incomplete");
+                            if (dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+                            FirebaseAuth.getInstance().signOut();
+                            note.setText("Please Note :\nyou have been blocked");
+
+                            getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+
+
+                        }
+                        else
+                        {  Log.v("Hassan","not blocked complete");
+
+                            Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                            new FirebaseHelper().LoadRiderProfile(getApplicationContext());
+                        }
+
+//
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
 
 }
