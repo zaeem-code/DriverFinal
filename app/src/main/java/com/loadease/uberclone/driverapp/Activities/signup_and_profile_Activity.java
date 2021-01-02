@@ -753,11 +753,11 @@ public void onComplete(@NonNull Task<Void> task) {
                 dialog.dismiss();
                 if (!TextUtils.isEmpty(chk)){
         if (chk.equals("Redirect")){
-                finish();
+                        finish();
         }}else {
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(getApplicationContext(),LoginMainActivity.class));
-       finish();
+                        finish();
         }
         }
         }

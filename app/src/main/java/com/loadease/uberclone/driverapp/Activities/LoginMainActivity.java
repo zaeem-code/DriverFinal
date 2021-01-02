@@ -46,7 +46,7 @@ public class LoginMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.layout_login);
-//        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         dialog = new ProgressDialog(this);
         dialog.setMessage("Validating...");
         pass = findViewById(R.id.etPassword);
@@ -100,7 +100,6 @@ public class LoginMainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(AuthResult authResult) {
 
-                Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
                 getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
                 loadata();
 
@@ -144,6 +143,7 @@ public class LoginMainActivity extends AppCompatActivity {
                         else
                         {  Log.v("Hassan","not blocked complete");
 
+                            Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
                             getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
                             new FirebaseHelper().LoadRiderProfile(getApplicationContext());
                         }
