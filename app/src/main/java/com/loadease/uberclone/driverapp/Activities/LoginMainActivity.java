@@ -46,7 +46,7 @@ public class LoginMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.layout_login);
-        firebaseAuth = FirebaseAuth.getInstance();
+//        firebaseAuth = FirebaseAuth.getInstance();
         dialog = new ProgressDialog(this);
         dialog.setMessage("Validating...");
         pass = findViewById(R.id.etPassword);
@@ -159,6 +159,7 @@ public class LoginMainActivity extends AppCompatActivity {
                 });
     }
     private  void loadata(){
+
         FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
                 .child(Common.userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
