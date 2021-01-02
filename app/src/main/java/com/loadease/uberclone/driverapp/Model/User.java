@@ -7,7 +7,15 @@ public class User{
     private String phone;
     private String rider_pic_Url;
     private String carnum;
-    private String id,blocked,blockedComments;
+    private String id,blocked,blockedComments,AverageRating;
+
+    public String getAverageRating() {
+        return AverageRating;
+    }
+
+    public void setAverageRating(String averageRating) {
+        AverageRating = averageRating;
+    }
 
     public String getBlockedComments() {
         return blockedComments;

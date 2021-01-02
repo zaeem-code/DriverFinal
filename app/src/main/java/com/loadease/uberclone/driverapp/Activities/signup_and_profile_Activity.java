@@ -718,6 +718,7 @@ private void profilesignup(){
         user.setCarnum(carnum);
         user.setBlocked("false");
         user.setBlockedComments("null");
+        user.setAverageRating("0");
 
 
         userX.setEmail(Roider_email);
