@@ -753,7 +753,7 @@ public void onComplete(@NonNull Task<Void> task) {
         if (chk.equals("Redirect")){
                 finish();
         }}else {
-       new FirebaseHelper().LoadRiderProfile(getApplicationContext());
+//       new FirebaseHelper().LoadRiderProfile(getApplicationContext());
        finish();
         }
         }
