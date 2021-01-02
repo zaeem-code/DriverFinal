@@ -94,6 +94,7 @@ import com.google.gson.Gson;
 import com.kusu.library.LoadingButton;
 import com.loadease.uberclone.chatIntegration.Activity.MainChatActivity;
 import com.loadease.uberclone.driverapp.Activities.Login;
+import com.loadease.uberclone.driverapp.Activities.LoginMainActivity;
 import com.loadease.uberclone.driverapp.Activities.RateActivity;
 import com.loadease.uberclone.driverapp.Activities.TripHistory;
 import com.loadease.uberclone.driverapp.Common.Common;
@@ -1811,7 +1812,7 @@ try {
 
             case R.id.nav_sign_out:
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(this, Login.class));
+                startActivity(new Intent(this, LoginMainActivity.class));
                 if (drawer.isDrawerOpen(GravityCompat.START)) {
                     drawer.closeDrawer(GravityCompat.START);
                 }

@@ -126,9 +126,10 @@ boolean blocked= getSharedPreferences("blocked", MODE_PRIVATE).getBoolean("chk",
             if (chk && chk2 && chk3) {
 //                Toast.makeText(this, "in", Toast.LENGTH_SHORT).show();
                 if (!blocked){
+                    if (!TextUtils.isEmpty(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                 startActivity(new Intent(Login.this, FragmentDriver.class));
 
-                finish();}else {
+                finish();}}else {
                     Toast.makeText(this, "Your Account is Blocked, Contact Head office for more Details", Toast.LENGTH_SHORT).show();
                 }
 

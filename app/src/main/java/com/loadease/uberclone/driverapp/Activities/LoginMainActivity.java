@@ -226,7 +226,7 @@ public class LoginMainActivity extends AppCompatActivity {
 
     private void BlockedCHK(){
 
-        FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
+        FirebaseDatabase.getInstance().getReference(Common.user_driver_profile)
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
