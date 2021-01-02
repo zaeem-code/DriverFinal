@@ -390,7 +390,7 @@ public void onRadioButtonClicked(View view) {
         drone.setChecked(false);
         van.setChecked(false);
         }
-        users.child( Common.userID).child("carType")
+        users.child( FirebaseAuth.getInstance().getCurrentUser().getUid()).child("carType")
                 .setValue(RideType);
         }
 
@@ -398,6 +398,8 @@ public void onCheckedChanged(View view) {
         switch (view.getId()) {
         case R.id.male:
         gender = "Male";
+
+
 
         female.setChecked(false);
         other.setChecked(false);
@@ -754,6 +756,7 @@ public void onComplete(@NonNull Task<Void> task) {
                 finish();
         }}else {
 //       new FirebaseHelper().LoadRiderProfile(getApplicationContext());
+                        startActivity(new Intent(getApplicationContext(),LoginMainActivity.class));
        finish();
         }
         }
