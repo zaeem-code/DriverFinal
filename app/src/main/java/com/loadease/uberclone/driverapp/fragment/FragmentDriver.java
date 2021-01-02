@@ -813,29 +813,30 @@ Toolbar toolbar;
         }catch (Exception e){
 
             Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        }
-        SuscribingTOfcm();
-        DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(Common.userID);
 
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(Common.userID);
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if (snapshot.hasChildren())
-                {
-                    user_curr=snapshot.child("Uid").getValue().toString();
+                    if (snapshot.hasChildren())
+                    {
+                        user_curr=snapshot.child("Uid").getValue().toString();
+                    }
+
+
+
                 }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
 
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+        }
+        SuscribingTOfcm();
 
 
 

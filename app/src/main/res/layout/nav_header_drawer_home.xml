@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
 
@@ -24,19 +25,22 @@
       app:civ_border_width="1dp"
       app:civ_border_color="#FF000000"/>
 
-     <ImageView
+  <ImageView
+      android:id="@+id/add"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
 
+      android:layout_height="wrap_content"
       android:layout_gravity="right|bottom"
       android:layout_marginEnd="3dp"
-      android:id="@+id/add"
-      android:onClick="uploadDP"
       android:layout_marginRight="3dp"
       android:layout_marginBottom="15dp"
       android:background="@drawable/backbg"
+      android:onClick="uploadDP"
       android:src="@drawable/ic_baseline_add_circle_outline_24"
-      app:tint="@android:color/black" />
+      android:tint="@android:color/black"
+
+      app:tint="@android:color/black"
+      tools:ignore="UseAppTint" />
 
 </FrameLayout>
   <TextView

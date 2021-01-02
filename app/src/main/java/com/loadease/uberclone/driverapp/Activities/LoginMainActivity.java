@@ -203,8 +203,8 @@ public class LoginMainActivity extends AppCompatActivity {
                                 signin.setBackgroundColor(Color.RED);
                                 signin.setClickable(false);
 
-                                FirebaseAuth.getInstance().signOut();
                                 note.setText("Please Note :\nA Request Against Your Id is Sent to the LoadEase Office, You will soon be contacted by one of our officials, Please wait for verification process to complete, It may take a while to process");
+
                             } else if (Common.currentRiderprofile.getProfile_status().equals("verified")) {
 
 
@@ -243,7 +243,6 @@ public class LoginMainActivity extends AppCompatActivity {
                             if (dialog.isShowing()){
                                 dialog.dismiss();
                             }
-                            FirebaseAuth.getInstance().signOut();
                             note.setText("Please Note :\nyou have been blocked\n Reason: "+dataSnapshot.child("blockedComments").getValue().toString());
 
                             getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
