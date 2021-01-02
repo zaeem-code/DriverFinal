@@ -755,7 +755,7 @@ public void onComplete(@NonNull Task<Void> task) {
         if (chk.equals("Redirect")){
                 finish();
         }}else {
-//       new FirebaseHelper().LoadRiderProfile(getApplicationContext());
+                        FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(getApplicationContext(),LoginMainActivity.class));
        finish();
         }
