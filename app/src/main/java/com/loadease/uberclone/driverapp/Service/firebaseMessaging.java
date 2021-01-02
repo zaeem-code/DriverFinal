@@ -2,6 +2,7 @@ package com.loadease.uberclone.driverapp.Service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.loadease.uberclone.driverapp.Common.Common;
 import com.loadease.uberclone.driverapp.Messages.DriverRequestReceived;
+import com.loadease.uberclone.driverapp.Messages.notification_genrater;
 import com.loadease.uberclone.driverapp.Model.Pickup;
 import com.loadease.uberclone.driverapp.Model.Token;
 import com.loadease.uberclone.driverapp.Model.TokenModel;
@@ -41,11 +43,20 @@ public class firebaseMessaging extends FirebaseMessagingService{
 //        }
 
 
+        Log.v("FCMMM","in");
+        if(remoteMessage.getData().get("title").equals("Action against your account"))
+        {
+            Log.v("FCMMM","ok");
+                  new notification_genrater(getApplicationContext(),remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
+        }
+
 
         Map<String, String> datrecover=remoteMessage.getData();
 
         if (datrecover!=null)
         {
+
+
 
             if (datrecover.get("title").equals("RequestDriver"))
             {
