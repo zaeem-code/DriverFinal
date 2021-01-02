@@ -93,6 +93,11 @@ public class LoginMainActivity extends AppCompatActivity {
         });
     }
 
+
+
+
+
+
     private void login() {
 
 
@@ -104,7 +109,8 @@ public class LoginMainActivity extends AppCompatActivity {
                 loadata();
 
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        }).addOnFailureListener(new OnFailureListener()
+        {
             @Override
             public void onFailure(@NonNull Exception e) {
                 getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
@@ -115,11 +121,13 @@ public class LoginMainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
     private void BlockedCHK(){
 
         FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
-                .child(Common.userID)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -135,6 +143,7 @@ public class LoginMainActivity extends AppCompatActivity {
                             if (dialog.isShowing()){
                                 dialog.dismiss();
                             }
+                            FirebaseAuth.getInstance().signOut();
 
                             getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
 
@@ -161,7 +170,8 @@ public class LoginMainActivity extends AppCompatActivity {
     private  void loadata(){
 
         FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
-                .child(Common.userID)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()
+                )
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -177,6 +187,7 @@ public class LoginMainActivity extends AppCompatActivity {
                             if (dialog.isShowing()){
                                 dialog.dismiss();
                             }
+                            Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                             getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
                             startActivity(new Intent(getApplicationContext(),signup_and_profile_Activity.class).putExtra("chk","Redirect")
@@ -187,6 +198,7 @@ public class LoginMainActivity extends AppCompatActivity {
 
 
                                     .putExtra("phone",dataSnapshot.child("phone").getValue().toString()));
+
                         }
                         else
                             {  Log.v("Hassan","Status complete");
@@ -211,9 +223,9 @@ public class LoginMainActivity extends AppCompatActivity {
 
 
     private void DriverApproveStatus() {
-        if (!TextUtils.isEmpty(Common.userID)) {
+        if (!TextUtils.isEmpty(FirebaseAuth.getInstance().getCurrentUser().getUid().toString())) {
             FirebaseDatabase.getInstance().getReference(Common.user_driver_profile)
-                    .child(Common.userID)
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -228,12 +240,15 @@ public class LoginMainActivity extends AppCompatActivity {
 
                                 getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
 
+                                findViewById(R.id.forgetpass).setVisibility(View.GONE);
                                 findViewById(R.id.l1).setVisibility(View.GONE);
                                 findViewById(R.id.l2).setVisibility(View.GONE);
                                 Button signin=findViewById(R.id.signin);
                                 signin.setBackgroundColor(Color.RED);
                                 signin.setClickable(false);
                                 TextView note=findViewById(R.id.note);
+
+                                FirebaseAuth.getInstance().signOut();
                                 note.setText("Please Note :\nA Request Against Your Id is Sent to the LoadEase Office, You will soon be contacted by one of our officials, Please wait for verification process to complete, It may take a while to process");
                             } else if (Common.currentRiderprofile.getProfile_status().equals("verified")) {
 
