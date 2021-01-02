@@ -808,7 +808,12 @@ Toolbar toolbar;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_home);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        try {
+
+        }catch (Exception e){
+
+            Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
         SuscribingTOfcm();
         DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(Common.userID);
 
@@ -820,6 +825,7 @@ Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
                 {
                     user_curr=snapshot.child("Uid").getValue().toString();
                 }
+
 
 
             }
@@ -836,7 +842,7 @@ Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
 
-canceltheongoingRide=findViewById(R.id.canceltrip);
+        canceltheongoingRide=findViewById(R.id.canceltrip);
         startCancelButtonsLayoutUI =findViewById(R.id.startCancelButtonsLayout);
 
         pickupAddress=findViewById(R.id.pickupadd);
@@ -1811,6 +1817,11 @@ try {
                 break;
 
             case R.id.nav_sign_out:
+                getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                        getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", false) .apply();
+                        getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                 getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(this, LoginMainActivity.class));
                 if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -2151,7 +2162,7 @@ return address;
 
 
 
-        FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+        FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid());
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this,  new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult)
