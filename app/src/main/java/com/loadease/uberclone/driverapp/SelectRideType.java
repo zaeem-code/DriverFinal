@@ -4,13 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -54,11 +52,11 @@ boolean vehicalchk=false;
                 shehzorcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                 pickupcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                 loadercard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
-                Typeofvehical="economy";
+                Typeofvehical="mazda";
                 break;
 
-            case R.id.shehzorelyt:
-            case R.id.truck:
+            case R.id.shahzorelyt:
+            case R.id.Shahzore:
 
                 vehicalchk=true;
                 mazdacard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
@@ -66,7 +64,7 @@ boolean vehicalchk=false;
                 pickupcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                 loadercard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
 
-                Typeofvehical="shehzore";
+                Typeofvehical="shahzore";
 
                 break;
 
@@ -86,8 +84,8 @@ boolean vehicalchk=false;
 
 
 
-            case R.id.loader:
-            case R.id.loaderlyt:
+            case R.id.truck:
+            case R.id.trucklyt:
 
                 vehicalchk=true;
                 mazdacard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
@@ -95,7 +93,7 @@ boolean vehicalchk=false;
                 shehzorcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                 pickupcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
 
-                Typeofvehical="loader";
+                Typeofvehical="truck";
 
 
                 break;

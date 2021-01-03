@@ -112,7 +112,7 @@
                     android:onClick="onClickRide"
                     android:clickable="true"
                     android:focusable="true"
-                    android:id="@+id/shehzorelyt"
+                    android:id="@+id/shahzorelyt"
                     android:background="@android:color/transparent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -120,7 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/offwhite"
-                        android:text="Shehzore"
+                        android:text="Shahzore"
                         android:textSize="20sp"
                         android:gravity="center_vertical"
                         android:layout_centerVertical="true"
@@ -132,7 +132,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/truck"
+                        android:id="@+id/Shahzore"
                         android:src="@drawable/truck"
                         android:layout_centerVertical="true"
                         android:clickable="true"
@@ -222,7 +222,7 @@
                     android:onClick="onClickRide"
                     android:clickable="true"
                     android:focusable="true"
-                    android:id="@+id/loaderlyt"
+                    android:id="@+id/trucklyt"
                     android:background="@android:color/transparent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -242,7 +242,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/loader"
+                        android:id="@+id/truck"
                         android:src="@drawable/truck"
                         android:layout_centerVertical="true"
                         android:clickable="true"
