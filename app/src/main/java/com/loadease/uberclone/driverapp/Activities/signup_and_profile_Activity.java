@@ -39,6 +39,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -639,7 +642,7 @@ private void firebaseSignup(String chk) {
         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
 @Override
 public void onSuccess(AuthResult authResult) {
-
+        SuscribingTOfcm();
         user1.setEmail(Roider_email);
         user1.setPassword(Roider_pass);
         user1.setPhone(Roider_phn);
@@ -783,4 +786,25 @@ private void storagepermission(){
                         storagepermission();
                 }
         }
-        }
+
+
+        private void SuscribingTOfcm(){
+
+
+
+
+                FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this,  new OnSuccessListener<InstanceIdResult>() {
+                        @Override
+                        public void onSuccess(InstanceIdResult instanceIdResult)
+                        {
+//            String newToken = instanceIdResult.getToken();
+//
+//            Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+
+                                FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                        }
+                });
+
+
+        } }

@@ -12,6 +12,8 @@ import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -21,11 +23,13 @@ import com.loadease.uberclone.driverapp.R;
 import java.util.List;
 import java.util.Random;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class notification_genrater {
       Context context;
      Bitmap largeIcon;
     String des; AudioAttributes audioAttributes;
-    String title1; String title; String date; String tender_no; String render_cat; String data,city;
+    String title1; String date; String tender_no; String render_cat; String data,city;
       Uri notificationSoundUri;
     private final String id ="admin_channel";
     final Intent intent;
@@ -48,42 +52,46 @@ public class notification_genrater {
         intent = (new Intent(context, Login.class));
         intent.putExtra("chk",true);
         intent.putExtra("UID",uid);
+        Log.v("notti",data);   Log.v("notti",title1);
 
+        if (!TextUtils.isEmpty(des) && !TextUtils.isEmpty(this.title1)){
 
-        if (TextUtils.isEmpty(des)){
-           this. des="An action has been taken against your account: sign in again for details ";
+            processs();
+
+            Log.v("notti",data);   Log.v("notti",title1);
+
         }
-        if (title1.isEmpty()){
-            this.title1  ="LoadEase ";
-        }
-processs();
 
     }
 
     final NotificationManager notificationManager;
-    private  void processs(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            stupChnl(title1,des);
-        }
+    private  void processs() {
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context , 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
-  NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, id)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            stupChnl(title1, des);
+        }
 
-                .setContentTitle(title1)
-                .setContentText(des)
-                .setAutoCancel(true)
-          .setStyle(new NotificationCompat.BigTextStyle().bigText(title1))
-          .setStyle(new NotificationCompat.BigTextStyle().bigText(des+".").setSummaryText("Verify the user"))
-          .setShowWhen(true)
-          .setAutoCancel(true)
-          .setSmallIcon(R.drawable.truck)
-          .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
-                .setSound(notificationSoundUri)
-                .setContentIntent(pendingIntent);
 
-        notificationManager.notify(notificationID, notificationBuilder.build());
+            NotificationCompat.Builder notificationBuilder =
+                    new NotificationCompat.Builder(context, id)
+
+                            .setContentTitle(title1)
+                            .setContentText(des)
+                            .setAutoCancel(true)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(des))
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(title1).setSummaryText("LoadEase"))
+                            .setShowWhen(true)
+                            .setAutoCancel(true)
+                            .setSmallIcon(R.drawable.truck)
+                            .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
+
+                            .setContentIntent(pendingIntent);
+
+            notificationManager.notify(notificationID, notificationBuilder.build());
+
     }
 
 

@@ -47,7 +47,19 @@ public class firebaseMessaging extends FirebaseMessagingService{
         if(remoteMessage.getData().get("title").equals("Action against your account"))
         {
             Log.v("FCMMM","ok");
-                  new notification_genrater(getApplicationContext(),remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
+            if (remoteMessage.getData().get("message").trim()=="You have been Restricted by LoadEase, Contact LoadEase office for more details"
+                    || remoteMessage.getData().get("message").trim().equals("Note: You have been Blocked by LoadEase,  Signin For more Details")){
+
+                Log.v("notti","contains");
+                  getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+              getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", false) .apply();
+             getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+          getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+
+
+            }
+
+            new notification_genrater(getApplicationContext(),remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
         }
 
 
@@ -56,10 +68,13 @@ public class firebaseMessaging extends FirebaseMessagingService{
         if (datrecover!=null)
         {
 
+            Log.v("FCMMM","not null");
 
 
             if (datrecover.get("title").equals("RequestDriver"))
             {
+
+                Log.v("FCMMM","RequestDriver");
 
 
                 DriverRequestReceived driverRequestReceived=new DriverRequestReceived();
@@ -91,6 +106,7 @@ public class firebaseMessaging extends FirebaseMessagingService{
             else
             {
 
+                Log.v("FCMMM","not RequestDriver");
                 Common.showNotification(this,new Random().nextInt(),
                         datrecover.get("title"),
                         datrecover.get("body"),
