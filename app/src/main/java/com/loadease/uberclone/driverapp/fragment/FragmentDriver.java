@@ -149,6 +149,7 @@ boolean dataalredyloaded=false;
     RelativeLayout startCancelButtonsLayoutUI;
     String duration,distance;
     DriverRequestReceived eventX;
+    TripPlaneModel event_Y;
     FrameLayout root;
     private GoogleMap mMap;
     String phone="";
@@ -356,6 +357,7 @@ boolean dataalredyloaded=false;
     {
 
         eventX=event;
+
         phone=event.getPhone();
 
         driverRequestReceived=event;
@@ -501,10 +503,17 @@ boolean dataalredyloaded=false;
                                 ///show layout when request of user send to driver
 
                                 layout_accept.setVisibility(View.VISIBLE);
-                                if (!dataalredyloaded){
+                                if (!dataalredyloaded)
+                                {
                                     dataalredyloaded=true;
+
                                     Log.v("hassan","---> repeat:  :"+event.getImageurl());
                                     loadpessengerdata(event);
+
+
+
+
+
                                                     }
 
 Log.v("hassan","--->  :"+event.getImageurl());
@@ -543,6 +552,31 @@ Log.v("hassan","--->  :"+event.getImageurl());
 
 
     }
+
+
+    private void loadpessengerdata2(TripPlaneModel event) {
+
+
+        pickupAddress.setText(event_Y.getOriginString());
+        dropoffAddress.setText(event_Y.getDestinationString());
+
+
+
+
+        customerName.setText(event.getName());
+        txt_type_uber.setText("car");
+        txt_rating.setText("1.7");
+        Picasso.get().load(event_Y.getPic_url()).into(imagecusavatar);
+
+
+        pickupAddressX.setText(event_Y.getOriginString());
+        customerNameX.setText(event.getName());
+        txt_type_uberX.setText("0000");
+        txt_ratingX.setText("1.7");
+        Picasso.get().load(event_Y.getPic_url()).into(imagecusavatarX);
+
+    }
+
 
     private void loadpessengerdata(DriverRequestReceived event) {
 
@@ -591,7 +625,6 @@ Log.v("hassan","--->  :"+event.getImageurl());
 
 
         setProcessLayout(true);
-
         FirebaseDatabase.getInstance().getReference(".info/serverTimeOffset")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -625,11 +658,13 @@ Log.v("hassan","--->  :"+event.getImageurl());
                                             tripPlaneModel.setDistancePickup(distance);
                                             tripPlaneModel.setDurationPickup(duration);
                                             tripPlaneModel.setCurrentLat(Common.currentLat);
+                                            tripPlaneModel.setCurrentLng(Common.currentLng);
                                             tripPlaneModel.setPic_url(Common.currentRiderprofile.getRider_pic_Url());
                                             tripPlaneModel.setFare("100rs");
                                             tripPlaneModel.setName(Common.currentRiderprofile.getName());
                                             tripPlaneModel.setFromAddress(fromaddressStringget(Common.currentLat,Common.currentLng));
                                             tripPlaneModel.setCarnum(Common.currentRiderprofile.getCarnum());
+                                            tripPlaneModel.setTrip_status("accept");
 
 
                                             ZoneId z = ZoneId.of("Asia/Karachi") ;
@@ -730,6 +765,163 @@ Log.v("hassan","--->  :"+event.getImageurl());
 
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void createTripPlan2(TripPlaneModel event, String duration, String distance) {
+
+
+        setProcessLayout(true);
+        FirebaseDatabase.getInstance().getReference(".info/serverTimeOffset")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        long timeOffset=snapshot.getValue(Long.class);
+
+                        FirebaseDatabase.getInstance().getReference("RidersInformation")
+                                .child("100818598893343921903")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @RequiresApi(api = Build.VERSION_CODES.O)
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                        if (snapshot.exists())
+                                        {
+
+
+
+                                            RiderModel riderModel=snapshot.getValue(RiderModel.class);
+
+                                            TripPlaneModel tripPlaneModel=new TripPlaneModel();
+                                            tripPlaneModel.setDriver(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                            tripPlaneModel.setRider("100818598893343921903");
+                                            tripPlaneModel.setUser(Common.currentUser);
+                                            tripPlaneModel.setRiderModel(riderModel);
+                                            tripPlaneModel.setOrigin(event.getOrigin());
+                                            tripPlaneModel.setOriginString(event.getOriginString());
+                                            tripPlaneModel.setDestination(event.getDestination());
+                                            tripPlaneModel.setDestinationString(event.getDestinationString());
+                                            tripPlaneModel.setDistancePickup(distance);
+                                            tripPlaneModel.setDurationPickup(duration);
+                                            tripPlaneModel.setCurrentLat(Common.currentLat);
+                                            tripPlaneModel.setCurrentLng(Common.currentLng);
+                                            tripPlaneModel.setPic_url(Common.currentRiderprofile.getRider_pic_Url());
+                                            tripPlaneModel.setFare("100rs");
+                                            tripPlaneModel.setName(Common.currentRiderprofile.getName());
+                                            tripPlaneModel.setFromAddress(fromaddressStringget(Common.currentLat,Common.currentLng));
+                                            tripPlaneModel.setCarnum(Common.currentRiderprofile.getCarnum());
+                                            tripPlaneModel.setTrip_status("accept");
+
+
+                                            ZoneId z = ZoneId.of("Asia/Karachi") ;
+
+                                            LocalTime localTime = LocalTime.now( z ) ;
+                                            Locale locale_en_US = Locale.forLanguageTag("PK");
+                                            DateTimeFormatter formatterUS = DateTimeFormatter.ofLocalizedTime( FormatStyle.SHORT ).withLocale( locale_en_US ) ;
+                                            String output = localTime.format( formatterUS ) ;
+
+                                            LocalDate locale_date= LocalDate.now(z);
+                                            Locale locale_SAU_date = Locale.forLanguageTag("PK");
+
+                                            DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale( locale_SAU_date ) ;
+                                            String output2 = locale_date.format( formatter ) ;
+
+
+                                            _24HourSDF = new SimpleDateFormat("HH:mm");
+                                            _12HourSDF = new SimpleDateFormat("hh:mm a");
+                                            try {
+                                                _24HourDt = _24HourSDF.parse(output);
+                                                tripPlaneModel.setTime(_12HourSDF.format(_24HourDt));
+                                                tripPlaneModel.setDate(output2);
+
+
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+
+
+
+                                            tripNumberId=Common.createUniqueTripNumber(timeOffset);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            FirebaseDatabase.getInstance().getReference("Trips").child("100818598893343921903")
+                                                    .child(tripNumberId)
+                                                    .setValue(tripPlaneModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+
+//                                                    txt_rider_name.setText(riderModel.getName());
+//                                                    txt_start_uber_estimate_time.setText(duration);
+//                                                    txt_start_uber_estimate_distance.setText(distance);
+
+                                                    setOffLineModForDriver2(event,duration,distance);
+
+
+
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                    Toast.makeText(FragmentDriver.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
+
+
+
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(FragmentDriver.this, "can not find rider wth key", Toast.LENGTH_SHORT).show();
+                                        }
+
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void setOffLineModForDriver(DriverRequestReceived event, String duration, String distance)
     {
@@ -748,7 +940,6 @@ Log.v("hassan","--->  :"+event.getImageurl());
             layout_accept.setVisibility(View.GONE);
             layout_start_uber.setVisibility(View.VISIBLE);
 
-
             isTripStart=true;
         }
 
@@ -757,8 +948,46 @@ Log.v("hassan","--->  :"+event.getImageurl());
 
 
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private void setProcessLayout(boolean isProcess)
+    private void setOffLineModForDriver2(TripPlaneModel event, String duration, String distance)
+    {
+
+
+        UsersUtill.sendAcceptRequestToRider(snackbarView,getApplicationContext(),"100818598893343921903",tripNumberId);
+
+
+        ///go offline
+
+        if (currentUserRef !=null)
+        {
+            currentUserRef.removeValue();
+
+            setProcessLayout(false);
+            layout_accept.setVisibility(View.GONE);
+            layout_start_uber.setVisibility(View.VISIBLE);
+
+            isTripStart=true;
+        }
+        else
+        {
+
+            setProcessLayout(false);
+            layout_accept.setVisibility(View.GONE);
+            layout_start_uber.setVisibility(View.VISIBLE);
+
+            isTripStart=true;
+
+        }
+
+
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void  setProcessLayout(boolean isProcess)
     {
 
         int color_dark_grey = -1;
@@ -800,8 +1029,83 @@ Toolbar toolbar;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_home);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-       getCurrentuser();
+         getCurrentuser();
         SuscribingTOfcm();
+
+
+
+
+
+//        try {
+//             DatabaseReference db=FirebaseDatabase.getInstance().getReference("running_trip").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+//        db.child("100818598893343921903").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                if (snapshot.hasChildren())
+//                {
+//
+//
+//                    TripPlaneModel ree_trip=snapshot.getValue(TripPlaneModel.class);
+//                    event_Y=ree_trip;
+//                    loadpessengerdata2(event_Y);
+//
+//
+//
+//                    if (ree_trip.getTrip_status().equals("accept"))
+//                    {
+//                        createTripPlan2(event_Y,duration,distance);
+//                        Log.v("model","open");
+//
+//                    }
+//                    else
+//                    {
+//                        Log.v("model","close");
+//
+//                    }
+//
+//
+//
+//
+//
+//
+//
+//                }
+//                else
+//                {
+//                    Log.v("model","open nhi");
+//
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                Toast.makeText(FragmentDriver.this, "null ha", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+//
+//
+//
+//        }
+//        catch (Exception e)
+//        {
+//
+//        }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -877,10 +1181,57 @@ Toolbar toolbar;
                 }
             }
         });
-accept_btn.setOnClickListener(new View.OnClickListener() {
+   accept_btn.setOnClickListener(new View.OnClickListener() {
     @Override
-    public void onClick(View view) {
+    public void onClick(View view)
+    {
         createTripPlan(eventX,duration,distance);
+
+        HashMap hashMap=new HashMap();
+
+
+//        ZoneId z = null;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            z = ZoneId.of("Asia/Karachi");
+//            LocalTime localTime = LocalTime.now( z ) ;
+//            Locale locale_en_US = Locale.forLanguageTag("PK");
+//            DateTimeFormatter formatterUS = DateTimeFormatter.ofLocalizedTime( FormatStyle.SHORT ).withLocale( locale_en_US ) ;
+//            String output = localTime.format( formatterUS ) ;
+//
+//            LocalDate locale_date= LocalDate.now(z);
+//            Locale locale_SAU_date = Locale.forLanguageTag("PK");
+//
+//            DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale( locale_SAU_date ) ;
+//            String output2 = locale_date.format( formatter ) ;
+//
+//            _24HourSDF = new SimpleDateFormat("HH:mm");
+//            _12HourSDF = new SimpleDateFormat("hh:mm a");
+//
+//            hashMap.put("time",_12HourSDF.format(_24HourDt));
+//            hashMap.put("date",output2);
+//
+//
+//
+//        }
+
+
+
+//
+//        hashMap.put("duration",duration);
+//        hashMap.put("distance",distance);
+//        hashMap.put("fromAddress",fromaddressStringget(Common.currentLat,Common.currentLng));
+//
+//
+//
+//        DatabaseReference db=FirebaseDatabase.getInstance().getReference("running_trip");
+//        db.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                .child(eventX.getKey()).updateChildren(hashMap);
+
+
+
+
+
+
     }
 });
 
@@ -944,6 +1295,9 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
 
             }
         });
+
+
+
         btn_start_uber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -995,12 +1349,19 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
                 dataalredyloaded=false;
                 Map<String, Object> update_trip = new HashMap<>();
                 update_trip.put("done",true);
+                update_trip.put("trip_status","complete");
 
 
                  FirebaseDatabase.getInstance().getReference("Trips").child(user_curr)
                          .child(tripNumberId)
                          .updateChildren(update_trip)
                          .addOnSuccessListener(aVoid -> {
+
+
+
+
+
+
 
                              UsersUtill.sendCompleteTripToRider(snackbarView,getApplicationContext(),driverRequestReceived.getKey(),
                                      tripNumberId
@@ -1848,7 +2209,7 @@ try {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
         }
     }
 private String fromaddressStringget(Double lat, Double lng){
@@ -1945,6 +2306,13 @@ return address;
 //                                fdb.child("time").setValue(duration);
 //                                fdb.child("durationPickup").setValue(duration);
 //
+
+
+
+
+
+
+
 //                                fdb.child("distancePickup").setValue(distance);
                                 fdb.updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
                                     @Override
@@ -1958,6 +2326,9 @@ return address;
                                                 putExtra("key",eventX.getKey()).
                                                 putExtra("price",calculatefare(distance,(duration))).
                                                 putExtra("from",eventX.getDestinationLocationString()));
+
+
+
                                     }
                                 });
 

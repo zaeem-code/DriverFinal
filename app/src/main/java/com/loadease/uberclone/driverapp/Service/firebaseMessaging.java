@@ -2,14 +2,21 @@ package com.loadease.uberclone.driverapp.Service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
@@ -17,11 +24,22 @@ import com.loadease.uberclone.driverapp.Common.Common;
 import com.loadease.uberclone.driverapp.Messages.DriverRequestReceived;
 import com.loadease.uberclone.driverapp.Messages.notification_genrater;
 import com.loadease.uberclone.driverapp.Model.Pickup;
+import com.loadease.uberclone.driverapp.Model.RiderModel;
 import com.loadease.uberclone.driverapp.Model.Token;
 import com.loadease.uberclone.driverapp.Model.TokenModel;
+import com.loadease.uberclone.driverapp.Model.TripPlaneModel;
+import com.loadease.uberclone.driverapp.fragment.FragmentDriver;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -99,6 +117,109 @@ public class firebaseMessaging extends FirebaseMessagingService{
 //                driverRequestReceived.setFromAddress(datrecover.get("FromAddress"));
 
                 EventBus.getDefault().postSticky(driverRequestReceived);
+
+
+
+
+
+
+
+
+
+
+//                FirebaseDatabase.getInstance().getReference(".info/serverTimeOffset")
+//                        .addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                                long timeOffset=snapshot.getValue(Long.class);
+//
+//                                FirebaseDatabase.getInstance().getReference("RidersInformation")
+//                                        .child("100818598893343921903")
+//                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+//                                            @RequiresApi(api = Build.VERSION_CODES.O)
+//                                            @Override
+//                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                                                if (snapshot.exists())
+//                                                {
+//
+//
+//
+//                                                    RiderModel riderModel=snapshot.getValue(RiderModel.class);
+//
+//                                                    TripPlaneModel tripPlaneModel=new TripPlaneModel();
+//                                                    tripPlaneModel.setDriver(FirebaseAuth.getInstance().getCurrentUser().getUid());
+//                                                    tripPlaneModel.setRider("100818598893343921903");
+//                                                    tripPlaneModel.setUser(Common.currentUser);
+//                                                    tripPlaneModel.setRiderModel(riderModel);
+//                                                    tripPlaneModel.setOrigin(datrecover.get("PickupLocation"));
+//                                                    tripPlaneModel.setOriginString(datrecover.get("PickupLocationString"));
+//                                                    tripPlaneModel.setDestination(datrecover.get("DestinationLocation"));
+//                                                    tripPlaneModel.setDestinationString(datrecover.get("DestinationLocationString"));
+//                                                    tripPlaneModel.setCurrentLat(Common.currentLat);
+//                                                    tripPlaneModel.setCurrentLng(Common.currentLng);
+//
+//                                                    tripPlaneModel.setPic_url(Common.currentRiderprofile.getRider_pic_Url());
+//                                                    tripPlaneModel.setFare("100rs");
+//                                                    tripPlaneModel.setName(Common.currentRiderprofile.getName());
+//                                                    tripPlaneModel.setCarnum(Common.currentRiderprofile.getCarnum());
+//                                                    tripPlaneModel.setTrip_status("accept");
+//
+//
+//
+//
+//
+//
+//
+//                                                    DatabaseReference db=FirebaseDatabase.getInstance().getReference("running_trip");
+//                                                    db.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                                                            .child(datrecover.get("RiderKey")).setValue(tripPlaneModel);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//                                                }
+//                                                else
+//                                                {
+//
+//                                                }
+//
+//
+//                                            }
+//
+//                                            @Override
+//                                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                                            }
+//                                        });
+//
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                            }
+//                        });
+
+
+
+
+
+
+
 
 
 

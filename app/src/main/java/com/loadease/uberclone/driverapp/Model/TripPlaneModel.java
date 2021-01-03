@@ -9,7 +9,16 @@ public class TripPlaneModel {
     private String origin,originString;
     private String destination,destinationString;
     private String distancePickup,distanceDestination;
-    private String durationPickup,durationDestination,pic_url,Fare,name,FromAddress, carnum,date,time;
+    private String durationPickup,durationDestination,pic_url,Fare,name,FromAddress, carnum,date,time,trip_status;
+
+
+    public String getTrip_status() {
+        return trip_status;
+    }
+
+    public void setTrip_status(String trip_status) {
+        this.trip_status = trip_status;
+    }
 
     public String getDate() {
         return date;
