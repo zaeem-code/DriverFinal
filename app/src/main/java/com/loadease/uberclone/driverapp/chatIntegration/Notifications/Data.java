@@ -1,4 +1,4 @@
-package com.loadease.uberclone.chatIntegration.Notifications;
+package com.loadease.uberclone.driverapp.chatIntegration.Notifications;
 
 public class Data {
     private String user;

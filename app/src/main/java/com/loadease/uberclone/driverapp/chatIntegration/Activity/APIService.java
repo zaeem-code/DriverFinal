@@ -1,8 +1,8 @@
-package com.loadease.uberclone.chatIntegration.Activity;
+package com.loadease.uberclone.driverapp.chatIntegration.Activity;
 
 
-import com.loadease.uberclone.chatIntegration.Notifications.MyResponse;
-import com.loadease.uberclone.chatIntegration.Notifications.Sender;
+import com.loadease.uberclone.driverapp.chatIntegration.Notifications.MyResponse;
+import com.loadease.uberclone.driverapp.chatIntegration.Notifications.Sender;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

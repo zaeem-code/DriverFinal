@@ -1,4 +1,4 @@
-package com.loadease.uberclone.chatIntegration.Notifications;
+package com.loadease.uberclone.driverapp.chatIntegration.Notifications;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

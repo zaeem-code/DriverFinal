@@ -1,4 +1,4 @@
-package com.loadease.uberclone.chatIntegration.Notifications;
+package com.loadease.uberclone.driverapp.chatIntegration.Notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.loadease.uberclone.chatIntegration.Activity.MessageActivity;
+import com.loadease.uberclone.driverapp.chatIntegration.Activity.MessageActivity;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
 

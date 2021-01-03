@@ -1,4 +1,4 @@
-package com.loadease.uberclone.chatIntegration.Activity;
+package com.loadease.uberclone.driverapp.chatIntegration.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -22,9 +21,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.loadease.uberclone.chatIntegration.Fragments.ChatsFragment;
-import com.loadease.uberclone.chatIntegration.Fragments.UsersFragment;
-import com.loadease.uberclone.chatIntegration.chatModel.Chat;
+import com.loadease.uberclone.driverapp.chatIntegration.Fragments.ChatsFragment;
+import com.loadease.uberclone.driverapp.chatIntegration.Fragments.UsersFragment;
+import com.loadease.uberclone.driverapp.chatIntegration.chatModel.Chat;
 import com.loadease.uberclone.driverapp.Model.UserX;
 import com.loadease.uberclone.driverapp.R;
 

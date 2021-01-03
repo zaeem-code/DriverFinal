@@ -1,4 +1,4 @@
-package com.loadease.uberclone.chatIntegration.chatModel;
+package com.loadease.uberclone.driverapp.chatIntegration.chatModel;
 
 public class Chatlist {
     public String id;

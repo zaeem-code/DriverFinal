@@ -1,4 +1,4 @@
-package com.loadease.uberclone.chatIntegration.Activity;
+package com.loadease.uberclone.driverapp.chatIntegration.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,13 +24,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.loadease.uberclone.chatIntegration.Adapter.MessageAdapter;
-import com.loadease.uberclone.chatIntegration.Notifications.Client;
-import com.loadease.uberclone.chatIntegration.Notifications.Data;
-import com.loadease.uberclone.chatIntegration.Notifications.MyResponse;
-import com.loadease.uberclone.chatIntegration.Notifications.Sender;
-import com.loadease.uberclone.chatIntegration.Notifications.Token;
-import com.loadease.uberclone.chatIntegration.chatModel.Chat;
+import com.loadease.uberclone.driverapp.chatIntegration.Adapter.MessageAdapter;
+import com.loadease.uberclone.driverapp.chatIntegration.Notifications.Client;
+import com.loadease.uberclone.driverapp.chatIntegration.Notifications.Data;
+import com.loadease.uberclone.driverapp.chatIntegration.Notifications.MyResponse;
+import com.loadease.uberclone.driverapp.chatIntegration.Notifications.Sender;
+import com.loadease.uberclone.driverapp.chatIntegration.Notifications.Token;
+import com.loadease.uberclone.driverapp.chatIntegration.chatModel.Chat;
 import com.loadease.uberclone.driverapp.Model.UserX;
 import com.loadease.uberclone.driverapp.R;
 

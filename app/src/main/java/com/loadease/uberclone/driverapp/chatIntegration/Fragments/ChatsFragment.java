@@ -1,4 +1,4 @@
-package com.loadease.uberclone.chatIntegration.Fragments;
+package com.loadease.uberclone.driverapp.chatIntegration.Fragments;
 
 import android.os.Bundle;
 
@@ -19,9 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.loadease.uberclone.chatIntegration.Adapter.UserAdapter;
-import com.loadease.uberclone.chatIntegration.Notifications.Token;
-import com.loadease.uberclone.chatIntegration.chatModel.Chatlist;
+import com.loadease.uberclone.driverapp.chatIntegration.Adapter.UserAdapter;
+import com.loadease.uberclone.driverapp.chatIntegration.Notifications.Token;
+import com.loadease.uberclone.driverapp.chatIntegration.chatModel.Chatlist;
 import com.loadease.uberclone.driverapp.Model.UserX;
 import com.loadease.uberclone.driverapp.R;
 

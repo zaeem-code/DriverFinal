@@ -1,4 +1,4 @@
-package com.loadease.uberclone.chatIntegration.Notifications;
+package com.loadease.uberclone.driverapp.chatIntegration.Notifications;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

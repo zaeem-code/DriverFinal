@@ -1,4 +1,4 @@
-package com.loadease.uberclone.chatIntegration.Adapter;
+package com.loadease.uberclone.driverapp.chatIntegration.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.loadease.uberclone.chatIntegration.chatModel.Chat;
+import com.loadease.uberclone.driverapp.chatIntegration.chatModel.Chat;
 import com.loadease.uberclone.driverapp.R;
 
 import java.util.List;
