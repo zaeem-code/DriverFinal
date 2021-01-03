@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">UC Driver</string>
     <string name="title_activity_main">Map</string>
-    <string name="google_direction_api">AIzaSyCFMRJrFq6OajUBDKd42R3t783B0-Rbzdg</string>
+    <string name="google_direction_api">AIzaSyB73UhHLHuUg_SUqZzteRm3qmtC7GkukV4</string>
     <string name="tv_login_title">DRIVER</string>
     <string name="tv_login_subtitle">UBER CLONE</string>
     <string name="login">LOG IN</string>
@@ -43,7 +43,7 @@
 
     <string name="facebook_app_id">374652373852578</string>
     <string name="fb_login_protocol_scheme">fb374652373852578</string>
-    <string name="google_maps_key">AIzaSyCFMRJrFq6OajUBDKd42R3t783B0-Rbzdg</string>
+    <string name="google_maps_key">AIzaSyB73UhHLHuUg_SUqZzteRm3qmtC7GkukV4</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_fragment_driver">Map</string>

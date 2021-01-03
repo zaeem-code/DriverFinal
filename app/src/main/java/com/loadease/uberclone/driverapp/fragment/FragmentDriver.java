@@ -390,7 +390,7 @@ boolean dataalredyloaded=false;
                         .append(Common.currentLng)
                         .toString(),
                 event.getPickupLocation(),
-                "AIzaSyCFMRJrFq6OajUBDKd42R3t783B0-Rbzdg")
+                "AIzaSyB73UhHLHuUg_SUqZzteRm3qmtC7GkukV4")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(returnResult->{
@@ -808,34 +808,7 @@ Toolbar toolbar;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_home);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        try {
-
-        }catch (Exception e){
-
-            Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-            DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(Common.userID);
-            db.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    if (snapshot.hasChildren())
-                    {
-                        user_curr=snapshot.child("Uid").getValue().toString();
-                    }
-
-
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-
-        }
+       getCurrentuser();
         SuscribingTOfcm();
 
 
@@ -1098,6 +1071,38 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
 
     }
 
+    private void getCurrentuser() {
+        try {
+            Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(Common.userID);
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    if (snapshot.hasChildren())
+                    {
+                        user_curr=snapshot.child("Uid").getValue().toString();
+                    }
+
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }catch (Exception e){
+            Log.v("hasan",e.toString());
+
+
+
+
+        }
+    }
+
     private void drawPathFromCurrentLocation(String destinationLocation) {
 
 
@@ -1110,7 +1115,7 @@ accept_btn.setOnClickListener(new View.OnClickListener() {
                         .append(Common.currentLng)
                         .toString(),
                 destinationLocation,
-                "AIzaSyCFMRJrFq6OajUBDKd42R3t783B0-Rbzdg")
+                "AIzaSyB73UhHLHuUg_SUqZzteRm3qmtC7GkukV4")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(returnResult->{
@@ -1889,7 +1894,7 @@ return address;
                         .append(",")
                         .append(Common.currentLng)
                         .toString(),
-                "AIzaSyCFMRJrFq6OajUBDKd42R3t783B0-Rbzdg")
+                "AIzaSyB73UhHLHuUg_SUqZzteRm3qmtC7GkukV4")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(returnResult->{
