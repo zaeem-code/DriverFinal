@@ -51,8 +51,13 @@ public class TripDetail extends FragmentActivity implements OnMapReadyCallback {
         settingInformation();
     }
 
-    private void settingInformation() {
-        if(getIntent()!=null) {
+    private void settingInformation()
+    {
+
+            if(getIntent()!=null)
+            {
+
+
             Calendar calendar = Calendar.getInstance();
             String date = String.format("%s, %d/%d", convertToDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)), calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH));
             txtDate.setText(date);
@@ -76,7 +81,8 @@ public class TripDetail extends FragmentActivity implements OnMapReadyCallback {
         }
     }
 
-    private String convertToDayOfWeek(int day) {
+    private String convertToDayOfWeek(int day)
+    {
         switch(day){
             case Calendar.SUNDAY:
                 return "SUNDAY";

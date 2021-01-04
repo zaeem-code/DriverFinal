@@ -243,6 +243,7 @@ boolean dataalredyloaded=false;
 
 
 
+    String startAddress;
 
     String city_name;
     private DatabaseReference drivers, onlineRef, currentUserRef;
@@ -1540,6 +1541,7 @@ Toolbar toolbar;
                                 duration=time.getString("text");
 
 
+
                                 JSONObject distanceEstimate=legObject.getJSONObject("distance");
                                 distance=distanceEstimate.getString("text");
 
@@ -1549,12 +1551,30 @@ Toolbar toolbar;
                                 timex.setText(duration);
 
                                 /////
-                               DatabaseReference fdb= FirebaseDatabase.getInstance().getReference("Trips").child(user_curr)
-                                        .child(tripNumberId);
-                               fdb.child("time").setValue(duration);
-                                fdb.child("durationPickup").setValue(duration);
+                               DatabaseReference fdb= FirebaseDatabase.getInstance().getReference("Trips")
+                                       .child(user_curr).child(tripNumberId);
 
-                                fdb.child("distancePickup").setValue(distance);
+
+                               HashMap hashMap=new HashMap();
+                               hashMap.put("durationPickup",duration);
+                               hashMap.put("distancePickup",distance);
+
+                               fdb.updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
+                                   @Override
+                                   public void onSuccess(Object o) {
+
+                                       Log.v("update","data");
+
+                                   }
+                               });
+
+//                                fdb.child("start_address").setValue(startAddress);
+//                                fdb.child("end_address").setValue(endAddress);
+//                                fdb.child("location_start").setValue(location_start);
+//                                fdb.child("location_end").setValue(location_end);
+
+
+
                                 ////
 
                                 createGeoFireDestinationLocation(driverRequestReceived.getKey(),destination);
@@ -2284,6 +2304,8 @@ return address;
 
                                  ads = legObject.getString("end_address");
 
+                                startAddress = legObject.getString("start_address");
+
 
 
 
@@ -2295,14 +2317,14 @@ return address;
                                 Log.v("FinalTrip","add current lat: "+Common.currentLng);
 
 
-                                DatabaseReference fdb= FirebaseDatabase.getInstance().getReference("Trips").child(user_curr)
-                                        .child(tripNumberId);
+                                DatabaseReference fdb= FirebaseDatabase.getInstance().getReference("Trips").child(user_curr).child(tripNumberId);
 
                                 HashMap hashMap= new HashMap();
                                 hashMap.put("time",duration);
                                 hashMap.put("durationPickup",duration);
                                 hashMap.put("distancePickup",distance);
                                 hashMap.put("destinationString",ads);
+                                hashMap.put("startAddress",startAddress);
 //                                fdb.child("time").setValue(duration);
 //                                fdb.child("durationPickup").setValue(duration);
 //
