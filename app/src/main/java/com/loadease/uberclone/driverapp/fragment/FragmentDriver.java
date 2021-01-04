@@ -107,6 +107,7 @@ import com.loadease.uberclone.driverapp.Retrofit.RetrofitClient_sep;
 import com.loadease.uberclone.driverapp.SelectRideType;
 import com.loadease.uberclone.driverapp.Util.Location;
 import com.loadease.uberclone.driverapp.Util.UsersUtill;
+import com.loadease.uberclone.driverapp.chatIntegration.Activity.MessageActivity;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.squareup.picasso.Picasso;
 
@@ -2191,7 +2192,38 @@ try {
 
                 break;
             case R.id.setting:
-                startActivity(new Intent(this, MainChatActivity.class));
+//                startActivity(new Intent(this, MainChatActivity.class));
+
+
+
+                DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(Common.userID);
+                db.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        if (snapshot.hasChildren())
+                        {
+
+                            String user_id=snapshot.child("Uid").getValue().toString();
+
+                            Intent intent = new Intent(FragmentDriver.this, MessageActivity.class);
+                            intent.putExtra("userid",user_id);
+                            startActivity(intent);
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
 
                 break;
 
