@@ -10,7 +10,14 @@ public class TripPlaneModel {
     private String destination,destinationString;
     private String distancePickup,distanceDestination;
     private String durationPickup,durationDestination,pic_url,Fare,name,FromAddress, carnum,date,time,trip_status;
+public String tripIp;
+    public String getTripIp() {
+        return tripIp;
+    }
 
+    public void setTripIp(String tripIp) {
+        this.tripIp = tripIp;
+    }
 
     public String getTrip_status() {
         return trip_status;

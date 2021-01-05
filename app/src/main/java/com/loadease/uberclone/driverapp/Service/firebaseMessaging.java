@@ -1,17 +1,26 @@
 package com.loadease.uberclone.driverapp.Service;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +37,8 @@ import com.loadease.uberclone.driverapp.Model.RiderModel;
 import com.loadease.uberclone.driverapp.Model.Token;
 import com.loadease.uberclone.driverapp.Model.TokenModel;
 import com.loadease.uberclone.driverapp.Model.TripPlaneModel;
+import com.loadease.uberclone.driverapp.chatIntegration.Activity.MessageActivity;
+import com.loadease.uberclone.driverapp.chatIntegration.Notifications.OreoNotification;
 import com.loadease.uberclone.driverapp.fragment.FragmentDriver;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,18 +59,18 @@ public class firebaseMessaging extends FirebaseMessagingService{
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
         super.onMessageReceived(remoteMessage);
-//        if(remoteMessage.getNotification().getTitle().equals("RequestDriver"))
-//        {
-//            Pickup pickup=new Gson().fromJson(remoteMessage.getNotification().getBody(), Pickup.class);
-//            Intent intent=new Intent(getBaseContext(), CustommerCall.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.putExtra("lat", pickup.getLastLocation().latitude);
-//            intent.putExtra("lng", pickup.getLastLocation().longitude);
-//            intent.putExtra("rider", pickup.getID());
-//            intent.putExtra("token", pickup.getToken().getToken());
-//            startActivity(intent);
-//        }
 
+
+
+
+
+
+
+
+
+
+
+        Log.v("msg","2 received");
 
         Log.v("FCMMM","in");
         if(remoteMessage.getData().get("title").equals("Action against your account"))
@@ -77,6 +88,7 @@ public class firebaseMessaging extends FirebaseMessagingService{
 
             }
 
+            Log.v("section","new");
             new notification_genrater(getApplicationContext(),remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
         }
 
@@ -227,13 +239,35 @@ public class firebaseMessaging extends FirebaseMessagingService{
             else
             {
 
-                Log.v("FCMMM","not RequestDriver");
-                Common.showNotification(this,new Random().nextInt(),
-                        datrecover.get("title"),
-                        datrecover.get("body"),
-                        null
 
-                );
+                ////for chat notification
+
+
+                String sented = remoteMessage.getData().get("sented");
+                String user = remoteMessage.getData().get("user");
+
+                SharedPreferences preferences = getSharedPreferences("PREFS", MODE_PRIVATE);
+                String currentUser = preferences.getString("currentuser", "none");
+
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                if (firebaseUser != null && sented.equals(firebaseUser.getUid())){
+                    if (!currentUser.equals(user)) {
+
+
+
+
+
+                        Log.v("section","send notification");
+                        Common.showNotification(this,new Random().nextInt(),
+                                datrecover.get("title"),
+                                datrecover.get("body"),
+                                null);
+
+                    }
+                }
+
+
 
             }
 
@@ -264,9 +298,6 @@ public class firebaseMessaging extends FirebaseMessagingService{
         if (FirebaseAuth.getInstance().getCurrentUser()!=null)tokens.child(FirebaseAuth.getInstance().getUid())
                 .setValue(token);
     }
-
-
-
 
 
 

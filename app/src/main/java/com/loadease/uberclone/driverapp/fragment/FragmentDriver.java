@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -31,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -245,6 +247,7 @@ boolean dataalredyloaded=false;
 
 
     String startAddress;
+    SwitchCompat switchCompat;
 
     String city_name;
     private DatabaseReference drivers, onlineRef, currentUserRef;
@@ -698,15 +701,8 @@ Log.v("hassan","--->  :"+event.getImageurl());
 
 
                                             tripNumberId=Common.createUniqueTripNumber(timeOffset);
-
-
-
-
-
-
-
-
-
+Log.v("tripNumberId","----->"+tripNumberId);
+                                            tripPlaneModel.setTripIp(tripNumberId);
 
 
 
@@ -1034,6 +1030,7 @@ Toolbar toolbar;
          getCurrentuser();
         SuscribingTOfcm();
 
+        switchCompat=findViewById(R.id.locationSwitch);
 
 
 
@@ -1414,6 +1411,7 @@ Toolbar toolbar;
 
         init();
 
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -1683,48 +1681,38 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
 
 
 
+
                 if (!isTripStart)
                 {
 
+                    makeDriverOnline();
 
-                  makeDriverOnline();
-
-
+                    Log.v("login","online");
 
                 }
                 else
                 {
                     if (!TextUtils.isEmpty(tripNumberId))
                     {
-                         Map<String,Object> update_data=new HashMap<>();
+                        Map<String,Object> update_data=new HashMap<>();
 
-                         update_data.put("currentLat",Common.currentLat);
-                         update_data.put("currentLng",Common.currentLng);
+                        update_data.put("currentLat",Common.currentLat);
+                        update_data.put("currentLng",Common.currentLng);
 
 
-                              FirebaseDatabase.getInstance().getReference("Trips").child(user_curr)
+                        FirebaseDatabase.getInstance().getReference("Trips").child(user_curr)
                                 .child(tripNumberId)
                                 .updateChildren(update_data).addOnSuccessListener(aVoid -> {
 
-                                }).addOnFailureListener(e -> {
+                        }).addOnFailureListener(e -> {
 
-                                });
-
-
-
-
-
-
+                        });
 
 
 
                     }
 
                 }
-
-
-
-
 
 
 
@@ -1842,7 +1830,11 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
             geoFire = new GeoFire(drivers);
 
 
-            ///update loc
+
+
+
+
+                 ///update loc
 
             geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                     new GeoLocation(Common.currentLat
@@ -1866,6 +1858,10 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
             );
 
             registerOnlineSystem();
+
+
+
+
              }catch (Exception e){
 
              }
@@ -2020,7 +2016,8 @@ try {
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
         location.inicializeLocation();
         if (!EventBus.getDefault().isRegistered(this))
@@ -2034,7 +2031,6 @@ try {
         if (!onlineSystemAlreadyRegister)
         {
             onlineRef.addValueEventListener(onlineValueEventLisner);
-
             onlineSystemAlreadyRegister=true;
         }
 
@@ -2192,36 +2188,8 @@ try {
 
                 break;
             case R.id.setting:
-//                startActivity(new Intent(this, MainChatActivity.class));
 
 
-
-                DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(Common.userID);
-                db.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        if (snapshot.hasChildren())
-                        {
-
-                            String user_id=snapshot.child("Uid").getValue().toString();
-
-                            Intent intent = new Intent(FragmentDriver.this, MessageActivity.class);
-                            intent.putExtra("userid",user_id);
-                            startActivity(intent);
-
-                        }
-                        else
-                        {
-
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
 
 
 
@@ -2285,7 +2253,35 @@ return address;
 
     public void chat() {
 
-        startActivity(new Intent(this, MainChatActivity.class));
+
+        DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").child(Common.userID);
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.hasChildren())
+                {
+
+                    String user_id=snapshot.child("Uid").getValue().toString();
+
+                    Intent intent = new Intent(FragmentDriver.this, MessageActivity.class);
+                    intent.putExtra("userid",user_id);
+                    startActivity(intent);
+
+                }
+                else
+                {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
     private  void finaltripendDetails(){
