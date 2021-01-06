@@ -2430,14 +2430,12 @@ return address;
                                 hashMap.put("distancePickup",distance);
                                 hashMap.put("destinationString",ads);
                                 hashMap.put("startAddress",startAddress);
-//                                fdb.child("time").setValue(duration);
-//                                fdb.child("durationPickup").setValue(duration);
-//
-
-
-
-
-
+                                hashMap.put("fare",  Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
+                                        Integer.parseInt(duration.substring(0,duration.length()-4).trim())));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    settingTotalprice( Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
+                                            Integer.parseInt(duration.substring(0,duration.length()-4).trim())));
+                                }
 
 
 //                                fdb.child("distancePickup").setValue(distance);
@@ -2480,6 +2478,58 @@ return address;
 
 
     }
+private void settingTotalprice(double price) {
+    /////........................................................
+
+
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+
+        ZoneId z = null;
+        z = ZoneId.of("Asia/Karachi");
+
+
+        LocalTime localTime = LocalTime.now(z);
+        Locale locale_en_US = Locale.forLanguageTag("PK");
+        DateTimeFormatter formatterUS = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale_en_US);
+        String output = localTime.format(formatterUS);
+
+        LocalDate locale_date = LocalDate.now(z);
+        Locale locale_SAU_date = Locale.forLanguageTag("PK");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale_SAU_date);
+        String output2 = locale_date.format(formatter);
+
+
+        _24HourSDF = new SimpleDateFormat("HH:mm");
+        _12HourSDF = new SimpleDateFormat("hh:mm a");
+
+
+        try {
+            _24HourDt = _24HourSDF.parse(output);
+//            tripPlaneModel.setTime(_12HourSDF.format(_24HourDt));
+
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference("TotalPrice").child(output2);
+
+
+            HashMap hashMap = new HashMap();
+            hashMap.put("price", price);
+
+            db.push().updateChildren(hashMap);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
+
+
+
+
+
+
+
+
 
     private String calculatefare(String distance,String time ){
         Log.v("dis"," =dis --->"+distance);

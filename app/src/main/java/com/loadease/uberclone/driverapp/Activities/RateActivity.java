@@ -205,51 +205,6 @@ ImageView call,chat;
         Picasso.get().load(Imagurl).into(passengerPic);
 
 
-     /////........................................................
-
-
-
-        ZoneId z = ZoneId.of("Asia/Karachi") ;
-
-        LocalTime localTime = LocalTime.now( z ) ;
-        Locale locale_en_US = Locale.forLanguageTag("PK");
-        DateTimeFormatter formatterUS = DateTimeFormatter.ofLocalizedTime( FormatStyle.SHORT ).withLocale( locale_en_US ) ;
-        String output = localTime.format( formatterUS ) ;
-
-        LocalDate locale_date= LocalDate.now(z);
-        Locale locale_SAU_date = Locale.forLanguageTag("PK");
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale( locale_SAU_date ) ;
-        String output2 = locale_date.format( formatter ) ;
-
-
-        _24HourSDF = new SimpleDateFormat("HH:mm");
-        _12HourSDF = new SimpleDateFormat("hh:mm a");
-
-
-        try {
-            _24HourDt = _24HourSDF.parse(output);
-//            tripPlaneModel.setTime(_12HourSDF.format(_24HourDt));
-
-            DatabaseReference db = FirebaseDatabase.getInstance().getReference("TotalPrice").child(output2);
-
-
-            HashMap hashMap=new HashMap();
-            hashMap.put("price",price);
-
-            db.push().updateChildren(hashMap);
-
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-
-
-
 
     }
 
