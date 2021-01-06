@@ -1727,6 +1727,7 @@ switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListen
                     else
                     {
 
+
                         try {
                             geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
                             onlineRef.removeEventListener(onlineValueEventLisner);
