@@ -22,6 +22,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -145,6 +146,7 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
         GoogleApiClient.OnConnectionFailedListener {
 boolean dataalredyloaded=false;
 
+String chk="true";
     String ads ="NA";
     CircleImageView imagecusavatar,imagecusavatarX;
     TextView customerName,pickupAddress,dropoffAddress,customerNameX,pickupAddressX,dropoffAddressX,distancex,timex;
@@ -356,16 +358,24 @@ boolean dataalredyloaded=false;
 
     }
 
+    MediaPlayer mediaPlayer;
+    private void playCallSound() {
+        mediaPlayer = MediaPlayer.create(this, R.raw.ringtone);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+    }
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
     public void onDriverRequestReceive(DriverRequestReceived event)
     {
 
         eventX=event;
-
         phone=event.getPhone();
-
         driverRequestReceived=event;
+
+
+        playCallSound();
+
         DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID").
                 child(Common.userID);
 //                 child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -1677,17 +1687,65 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
 
 
 
+switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        if(isChecked)
+        {
+
+            chk="false";
 
 
+        }
+        else
+        {
+            chk="true";
+        }
+
+
+
+    }
+});
 
 
 
                 if (!isTripStart)
                 {
 
-                    makeDriverOnline();
 
-                    Log.v("login","online");
+
+
+
+                    if (chk.equals("false"))
+                    {
+
+                        makeDriverOnline();
+                        Log.v("onRide","online active");
+
+                    }
+                    else
+                    {
+
+                        try {
+                            geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            onlineRef.removeEventListener(onlineValueEventLisner);
+
+                            //                        onlineSystemAlreadyRegister = false;
+
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        Log.v("onRide","delete");
+
+
+                    }
+
+
+
+                    Log.v("onRide","online");
 
                 }
                 else
@@ -1713,6 +1771,10 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
                     }
 
                 }
+
+
+
+
 
 
 
@@ -2000,7 +2062,11 @@ try {
     EventBus.getDefault().unregister(this);
     compositeDisposable.clear();
     onlineSystemAlreadyRegister = false;
-}catch (Exception e){
+
+
+}
+catch (Exception e)
+{
 
 }
 
