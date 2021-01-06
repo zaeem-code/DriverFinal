@@ -215,7 +215,7 @@
                 android:layout_marginBottom="10dp"
                 app:cardBackgroundColor="#E5E5E5"
                 app:cardElevation="3dp"
-                android:id="@+id/loadercard"
+                android:id="@+id/truckcard"
                 android:padding="3dp"
                 app:cardCornerRadius="10dp">
                 <RelativeLayout
@@ -230,7 +230,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/offwhite"
-                        android:text="Loader"
+                        android:text="Truck"
                         android:textSize="20sp"
                         android:gravity="center_vertical"
                         android:layout_centerVertical="true"

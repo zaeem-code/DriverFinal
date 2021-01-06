@@ -22,7 +22,7 @@ import com.loadease.uberclone.driverapp.Common.Common;
 
 public class SelectRideType extends AppCompatActivity {
 
-    CardView shehzorcard,mazdacard,pickupcard,loadercard ;
+    CardView shehzorcard,mazdacard,pickupcard, truckcard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +31,7 @@ public class SelectRideType extends AppCompatActivity {
         mazdacard=findViewById(R.id.mazdacard);
         shehzorcard =findViewById(R.id.shehzorecard);
         pickupcard =findViewById(R.id.pickupcard);
-        loadercard =findViewById(R.id.loadercard);
+        truckcard =findViewById(R.id.truckcard);
         dialog = new ProgressDialog(this);
         dialog.setMessage("Validating...");
         fetchingData();
@@ -51,8 +51,8 @@ boolean vehicalchk=false;
                 mazdacard.setCardBackgroundColor(Color.parseColor("#03528B"));
                 shehzorcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                 pickupcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
-                loadercard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
-                Typeofvehical="mazda";
+                truckcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
+                Typeofvehical="Mazda";
                 break;
 
             case R.id.shahzorelyt:
@@ -62,9 +62,9 @@ boolean vehicalchk=false;
                 mazdacard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                 shehzorcard.setCardBackgroundColor(Color.parseColor("#03528B"));
                 pickupcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
-                loadercard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
+                truckcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
 
-                Typeofvehical="shahzore";
+                Typeofvehical="Shahzore";
 
                 break;
 
@@ -76,9 +76,9 @@ boolean vehicalchk=false;
                 mazdacard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                 pickupcard.setCardBackgroundColor(Color.parseColor("#03528B"));
                 shehzorcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
-                loadercard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
+                truckcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
 
-                Typeofvehical="pickup";
+                Typeofvehical="Pickup";
 
                 break;
 
@@ -89,11 +89,11 @@ boolean vehicalchk=false;
 
                 vehicalchk=true;
                 mazdacard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
-                loadercard.setCardBackgroundColor(Color.parseColor("#03528B"));
+                truckcard.setCardBackgroundColor(Color.parseColor("#03528B"));
                 shehzorcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                 pickupcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
 
-                Typeofvehical="truck";
+                Typeofvehical="Truck";
 
 
                 break;
@@ -162,41 +162,41 @@ if (vehicalchk && !TextUtils.isEmpty(Typeofvehical)){
                 Typeofvehical = dataSnapshot.child("carType").getValue().toString();
                 switch (Typeofvehical) {
 
-                        case "economy":
+                        case "Mazda":
                             mazdacard.setCardBackgroundColor(Color.parseColor("#03528B"));
                             shehzorcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                             pickupcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
-                            loadercard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
+                            truckcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
 
                             break;
 
-                    case "shehzore":
+                    case "Shahzore":
 
                             mazdacard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                             shehzorcard.setCardBackgroundColor(Color.parseColor("#03528B"));
                             pickupcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
-                            loadercard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
+                            truckcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
 
 
                             break;
 
 
-                    case "pickup":
+                    case "Pickup":
 
                             mazdacard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                             pickupcard.setCardBackgroundColor(Color.parseColor("#03528B"));
                             shehzorcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
-                            loadercard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
+                            truckcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
 
 
                             break;
 
 
 
-                        case "loader":
+                        case "Truck":
 
                             mazdacard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
-                            loadercard.setCardBackgroundColor(Color.parseColor("#03528B"));
+                            truckcard.setCardBackgroundColor(Color.parseColor("#03528B"));
                             shehzorcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
                             pickupcard.setCardBackgroundColor(Color.parseColor("#E5E5E5"));
 

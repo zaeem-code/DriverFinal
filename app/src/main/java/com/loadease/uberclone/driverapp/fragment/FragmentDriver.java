@@ -145,6 +145,8 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
         , GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 boolean dataalredyloaded=false;
+DatabaseReference db_generate;
+int Count_x=0;
 
 String chk="true";
     String ads ="NA";
@@ -1042,6 +1044,7 @@ Toolbar toolbar;
 
         switchCompat=findViewById(R.id.locationSwitch);
 
+        db_generate=FirebaseDatabase.getInstance().getReference("onlinedriver").child("count");
 
 
 
@@ -1104,12 +1107,6 @@ Toolbar toolbar;
 //        {
 //
 //        }
-
-
-
-
-
-
 
 
 
@@ -1519,7 +1516,7 @@ Toolbar toolbar;
 
 
                                 blackPolyLineOption=new PolylineOptions();
-                                blackPolyLineOption.color(Color.BLACK);
+                                blackPolyLineOption.color(Color.RED);
                                 blackPolyLineOption.width(5);
                                 blackPolyLineOption.startCap(new SquareCap());
                                 blackPolyLineOption.jointType(JointType.ROUND);
@@ -1655,7 +1652,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
                 if (currentLocationMarket != null) currentLocationMarket.remove();
 
                 currentLocationMarket = mMap.addMarker(new MarkerOptions().position(currentLocation)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_marker))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
                         .title("Your Location"));
 
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Common.currentLat,
@@ -1686,8 +1683,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
 
 
 
-
-switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -1695,12 +1691,29 @@ switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListen
         {
 
             chk="false";
+            Log.v("countx","on");
 
+            Count_x++;
+            DatabaseReference db=FirebaseDatabase.getInstance().getReference("onlineDriver");
+            HashMap hashMap=new HashMap();
+            hashMap.put("count",Count_x);
+            db.updateChildren(hashMap);
 
         }
         else
         {
             chk="true";
+
+            Log.v("countx","off");
+
+            Count_x--;
+            DatabaseReference db=FirebaseDatabase.getInstance().getReference("onlineDriver");
+            HashMap hashMap=new HashMap();
+            hashMap.put("count",Count_x);
+            db.updateChildren(hashMap);
+
+
+
         }
 
 
@@ -1712,9 +1725,6 @@ switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListen
 
                 if (!isTripStart)
                 {
-
-
-
 
 
                     if (chk.equals("false"))
@@ -1743,10 +1753,9 @@ switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListen
 
 
                     }
-
-
-
                     Log.v("onRide","online");
+
+
 
                 }
                 else
@@ -1798,6 +1807,7 @@ switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListen
     }
 
     private void makeDriverOnline() {
+
 
         String saveCityName=city_name;
         city_name= LocationUtils.getAddressFromLocation(getApplicationContext());

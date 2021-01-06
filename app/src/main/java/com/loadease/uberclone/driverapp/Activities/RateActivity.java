@@ -2,6 +2,7 @@
 package com.loadease.uberclone.driverapp.Activities;
 
 import android.app.AlertDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,13 +30,23 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class RateActivity extends AppCompatActivity {
     Button btnSubmit;
     MaterialRatingBar ratingBar;
@@ -46,6 +58,15 @@ String price="",duration="",KMS="";
 TextView fromadresstv,toaddresstv, totaldest,totaltime,totalfare;
 de.hdodenhof.circleimageview.CircleImageView passengerPic;
 ImageView call,chat;
+    String curr_Time="";
+    SimpleDateFormat _24HourSDF;
+    SimpleDateFormat _12HourSDF;
+    Date _24HourDt;
+    TextView islamic_D_T;
+
+
+
+
     double ratingStars=1.0;
     String Currentpassengerid ="",Namepessenge="",Imagurl="",from="",To="";
     @Override
@@ -163,16 +184,16 @@ ImageView call,chat;
     private void gettingRideDetails() {
 
 
-        Currentpassengerid =this.getIntent().getStringExtra("key");
+        Currentpassengerid = this.getIntent().getStringExtra("key");
         rateDetailRef.child(Currentpassengerid);
-        To=this.getIntent().getStringExtra("destination");
-        from=this.getIntent().getStringExtra("from");
+        To = this.getIntent().getStringExtra("destination");
+        from = this.getIntent().getStringExtra("from");
 
-        Namepessenge =this.getIntent().getStringExtra("name");
-        Imagurl =this.getIntent().getStringExtra("imageurl");
-        price =this.getIntent().getStringExtra("price");
-        duration =this.getIntent().getStringExtra("duration");
-        KMS =this.getIntent().getStringExtra("distance");
+        Namepessenge = this.getIntent().getStringExtra("name");
+        Imagurl = this.getIntent().getStringExtra("imageurl");
+        price = this.getIntent().getStringExtra("price");
+        duration = this.getIntent().getStringExtra("duration");
+        KMS = this.getIntent().getStringExtra("distance");
 
         fromadresstv.setText(from);
         toaddresstv.setText(To);
@@ -183,7 +204,57 @@ ImageView call,chat;
 
         Picasso.get().load(Imagurl).into(passengerPic);
 
-                }
+
+     /////........................................................
+
+
+
+        ZoneId z = ZoneId.of("Asia/Karachi") ;
+
+        LocalTime localTime = LocalTime.now( z ) ;
+        Locale locale_en_US = Locale.forLanguageTag("PK");
+        DateTimeFormatter formatterUS = DateTimeFormatter.ofLocalizedTime( FormatStyle.SHORT ).withLocale( locale_en_US ) ;
+        String output = localTime.format( formatterUS ) ;
+
+        LocalDate locale_date= LocalDate.now(z);
+        Locale locale_SAU_date = Locale.forLanguageTag("PK");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale( locale_SAU_date ) ;
+        String output2 = locale_date.format( formatter ) ;
+
+
+        _24HourSDF = new SimpleDateFormat("HH:mm");
+        _12HourSDF = new SimpleDateFormat("hh:mm a");
+
+
+        try {
+            _24HourDt = _24HourSDF.parse(output);
+//            tripPlaneModel.setTime(_12HourSDF.format(_24HourDt));
+
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference("TotalPrice").child(output2);
+
+
+            HashMap hashMap=new HashMap();
+            hashMap.put("price",price);
+
+            db.push().updateChildren(hashMap);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+    }
+
+
+
 
 
 
