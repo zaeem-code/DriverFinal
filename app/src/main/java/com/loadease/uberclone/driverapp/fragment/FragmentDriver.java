@@ -2534,7 +2534,7 @@ private void settingTotalprice(double price) {
     private String calculatefare(String distance,String time ){
         Log.v("dis"," =dis --->"+distance);
         Log.v("dis"," =dis --->"+time);
-
+//ff/
         Log.v("dis"," =dis length --->"+distance.length());
         Log.v("dis"," =time length --->"+time.length());
 
