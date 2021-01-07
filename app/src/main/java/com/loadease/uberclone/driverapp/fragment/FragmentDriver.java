@@ -136,6 +136,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
+import java.util.concurrent.CountDownLatch;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -1689,16 +1690,29 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
                 switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        DatabaseReference db=FirebaseDatabase.getInstance().getReference("onlineDriver");
 
+
+    db.addListenerForSingleValueEvent(new ValueEventListener() {
+    @Override
+    public void onDataChange(@NonNull DataSnapshot snapshot) {
+        Count_x=Integer.parseInt(snapshot.child("count").getValue().toString());
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError error) {
+
+    }
+});
         if(isChecked)
         {
+
 
             chk="false";
             Log.v("xxx","chk true");
 
             Count_x++;
-            DatabaseReference db=FirebaseDatabase.getInstance().getReference("onlineDriver");
-            HashMap hashMap=new HashMap();
+             HashMap hashMap=new HashMap();
             hashMap.put("count",Count_x);
             db.updateChildren(hashMap);
 
@@ -1710,8 +1724,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
             Log.v("xxx","chk false");
 
             Count_x--;
-            DatabaseReference db=FirebaseDatabase.getInstance().getReference("onlineDriver");
-            HashMap hashMap=new HashMap();
+             HashMap hashMap=new HashMap();
             hashMap.put("count",Count_x);
             db.updateChildren(hashMap);
 
