@@ -1699,15 +1699,14 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
             chk="false";
             Log.v("DBcount","chk true");
 
-            db.child("count").addListenerForSingleValueEvent(new ValueEventListener() {
+            db.child("count").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()){
-                        if(!(snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString().equals("true"))){
 
                             db.child("count").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("true");
 
-                    }}else {
+                    }else {
 
                         db.child("count").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("true");
                     }
@@ -1729,7 +1728,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
 
             Log.v("DBcount","chk false");
 
-            db.child("count").addListenerForSingleValueEvent(new ValueEventListener() {
+            db.child("count").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if((snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString().equals("true"))){
