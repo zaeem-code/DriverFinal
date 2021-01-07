@@ -149,7 +149,7 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
         GoogleApiClient.OnConnectionFailedListener {
 boolean dataalredyloaded=false;
 DatabaseReference db_generate;
-int Count_x=0;
+String Count_x="0";
 
 String chk="true";
 String active="false";
@@ -1698,17 +1698,17 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
 
             chk="false";
             Log.v("DBcount","chk true");
-            db.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            db.child("count").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Count_x=Integer.parseInt(snapshot.child("count").getValue().toString());
-                    Log.v("DBcount","---f-->"+Count_x);
+                        if(!(snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString().equals("true"))){
 
-                    Count_x++;
-                    Log.v("DBcount","----s->"+Count_x);
+                            db.child("count").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("true");
 
-                    db.child("count").setValue(Count_x);
-                }
+                    }
+
+           }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -1725,15 +1725,18 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
 
             Log.v("DBcount","chk false");
 
-            db.addListenerForSingleValueEvent(new ValueEventListener() {
+            db.child("count").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Count_x=Integer.parseInt(snapshot.child("count").getValue().toString());
-                    Log.v("DBcount","--f--->"+Count_x);
+                    for (DataSnapshot dsp: snapshot.getChildren()){
+                        if((snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString().equals("true"))){
 
-                    Count_x--;
-                    Log.v("DBcount","---s-->"+Count_x);
-                    db.child("count").setValue(Count_x);
+                            db.child("count").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("false");
+
+                        }
+
+                    }
+
 
                 }
 
