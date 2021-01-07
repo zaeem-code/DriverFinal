@@ -2,20 +2,16 @@ package com.loadease.uberclone.driverapp.Activities;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,7 +24,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,18 +41,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.loadease.uberclone.driverapp.Common.Common;
-import com.loadease.uberclone.driverapp.Helpers.FirebaseHelper;
 import com.loadease.uberclone.driverapp.Model.FCM_send_msg;
 import com.loadease.uberclone.driverapp.Model.User;
 import com.loadease.uberclone.driverapp.Model.UserX;
 import com.loadease.uberclone.driverapp.R;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class signup_and_profile_Activity extends  AppCompatActivity implements View.OnClickListener {
 private ProgressDialog dialog; FirebaseDatabase firebaseDatabase;
@@ -83,7 +72,7 @@ String chk="",name="";
         RadioButton male, female, other,
 
 
-        ecnomy, premium, bike, van, drone, truck;
+        MazdaRadio, PickupRadio, LoaderRadio, ShahzoreRadio, drone, TruckRadio;
         ImageView dropdownx,AddCNIC,ADDRIDERPIC,Addlicence,Addvehical;
 
 
@@ -133,12 +122,12 @@ private void process() {
         Addvehical = findViewById(R.id.ADDvehical);
         Addvehical.setOnClickListener(this);
 
-        ecnomy = findViewById(R.id.ecnomy);
-        premium = findViewById(R.id.premium);
-        bike = findViewById(R.id.bike);
-        van = findViewById(R.id.van);
-        drone = findViewById(R.id.drone);
-        truck = findViewById(R.id.truck);
+        MazdaRadio = findViewById(R.id.Mazda);
+        PickupRadio = findViewById(R.id.Pickup);
+        LoaderRadio = findViewById(R.id.Loader);
+        ShahzoreRadio = findViewById(R.id.Shahzor);
+//        drone = findViewById(R.id.drone);
+        TruckRadio = findViewById(R.id.truck);
 
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -335,63 +324,63 @@ public void onClick(View view) {
 
 public void onRadioButtonClicked(View view) {
         switch (view.getId()) {
-        case R.id.ecnomy:
-        RideType = "ecnomy";
+        case R.id.Mazda:
+        RideType = "Mazda";
 
-        premium.setChecked(false);
-        bike.setChecked(false);
-        truck.setChecked(false);
+        PickupRadio.setChecked(false);
+        LoaderRadio.setChecked(false);
+        TruckRadio.setChecked(false);
         drone.setChecked(false);
-        van.setChecked(false);
+        ShahzoreRadio.setChecked(false);
         break;
 
-        case R.id.premium:
+        case R.id.Pickup:
 
-        RideType = "premium";
-        ecnomy.setChecked(false);
-        bike.setChecked(false);
-        truck.setChecked(false);
+        RideType = "Pickup";
+        MazdaRadio.setChecked(false);
+        LoaderRadio.setChecked(false);
+        TruckRadio.setChecked(false);
         drone.setChecked(false);
-        van.setChecked(false);
+        ShahzoreRadio.setChecked(false);
         break;
 
-        case R.id.bike:
+        case R.id.Loader:
 
         RideType = "bike";
-        ecnomy.setChecked(false);
-        premium.setChecked(false);
+        MazdaRadio.setChecked(false);
+        PickupRadio.setChecked(false);
 
-        truck.setChecked(false);
+        TruckRadio.setChecked(false);
         drone.setChecked(false);
-        van.setChecked(false);
+        ShahzoreRadio.setChecked(false);
         break;
 
-        case R.id.van:
-        RideType = "van";
-        ecnomy.setChecked(false);
-        premium.setChecked(false);
-        bike.setChecked(false);
-        truck.setChecked(false);
+        case R.id.Shahzor:
+        RideType = "Shahzore";
+        MazdaRadio.setChecked(false);
+        PickupRadio.setChecked(false);
+        LoaderRadio.setChecked(false);
+        TruckRadio.setChecked(false);
         drone.setChecked(false);
         break;
 
         case R.id.drone:
         RideType = "drone";
-        ecnomy.setChecked(false);
-        premium.setChecked(false);
-        bike.setChecked(false);
-        truck.setChecked(false);
-        van.setChecked(false);
+        MazdaRadio.setChecked(false);
+        PickupRadio.setChecked(false);
+        LoaderRadio.setChecked(false);
+        TruckRadio.setChecked(false);
+        ShahzoreRadio.setChecked(false);
         break;
 
         case R.id.truck:
 
-        RideType = "truck";
-        ecnomy.setChecked(false);
-        premium.setChecked(false);
-        bike.setChecked(false);
+        RideType = "Truck";
+        MazdaRadio.setChecked(false);
+        PickupRadio.setChecked(false);
+        LoaderRadio.setChecked(false);
         drone.setChecked(false);
-        van.setChecked(false);
+        ShahzoreRadio.setChecked(false);
         }
         users.child( FirebaseAuth.getInstance().getCurrentUser().getUid()).child("carType")
                 .setValue(RideType);
@@ -647,7 +636,7 @@ public void onSuccess(AuthResult authResult) {
         user1.setPassword(Roider_pass);
         user1.setPhone(Roider_phn);
         user1.setName(Roider_name);
-        user1.setCarType("UberX");
+        user1.setCarType("Mazda");
         user1.setId(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
