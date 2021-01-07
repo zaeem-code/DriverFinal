@@ -72,23 +72,6 @@ public class firebaseMessaging extends FirebaseMessagingService{
 
         Log.v("msg","2 received");
 
-        Log.v("FCMMM","in");
-        if(remoteMessage.getData().get("title").equals("Action against your account"))
-        {
-            Log.v("FCMMM","ok");
-            if (remoteMessage.getData().get("message").trim()=="You have been Restricted by LoadEase, Contact LoadEase office for more details"
-                    || remoteMessage.getData().get("message").trim().equals("Note: You have been Blocked by LoadEase,  Signin For more Details")){
-
-                Log.v("notti","contains");
-                  getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
-             getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
-
-
-            }
-
-            Log.v("section","new");
-            new notification_genrater(getApplicationContext(),remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
-        }
 
 
         if(remoteMessage.getData().get("title").equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
@@ -96,13 +79,13 @@ public class firebaseMessaging extends FirebaseMessagingService{
 
             if(remoteMessage.getData().get("message").equals("Verification process was successful, You can Proceed now")){
 
-                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
                 new notification_genrater(getApplicationContext(),"Verification process was successful", remoteMessage.getData().get("message"));
 
 
             }else   if(remoteMessage.getData().get("message").equals("You have been Restricted by LoadEase, Contact LoadEase office for more details")){
 
-                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
                 new notification_genrater(getApplicationContext(),"You have been Restricted", remoteMessage.getData().get("message"));
 
         }else   if(remoteMessage.getData().get("message").equals("Congratulations: You have been UnBlocked by LoadEase")){
