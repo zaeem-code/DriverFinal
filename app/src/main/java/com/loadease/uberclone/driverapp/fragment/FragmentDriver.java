@@ -91,6 +91,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kusu.library.LoadingButton;
+import com.loadease.uberclone.driverapp.Service.AdsService;
 import com.loadease.uberclone.driverapp.chatIntegration.Activity.MainChatActivity;
 import com.loadease.uberclone.driverapp.Activities.LoginMainActivity;
 import com.loadease.uberclone.driverapp.Activities.RateActivity;
@@ -134,6 +135,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -149,6 +151,7 @@ DatabaseReference db_generate;
 int Count_x=0;
 
 String chk="true";
+String active="false";
     String ads ="NA";
     CircleImageView imagecusavatar,imagecusavatarX;
     TextView customerName,pickupAddress,dropoffAddress,customerNameX,pickupAddressX,dropoffAddressX,distancex,timex;
@@ -1691,7 +1694,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
         {
 
             chk="false";
-            Log.v("countx","on");
+            Log.v("xxx","chk true");
 
             Count_x++;
             DatabaseReference db=FirebaseDatabase.getInstance().getReference("onlineDriver");
@@ -1704,13 +1707,24 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
         {
             chk="true";
 
-            Log.v("countx","off");
+            Log.v("xxx","chk false");
 
             Count_x--;
             DatabaseReference db=FirebaseDatabase.getInstance().getReference("onlineDriver");
             HashMap hashMap=new HashMap();
             hashMap.put("count",Count_x);
             db.updateChildren(hashMap);
+
+            try {
+                stopService(new Intent(FragmentDriver.this, AdsService.class));
+                new AdsService().killme();
+
+
+
+            } catch (Exception e) {
+
+            }
+
 
 
 
@@ -1731,7 +1745,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
                     {
 
                         makeDriverOnline();
-                        Log.v("onRide","online active");
+                        Log.v("xxx","online active");
 
                     }
                     else
@@ -1742,9 +1756,11 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
                             geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
                             onlineRef.removeEventListener(onlineValueEventLisner);
 
+                            Log.v("xxx","remove driver");
+
                             //                        onlineSystemAlreadyRegister = false;
 
-                        }
+                                   }
                         catch (Exception e)
                         {
 
@@ -2089,6 +2105,22 @@ catch (Exception e)
         super.onResume();
 
             registerOnlineSystem();
+        try {
+            stopService(new Intent(this, AdsService.class));
+            new AdsService().killme();
+
+            Log.v("xxx","pause service");
+
+
+
+
+        } catch (Exception e) {
+
+        }
+
+
+
+
 
     }
 
@@ -2722,4 +2754,51 @@ private void settingTotalprice(double price) {
         });
 
 
-    }}
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+
+
+        if(chk.equals("false"))
+        {
+
+
+                if (android.os.Build.VERSION.SDK_INT >= 26)
+                {
+
+                    // only for gingerbread and newer versions
+                    Intent serviceIntent =
+                            new Intent(getApplicationContext(), AdsService.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startForegroundService(serviceIntent);
+
+
+                }
+                else
+                {
+
+                    startService(new Intent(getApplicationContext(), AdsService.class));
+
+                }
+                Log.v("xxx","start service");
+                Log.v("xxx",active);
+
+
+
+
+        }
+        else
+        {
+            Log.v("xxx",chk);
+
+        }
+
+
+    }
+}
+
+
+
