@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -72,35 +73,37 @@ public class firebaseMessaging extends FirebaseMessagingService{
 
         Log.v("msg","2 received");
 
-
-
-        if(remoteMessage.getData().get("title").equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+String auth=Common.userIDforfcm;
+if (auth!=null){
+        if(remoteMessage.getData().get("title").equals(auth))
         {
 
             if(remoteMessage.getData().get("message").equals("Verification process was successful, You can Proceed now")){
 
-                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+//                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
                 new notification_genrater(getApplicationContext(),"Verification process was successful", remoteMessage.getData().get("message"));
 
 
             }else   if(remoteMessage.getData().get("message").equals("You have been Restricted by LoadEase, Contact LoadEase office for more details")){
 
-                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+//                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
                 new notification_genrater(getApplicationContext(),"You have been Restricted", remoteMessage.getData().get("message"));
 
         }else   if(remoteMessage.getData().get("message").equals("Congratulations: You have been UnBlocked by LoadEase")){
 
-                getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+//                getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
                 new notification_genrater(getApplicationContext(),"UnBlocked by LoadEase", remoteMessage.getData().get("message"));
 
             }else   if(remoteMessage.getData().get("message").equals("Note: You have been Blocked by LoadEase,  Signin For more Details")){
 
-                getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+//                getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
                 new notification_genrater(getApplicationContext(),"Blocked by LoadEase", remoteMessage.getData().get("message"));
 
             }
 
 
+             }}else {
+    Log.v("llll","empty");
              }
 
 

@@ -106,7 +106,7 @@ public class LoginMainActivity extends AppCompatActivity {
         firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), pass.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-
+Common.userIDforfcm=firebaseAuth.getCurrentUser().getUid();
                 getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
                 loadata();
 

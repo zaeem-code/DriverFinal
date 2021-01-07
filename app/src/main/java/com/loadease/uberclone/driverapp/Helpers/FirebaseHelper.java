@@ -119,6 +119,8 @@ public class FirebaseHelper {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Snackbar.make(root, activity.getResources().getString(R.string.registered), Snackbar.LENGTH_SHORT).show();
+
+                                Common.userIDforfcm=account.getId();
                                 loginSuccess();
                             }
                         }).addOnFailureListener(new OnFailureListener() {

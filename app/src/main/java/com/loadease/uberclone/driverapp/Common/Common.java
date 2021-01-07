@@ -42,6 +42,7 @@ public class Common {
     public static User currentUser;
     public static User currentRiderprofile;
     public static String userID;
+    public static String userIDforfcm;
     public static final int PICK_IMAGE_REQUEST = 9999;
     static String Notification_Chanel_Id="notification_alert";
 

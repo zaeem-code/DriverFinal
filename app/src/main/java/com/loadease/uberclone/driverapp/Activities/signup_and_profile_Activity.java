@@ -126,7 +126,7 @@ private void process() {
         PickupRadio = findViewById(R.id.Pickup);
         LoaderRadio = findViewById(R.id.Loader);
         ShahzoreRadio = findViewById(R.id.Shahzor);
-//        drone = findViewById(R.id.drone);
+        drone = findViewById(R.id.drone);
         TruckRadio = findViewById(R.id.truck);
 
 
@@ -644,6 +644,7 @@ public void onSuccess(AuthResult authResult) {
         ///
 
 
+        Common.userIDforfcm=firebaseAuth.getCurrentUser().getUid();
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
         .setValue(user1)
         .addOnSuccessListener(new OnSuccessListener<Void>() {
