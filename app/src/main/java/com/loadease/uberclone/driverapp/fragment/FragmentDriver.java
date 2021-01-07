@@ -1254,6 +1254,13 @@ Toolbar toolbar;
             public void onClick(View view) {
                 reject_btn.performClick();
 
+                if (mediaPlayer.isPlaying())
+                {
+                    mediaPlayer.pause();
+                    mediaPlayer.release();
+
+                }
+
                 Log.v("trip","home3");
 
             }
@@ -1261,6 +1268,15 @@ Toolbar toolbar;
         reject_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                if (mediaPlayer.isPlaying())
+                {
+                    mediaPlayer.pause();
+                    mediaPlayer.release();
+
+                }
+
                 dataalredyloaded=false;
 
                 if (driverRequestReceived!=null)
@@ -2142,14 +2158,13 @@ catch (Exception e)
         super.onResume();
 
             registerOnlineSystem();
+
+
+
         try {
             stopService(new Intent(this, AdsService.class));
             new AdsService().killme();
-
             Log.v("xxx","pause service");
-
-
-
 
         } catch (Exception e) {
 
