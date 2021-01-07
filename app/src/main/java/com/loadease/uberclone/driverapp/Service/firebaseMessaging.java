@@ -81,9 +81,7 @@ public class firebaseMessaging extends FirebaseMessagingService{
 
                 Log.v("notti","contains");
                   getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
-              getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", false) .apply();
              getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
-          getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
 
 
             }
@@ -95,22 +93,32 @@ public class firebaseMessaging extends FirebaseMessagingService{
 
         if(remoteMessage.getData().get("title").equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
         {
-            Log.v("FCMMM","ok");
-            if (remoteMessage.getData().get("message").trim()=="You have been Restricted by LoadEase, Contact LoadEase office for more details"
-                    || remoteMessage.getData().get("message").trim().equals("Note: You have been Blocked by LoadEase,  Signin For more Details")){
 
-                Log.v("notti","contains");
-                getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
-                getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", false) .apply();
+            if(remoteMessage.getData().get("message").equals("Verification process was successful, You can Proceed now")){
+
+                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                new notification_genrater(getApplicationContext(),"Verification process was successful", remoteMessage.getData().get("message"));
+
+
+            }else   if(remoteMessage.getData().get("message").equals("You have been Restricted by LoadEase, Contact LoadEase office for more details")){
+
                 getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
-                getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                new notification_genrater(getApplicationContext(),"You have been Restricted", remoteMessage.getData().get("message"));
 
+        }else   if(remoteMessage.getData().get("message").equals("Congratulations: You have been UnBlocked by LoadEase")){
+
+                getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                new notification_genrater(getApplicationContext(),"UnBlocked by LoadEase", remoteMessage.getData().get("message"));
+
+            }else   if(remoteMessage.getData().get("message").equals("Note: You have been Blocked by LoadEase,  Signin For more Details")){
+
+                getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+                new notification_genrater(getApplicationContext(),"Blocked by LoadEase", remoteMessage.getData().get("message"));
 
             }
 
-            Log.v("section","new");
-            new notification_genrater(getApplicationContext(),"An action against your account has been taken!", remoteMessage.getData().get("message"));
-        }
+
+             }
 
 
         Map<String, String> datrecover=remoteMessage.getData();
