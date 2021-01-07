@@ -1731,7 +1731,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
             db.child("count").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if((snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString().equals("true"))){
+                        if((snapshot.exists())){
 
 
                             db.child("count").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
