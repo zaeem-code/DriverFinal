@@ -190,7 +190,7 @@ public class RateActivity extends AppCompatActivity {
         To = this.getIntent().getStringExtra("destination");
         from = this.getIntent().getStringExtra("from");
 
-      String discount=  this.getIntent().getStringExtra("DiscountAmmount");
+      String discount=  this.getIntent().getStringExtra("DiscountCode");
         Namepessenge = this.getIntent().getStringExtra("name");
         Imagurl = this.getIntent().getStringExtra("imageurl");
         price = this.getIntent().getStringExtra("price");

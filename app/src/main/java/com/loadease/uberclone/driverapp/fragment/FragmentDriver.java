@@ -825,7 +825,7 @@ Log.v("tripNumberId","----->"+tripNumberId);
                                             tripPlaneModel.setCurrentLat(Common.currentLat);
                                             tripPlaneModel.setCurrentLng(Common.currentLng);
                                             tripPlaneModel.setPic_url(Common.currentRiderprofile.getRider_pic_Url());
-                                            tripPlaneModel.setFare("100rs");
+                                            tripPlaneModel.setFare("0rs");
                                             tripPlaneModel.setName(Common.currentRiderprofile.getName());
                                             tripPlaneModel.setFromAddress(fromaddressStringget(Common.currentLat,Common.currentLng));
                                             tripPlaneModel.setCarnum(Common.currentRiderprofile.getCarnum());
@@ -2549,7 +2549,7 @@ return address;
                                                 putExtra("key",eventX.getKey()).
                                                 putExtra("DiscountCode",eventX.getDiscountCode()).
                                                 putExtra("DiscountAmmount",eventX.getDiscountAmmount()).
-                                                putExtra("price",calculatefare(distance,(duration))).
+                                                putExtra("price",calculatefare(distance,duration)).
                                                 putExtra("from",eventX.getDestinationLocationString()));
 
 
@@ -2645,10 +2645,18 @@ private void settingTotalprice(double price) {
         Log.v("dis"," =mins repla - --->"+time.replace("mins"," "));
 
         Log.v("dis"," =--->"+ String.format("%s + %s = $%.2f", distance, time, Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
-                Integer.parseInt(time.substring(0,time.length()-4).trim()))));
+                Integer.parseInt(time.substring(0,time.length()-4).trim()))-Integer.parseInt(eventX.getDiscountAmmount())));
+        if (!eventX.getDiscountCode().equals("0")) {
+            return String.format("%s + %s = $%.2f", distance, time, Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
+                    Integer.parseInt(time.substring(0,time.length()-4).trim()))-Integer.parseInt(eventX.getDiscountAmmount()));
 
-        return String.format("%s + %s = $%.2f", distance, time, Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
+        }else {
+
+
+            return String.format("%s + %s = %.2f", distance, time, Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
                 Integer.parseInt(time.substring(0,time.length()-4).trim())));
+
+    }
 
     }
     /////dp uplod
@@ -2867,9 +2875,7 @@ try {
                 }
                 else
                 {
-
                     startService(new Intent(getApplicationContext(), AdsService.class));
-
                 }
                 Log.v("xxx","start service");
                 Log.v("xxx",active);
@@ -2890,7 +2896,8 @@ try {
 
 private  void couponusedbyuser() {
 
-    if (eventX != null) {
+    if (eventX != null && eventX.getDiscountCode()!=null) {
+        Log.v("Coupon",eventX.getKey()+", "+eventX.getDiscountCode()+","+eventX.getDiscountAmmount());
         DatabaseReference db = FirebaseDatabase.getInstance().getReference("CouponUsedByPass");
         db.child(eventX.getKey()).child(eventX.getDiscountCode()).setValue(eventX.getDiscountAmmount());
         Log.v("Coupon","wiruted");

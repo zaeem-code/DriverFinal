@@ -93,6 +93,26 @@ public class firebaseMessaging extends FirebaseMessagingService{
         }
 
 
+        if(remoteMessage.getData().get("title").equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+        {
+            Log.v("FCMMM","ok");
+            if (remoteMessage.getData().get("message").trim()=="You have been Restricted by LoadEase, Contact LoadEase office for more details"
+                    || remoteMessage.getData().get("message").trim().equals("Note: You have been Blocked by LoadEase,  Signin For more Details")){
+
+                Log.v("notti","contains");
+                getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+                getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", false) .apply();
+                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+                getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+
+
+            }
+
+            Log.v("section","new");
+            new notification_genrater(getApplicationContext(),"An action against your account has been taken!", remoteMessage.getData().get("message"));
+        }
+
+
         Map<String, String> datrecover=remoteMessage.getData();
 
         if (datrecover!=null)
@@ -126,7 +146,12 @@ public class firebaseMessaging extends FirebaseMessagingService{
                 driverRequestReceived.setLsbourdetails(datrecover.get("Lsbourdetails"));
                 driverRequestReceived.setVehicaltype(datrecover.get("ridetype"));
                 driverRequestReceived.setInsurancedetails(datrecover.get("insurancedetails"));
+
+                driverRequestReceived.setDiscountCode(datrecover.get("DiscountCode"));
+
+                driverRequestReceived.setDiscountAmmount(datrecover.get("DiscountAmmount"));
 //                driverRequestReceived.setFromAddress(datrecover.get("FromAddress"));
+                Log.v("Coupon",datrecover.get("DiscountCode")+", "+datrecover.get("DiscountAmmount"));
 
                 EventBus.getDefault().postSticky(driverRequestReceived);
 
