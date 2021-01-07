@@ -122,6 +122,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -151,6 +152,8 @@ boolean dataalredyloaded=false;
 DatabaseReference db_generate;
 String Count_x="0";
 
+    Uri pdf_uri;
+    String imguri="";
 String chk="true";
 String active="false";
     String ads ="NA";
@@ -2624,46 +2627,65 @@ private void settingTotalprice(double price) {
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 007);
             } else {
-                opencamera(1);
+
+                choosePic(1);
             }
         }else {
 
-            opencamera(1);
+
+            choosePic(1);
+
         }
+
+
+
     }
 
-    private void opencamera(int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+
+
+
+
+
+
+
+
+
+    public void choosePic(int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE)
+    {
+        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "select image"), CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_CANCELED) {
+        if (requestCode == 1 && resultCode == -1 && data != null)
+        {
+            pdf_uri = data.getData();
+            String imageName = new File(pdf_uri.getPath()).getName();
 
-            if (data != null) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
 
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                ///ask for permissions
-                String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "pic", null);
-
-                 Driverdp.setImageBitmap(photo);
-                uploadpic( Uri.parse(path));
-
-            } else {
-                Snackbar.make(root, "Failed: try again", Snackbar.LENGTH_SHORT).show();
+            Uri uri = pdf_uri;
+            if (uri != null) {
+//                                Upload_file(uri, imageName, uri.getPath());
+                Toast.makeText(this, ""+uri, Toast.LENGTH_SHORT).show();
+                uploadpic(uri);
             }
-
-
-        } else {
-            Snackbar.make(root, "Failed: try again", Snackbar.LENGTH_SHORT).show();
         }
 
 
+
+
     }
+
+
+
+
+
+
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
