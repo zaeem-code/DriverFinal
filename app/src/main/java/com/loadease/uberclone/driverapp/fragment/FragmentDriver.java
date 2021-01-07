@@ -1728,12 +1728,11 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
             db.child("count").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot dsp: snapshot.getChildren()){
                         if((snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString().equals("true"))){
 
                             db.child("count").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("false");
 
-                        }
+
 
                     }
 
