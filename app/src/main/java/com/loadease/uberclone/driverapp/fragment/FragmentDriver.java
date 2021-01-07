@@ -1714,7 +1714,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
             Count_x++;
              HashMap hashMap=new HashMap();
             hashMap.put("count",Count_x);
-            db.updateChildren(hashMap);
+            db.child("count").setValue(Count_x);
 
         }
         else
@@ -1726,7 +1726,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
             Count_x--;
              HashMap hashMap=new HashMap();
             hashMap.put("count",Count_x);
-            db.updateChildren(hashMap);
+            db.child("count").setValue(Count_x);
 
             try {
                 stopService(new Intent(FragmentDriver.this, AdsService.class));
@@ -2750,23 +2750,24 @@ private void settingTotalprice(double price) {
 
     private void SuscribingTOfcm(){
 
+try {
 
 
-
-        FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this,  new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult)
-            {
+    FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid());
+    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
+        @Override
+        public void onSuccess(InstanceIdResult instanceIdResult) {
 //            String newToken = instanceIdResult.getToken();
 //
 //            Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
 
-                FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
-            }
-        });
+            FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+        }
+    });
 
+}catch ( Exception e){
 
+}
     }
 
 

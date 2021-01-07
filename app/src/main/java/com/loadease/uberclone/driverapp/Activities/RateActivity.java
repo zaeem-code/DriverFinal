@@ -51,13 +51,13 @@ public class RateActivity extends AppCompatActivity {
     Button btnSubmit;
     MaterialRatingBar ratingBar;
     MaterialEditText etComment;
-String price="",duration="",KMS="";
+    String price="",duration="",KMS="";
     FirebaseDatabase database;
     TextView passengername;
     DatabaseReference rateDetailRef, driverInformationRef;
-TextView fromadresstv,toaddresstv, totaldest,totaltime,totalfare;
-de.hdodenhof.circleimageview.CircleImageView passengerPic;
-ImageView call,chat;
+   TextView fromadresstv,toaddresstv, totaldest,totaltime,totalfare;
+   de.hdodenhof.circleimageview.CircleImageView passengerPic;
+   ImageView call,chat;
     String curr_Time="";
     SimpleDateFormat _24HourSDF;
     SimpleDateFormat _12HourSDF;
