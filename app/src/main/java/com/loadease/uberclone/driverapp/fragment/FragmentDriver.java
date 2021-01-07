@@ -91,6 +91,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kusu.library.LoadingButton;
+import com.loadease.uberclone.driverapp.Model.UserX;
 import com.loadease.uberclone.driverapp.Service.AdsService;
 import com.loadease.uberclone.driverapp.chatIntegration.Activity.MainChatActivity;
 import com.loadease.uberclone.driverapp.Activities.LoginMainActivity;
@@ -381,7 +382,6 @@ String active="false";
         eventX=event;
         phone=event.getPhone();
         driverRequestReceived=event;
-
 
         playCallSound();
 
@@ -684,7 +684,9 @@ Log.v("hassan","--->  :"+event.getImageurl());
                                             tripPlaneModel.setCurrentLat(Common.currentLat);
                                             tripPlaneModel.setCurrentLng(Common.currentLng);
                                             tripPlaneModel.setPic_url(Common.currentRiderprofile.getRider_pic_Url());
-                                            tripPlaneModel.setFare("100rs");
+                                            tripPlaneModel.setFare("0rs");
+                                            tripPlaneModel.setDiscountAmmount(event.getDiscountAmmount());
+                                            tripPlaneModel.setDiscountCode(event.getDiscountCode());
                                             tripPlaneModel.setName(Common.currentRiderprofile.getName());
                                             tripPlaneModel.setFromAddress(fromaddressStringget(Common.currentLat,Common.currentLng));
                                             tripPlaneModel.setCarnum(Common.currentRiderprofile.getCarnum());
@@ -1361,7 +1363,7 @@ Toolbar toolbar;
                 btn_start_uber.setVisibility(View.GONE);
                 btn_complete_trip.setVisibility(View.VISIBLE);
 
-
+                couponusedbyuser();
 
 
             }
@@ -2514,12 +2516,24 @@ return address;
                                 hashMap.put("distancePickup",distance);
                                 hashMap.put("destinationString",ads);
                                 hashMap.put("startAddress",startAddress);
-                                hashMap.put("fare",  Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
-                                        Integer.parseInt(duration.substring(0,duration.length()-4).trim())));
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                    settingTotalprice( Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
-                                            Integer.parseInt(duration.substring(0,duration.length()-4).trim())));
+                                hashMap.put("DiscountCode",eventX.getDiscountCode());
+                                hashMap.put("DiscountAmmount",eventX.getDiscountAmmount());
+                                if (!eventX.getDiscountCode().equals("0")){
+                                    hashMap.put("fare", Common.getPrice(Double.parseDouble(distance.substring(0, distance.length() - 2).trim()),
+                                            Integer.parseInt(duration.substring(0, duration.length() - 4).trim()))-Integer.parseInt(eventX.getDiscountAmmount()));
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        settingTotalprice( Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
+                                                Integer.parseInt(duration.substring(0,duration.length()-4).trim()))-Integer.parseInt(eventX.getDiscountAmmount()));
+                                    }
+                                }else {
+                                    hashMap.put("fare", Common.getPrice(Double.parseDouble(distance.substring(0, distance.length() - 2).trim()),
+                                            Integer.parseInt(duration.substring(0, duration.length() - 4).trim())));
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        settingTotalprice( Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
+                                                Integer.parseInt(duration.substring(0,duration.length()-4).trim())));
+                                    }
                                 }
+
 
 
 //                                fdb.child("distancePickup").setValue(distance);
@@ -2533,6 +2547,8 @@ return address;
                                                 putExtra("imageurl",eventX.getImageurl()).
                                                 putExtra("name",eventX.getName()).
                                                 putExtra("key",eventX.getKey()).
+                                                putExtra("DiscountCode",eventX.getDiscountCode()).
+                                                putExtra("DiscountAmmount",eventX.getDiscountAmmount()).
                                                 putExtra("price",calculatefare(distance,(duration))).
                                                 putExtra("from",eventX.getDestinationLocationString()));
 
@@ -2870,6 +2886,16 @@ try {
 
 
     }
+
+
+private  void couponusedbyuser() {
+
+    if (eventX != null) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference("CouponUsedByPass");
+        db.child(eventX.getKey()).child(eventX.getDiscountCode()).setValue(eventX.getDiscountAmmount());
+        Log.v("Coupon","wiruted");
+    }
+}
 }
 
 

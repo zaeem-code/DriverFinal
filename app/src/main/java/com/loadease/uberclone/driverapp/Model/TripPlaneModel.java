@@ -11,6 +11,24 @@ public class TripPlaneModel {
     private String distancePickup,distanceDestination;
     private String durationPickup,durationDestination,pic_url,Fare,name,FromAddress, carnum,date,time,trip_status;
 public String tripIp;
+    String discountCode,  discountAmmount;
+
+    public String getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
+    }
+
+    public String getDiscountAmmount() {
+        return discountAmmount;
+    }
+
+    public void setDiscountAmmount(String discountAmmount) {
+        this.discountAmmount = discountAmmount;
+    }
+
     public String getTripIp() {
         return tripIp;
     }

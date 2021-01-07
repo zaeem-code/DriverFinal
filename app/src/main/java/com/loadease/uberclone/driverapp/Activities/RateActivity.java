@@ -4,6 +4,7 @@ package com.loadease.uberclone.driverapp.Activities;
 import android.app.AlertDialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -189,6 +190,7 @@ public class RateActivity extends AppCompatActivity {
         To = this.getIntent().getStringExtra("destination");
         from = this.getIntent().getStringExtra("from");
 
+      String discount=  this.getIntent().getStringExtra("DiscountAmmount");
         Namepessenge = this.getIntent().getStringExtra("name");
         Imagurl = this.getIntent().getStringExtra("imageurl");
         price = this.getIntent().getStringExtra("price");
@@ -199,7 +201,13 @@ public class RateActivity extends AppCompatActivity {
         toaddresstv.setText(To);
         totaltime.setText(duration);
         totaldest.setText(KMS);
-        totalfare.setText(price);
+        if (!TextUtils.isEmpty(discount) && !discount.equals("0")){
+
+            totalfare.setText(price+" (after "+discount+" discounted )");
+        }else {
+
+            totalfare.setText(price);
+        }
         passengername.setText(Namepessenge);
 
         Picasso.get().load(Imagurl).into(passengerPic);

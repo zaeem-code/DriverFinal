@@ -7,6 +7,24 @@ public class DriverRequestReceived {
     String pickupLocation,puckupLocationString;
     String destinationLocation,destinationLocationString,FromAddress,phone,name,imageurl,lsbourdetails,insurancedetails,industry,vehicaltype;
 
+    String discountCode,  discountAmmount;
+
+    public String getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
+    }
+
+    public String getDiscountAmmount() {
+        return discountAmmount;
+    }
+
+    public void setDiscountAmmount(String discountAmmount) {
+        this.discountAmmount = discountAmmount;
+    }
+
     public String getLsbourdetails() {
         return lsbourdetails;
     }
