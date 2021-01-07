@@ -1705,7 +1705,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
                     Log.v("DBcount","---f-->"+Count_x);
 
                     Count_x++;
-                    Log.v("DBcount","---s-->"+Count_x);
+                    Log.v("DBcount","----s->"+Count_x);
 
                     db.child("count").setValue(Count_x);
                 }
