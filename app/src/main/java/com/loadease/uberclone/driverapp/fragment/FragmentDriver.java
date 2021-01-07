@@ -1693,40 +1693,56 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
         DatabaseReference db=FirebaseDatabase.getInstance().getReference("onlineDriver");
 
 
-    db.addListenerForSingleValueEvent(new ValueEventListener() {
-    @Override
-    public void onDataChange(@NonNull DataSnapshot snapshot) {
-        Count_x=Integer.parseInt(snapshot.child("count").getValue().toString());
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError error) {
-
-    }
-});
         if(isChecked)
         {
 
-
             chk="false";
-            Log.v("xxx","chk true");
+            Log.v("DBcount","chk true");
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Count_x=Integer.parseInt(snapshot.child("count").getValue().toString());
+                    Log.v("DBcount","---f-->"+Count_x);
 
-            Count_x++;
-             HashMap hashMap=new HashMap();
-            hashMap.put("count",Count_x);
-            db.child("count").setValue(Count_x);
+                    Count_x++;
+                    Log.v("DBcount","---s-->"+Count_x);
+
+                    db.child("count").setValue(Count_x);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
 
         }
         else
         {
             chk="true";
 
-            Log.v("xxx","chk false");
+            Log.v("DBcount","chk false");
 
-            Count_x--;
-             HashMap hashMap=new HashMap();
-            hashMap.put("count",Count_x);
-            db.child("count").setValue(Count_x);
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Count_x=Integer.parseInt(snapshot.child("count").getValue().toString());
+                    Log.v("DBcount","--f--->"+Count_x);
+
+                    Count_x--;
+                    Log.v("DBcount","---s-->"+Count_x);
+                    db.child("count").setValue(Count_x);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
 
             try {
                 stopService(new Intent(FragmentDriver.this, AdsService.class));
