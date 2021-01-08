@@ -55,17 +55,7 @@ import java.util.Arrays;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class Login extends AppCompatActivity {
-//        implements GoogleApiClient.OnConnectionFailedListener {
-//    private GoogleApiClient googleApiClient;
-//    public static final int SIGN_IN_CODE_GOOGLE = 157;
-//    Button btnSignIn, btnLogIn;
-
     FirebaseHelper firebaseHelper;
-//    GoogleSignInAccount account;
-//
-//    //facebook
-//    CallbackManager mFacebookCallbackManager;
-//    LoginManager mLoginManager;
     AccessToken accessToken = AccessToken.getCurrentAccessToken();
     boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
@@ -75,31 +65,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         firebaseHelper = new FirebaseHelper(this);
-//        FancyButton signInButtonGoogle = findViewById(R.id.login_button_Google);
-//        FancyButton signInButtonFacebook = findViewById(R.id.facebookLogin);
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-//        googleApiClient = new GoogleApiClient.Builder(this)
-//                .enableAutoManage(this, this)
-//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-//                .build();
-//        signInButtonGoogle.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-//                startActivityForResult(intent, SIGN_IN_CODE_GOOGLE);
-//            }
-//        });
-//        setupFacebookStuff();
-//        signInButtonFacebook.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (AccessToken.getCurrentAccessToken() != null) {
-//                    mLoginManager.logOut();
-//                } else {
-//                    mLoginManager.logInWithReadPermissions(Login.this, Arrays.asList("email", "user_birthday", "public_profile"));
-//                }
-//            }
-//        });
+
         findViewById(R.id.btnSignin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,18 +81,16 @@ public class Login extends AppCompatActivity {
                 Log.v("db","login");
             }
         });
-boolean blocked= getSharedPreferences("blocked", MODE_PRIVATE).getBoolean("chk", false);
+        String blocked= getSharedPreferences("blocked", MODE_PRIVATE).getString("chk","false");
+        String chk3= getSharedPreferences("profile", MODE_PRIVATE).getString("chk", "false") ;
+        String chk2= getSharedPreferences("verified", MODE_PRIVATE).getString("chk", "false");
+        String chk = getSharedPreferences("Login", MODE_PRIVATE).getString("chk", "false");
+Log.v("cradenitiols",chk+", "+chk2+", "+chk3+", "+blocked);
 
-        boolean chk3=
-        getSharedPreferences("profile", MODE_PRIVATE).getBoolean("chk", false) ;
-        boolean chk2=
-               getSharedPreferences("Nverified", MODE_PRIVATE).getBoolean("chk", false);
-            boolean chk = getSharedPreferences("Login", MODE_PRIVATE).getBoolean("chk", false);
-
-            if (chk && chk2 && chk3)
+            if (chk.equals("true") && chk3.equals("true")  && chk2.equals("true") )
             {
-//                Toast.makeText(this, "in", Toast.LENGTH_SHORT).show();
-                if (!blocked)
+
+                if (blocked.equals("false"))
                 {
 
                        startActivity(new Intent(Login.this, FragmentDriver.class));
@@ -137,6 +101,7 @@ boolean blocked= getSharedPreferences("blocked", MODE_PRIVATE).getBoolean("chk",
                 else
                     {
 
+                        FirebaseAuth.getInstance().signOut();
                         Toast.makeText(this, "Your Account is Blocked, Contact Head office for more Details", Toast.LENGTH_SHORT).show();
                    }
 
@@ -144,79 +109,6 @@ boolean blocked= getSharedPreferences("blocked", MODE_PRIVATE).getBoolean("chk",
         }
     }
 
-//    private void verifyGoogleAccount() {
-//        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
-//        if (opr.isDone()) {
-//            GoogleSignInResult result = opr.get();
-//            if (result.isSuccess())
-//                firebaseHelper.loginSuccess();
-//
-//        }
-//    }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-////        verifyGoogleAccount();
-//    }
-
-//    private void setupFacebookStuff() {
-//
-//        // This should normally be on your application class
-//        FacebookSdk.sdkInitialize(getApplicationContext());
-//
-//        mLoginManager = LoginManager.getInstance();
-//        mFacebookCallbackManager = CallbackManager.Factory.create();
-//
-//        LoginManager.getInstance().registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//                //login
-//                firebaseHelper.registerByFacebookAccount();
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//                Toast.makeText(Login.this, "The login was canceled", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onError(FacebookException error) {
-//                Toast.makeText(Login.this, "There was an error in the login", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == SIGN_IN_CODE_GOOGLE) {//Google
-//            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-//            handleSignInResult(result);
-//        }
-//        mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
-//    }
-//
-//    private void handleSignInResult(GoogleSignInResult result) {
-//        if (result.isSuccess()) {
-//            account = result.getSignInAccount();
-//            firebaseHelper.registerByGoogleAccount(account);
-//        } else {
-//            Message.messageError(this, Errors.ERROR_LOGIN_GOOGLE);
-//        }
-//    }
-//
-//    @Override
-//    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-//        Message.messageError(this, Errors.ERROR_LOGIN_GOOGLE);
-//    }
-//
-//    @Override
-//    public void onPointerCaptureChanged(boolean hasCapture) {
-//
-//    }
 
 
 

@@ -56,7 +56,7 @@ public class FirebaseHelper {
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
         users=firebaseDatabase.getReference(Common.user_driver_tbl);
-        if(firebaseAuth.getUid()!=null)loginSuccess();
+//        if(firebaseAuth.getUid()!=null)loginSuccess();
     }
 
 

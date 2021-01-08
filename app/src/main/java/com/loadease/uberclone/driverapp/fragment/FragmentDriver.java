@@ -2359,10 +2359,7 @@ try {
                 break;
 
             case R.id.nav_sign_out:
-                getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
-                        getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", false) .apply();
-                        getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
-                 getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                 getSharedPreferences("Login", MODE_PRIVATE).edit().putString("chk", "false").apply();
 
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(this, LoginMainActivity.class));

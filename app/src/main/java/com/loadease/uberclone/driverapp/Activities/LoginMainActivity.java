@@ -107,7 +107,7 @@ public class LoginMainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(AuthResult authResult) {
 Common.userIDforfcm=firebaseAuth.getCurrentUser().getUid();
-                getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+                getSharedPreferences("Login", MODE_PRIVATE).edit().putString("chk", "true").apply();
                 loadata();
 
             }
@@ -115,7 +115,6 @@ Common.userIDforfcm=firebaseAuth.getCurrentUser().getUid();
         {
             @Override
             public void onFailure(@NonNull Exception e) {
-                getSharedPreferences("Login", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
 
                 Snackbar.make(root, getResources().getString(R.string.failed) + e.getMessage(), Snackbar.LENGTH_SHORT).show();
                 if (dialog.isShowing()){
@@ -148,7 +147,7 @@ Common.userIDforfcm=firebaseAuth.getCurrentUser().getUid();
                             }
                             Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                            getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                            getSharedPreferences("profile", MODE_PRIVATE).edit().putString("chk", "false").apply();
                             startActivity(new Intent(getApplicationContext(),signup_and_profile_Activity.class).putExtra("chk","Redirect")
                             .putExtra("name",dataSnapshot.child("name").getValue().toString())
                                     .putExtra("email",dataSnapshot.child("email").getValue().toString())
@@ -162,7 +161,7 @@ Common.userIDforfcm=firebaseAuth.getCurrentUser().getUid();
                         else
                             {  Log.v("Hassan","Status complete");
 
-                                getSharedPreferences("profile", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+                                getSharedPreferences("profile", MODE_PRIVATE).edit().putString("chk", "true").apply();
                                 DriverApproveStatus();
                         }
 
@@ -194,7 +193,7 @@ Common.userIDforfcm=firebaseAuth.getCurrentUser().getUid();
                             if (Common.currentRiderprofile.getProfile_status().toString().equals("Nverified")) {
 
 
-                                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                                getSharedPreferences("verified", MODE_PRIVATE).edit().putString("chk", "false").apply();
 
                                 findViewById(R.id.forgetpass).setVisibility(View.GONE);
                                 findViewById(R.id.l1).setVisibility(View.GONE);
@@ -208,7 +207,7 @@ Common.userIDforfcm=firebaseAuth.getCurrentUser().getUid();
                             } else if (Common.currentRiderprofile.getProfile_status().equals("verified")) {
 
 
-                                getSharedPreferences("Nverified", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+                                getSharedPreferences("verified", MODE_PRIVATE).edit().putString("chk", "true").apply();
                                 BlockedCHK();
                             }
 
@@ -245,7 +244,7 @@ Common.userIDforfcm=firebaseAuth.getCurrentUser().getUid();
                             }
                             note.setText("Please Note :\nyou have been blocked\n Reason: "+dataSnapshot.child("blockedComments").getValue().toString());
 
-                            getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", true).apply();
+                            getSharedPreferences("blocked", MODE_PRIVATE).edit().putString("chk", "true").apply();
 
 
                         }
@@ -253,7 +252,7 @@ Common.userIDforfcm=firebaseAuth.getCurrentUser().getUid();
                         {  Log.v("Hassan","not blocked complete");
 
                             Common.userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            getSharedPreferences("blocked", MODE_PRIVATE).edit().putBoolean("chk", false).apply();
+                            getSharedPreferences("blocked", MODE_PRIVATE).edit().putString("chk", "false").apply();
                             new FirebaseHelper().LoadRiderProfile(getApplicationContext());
                         }
 
