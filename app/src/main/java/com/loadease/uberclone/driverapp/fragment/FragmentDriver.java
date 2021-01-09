@@ -1211,6 +1211,9 @@ Toolbar toolbar;
 
             }
         });
+
+
+
         btn_complete_trip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2349,7 +2352,7 @@ return address;
                                 Log.v("FinalTrip","add current lat: "+Common.currentLng);
 
 
-                                DatabaseReference fdb= FirebaseDatabase.getInstance().getReference("Trips").child(user_curr).child(tripNumberId);
+                                DatabaseReference fdb= FirebaseDatabase.getInstance().getReference("Trips").child(user_curr);
 
                                 HashMap hashMap= new HashMap();
                                 hashMap.put("time",duration);
@@ -2359,17 +2362,58 @@ return address;
                                 hashMap.put("startAddress",startAddress);
                                 hashMap.put("DiscountCode",eventX.getDiscountCode());
                                 hashMap.put("DiscountAmmount",eventX.getDiscountAmmount());
-                                if (!eventX.getDiscountCode().equals("0")){
-                                    hashMap.put("fare", Common.getPrice(Double.parseDouble(distance.substring(0, distance.length() - 2).trim()),
-                                            Integer.parseInt(duration.substring(0, duration.length() - 4).trim()))-Integer.parseInt(eventX.getDiscountAmmount()));
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                        settingTotalprice( Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
-                                                Integer.parseInt(duration.substring(0,duration.length()-4).trim()))-Integer.parseInt(eventX.getDiscountAmmount()));
+                                if (!eventX.getDiscountCode().equals("0"))
+                                {
+
+
+                                    hashMap.put(
+                                            "fare",String.valueOf
+                                                    (
+                                                                    Common.getPrice(Double.parseDouble(distance.substring(0, distance.length() - 2).trim())
+                                                                    ,
+                                                                    Integer.parseInt(duration.substring(0, duration.length() - 4).trim()))-Integer.parseInt(eventX.getDiscountAmmount())
+                                                    )
+                                    );
+
+
+
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                                    {
+                                        settingTotalprice
+                                                (
+
+                                                        Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
+                                                      Integer.parseInt(duration.substring(0,duration.length()-4).trim()))-Integer.parseInt(eventX.getDiscountAmmount())
+                                                );
+
+
+
+
+
                                     }
-                                }else {
-                                    hashMap.put("fare", Common.getPrice(Double.parseDouble(distance.substring(0, distance.length() - 2).trim()),
-                                            Integer.parseInt(duration.substring(0, duration.length() - 4).trim())));
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                }
+
+                                else
+                                    {
+
+
+
+                                        hashMap.put("fare",
+                                                String.valueOf
+                                                        (
+                                                                Common.getPrice(Double.parseDouble(distance.substring(0, distance.length() - 2).trim()),
+                                                                        Integer.parseInt(duration.substring(0, duration.length() - 4).trim()))
+                                                        )
+                                        );
+
+
+
+
+
+
+
+
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                         settingTotalprice( Common.getPrice(Double.parseDouble(distance.substring(0,distance.length()-2).trim()),
                                                 Integer.parseInt(duration.substring(0,duration.length()-4).trim())));
                                     }
@@ -2378,7 +2422,7 @@ return address;
 
 
 //                                fdb.child("distancePickup").setValue(distance);
-                                fdb.updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                                fdb.child(tripNumberId).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
                                     @Override
                                     public void onComplete(@NonNull Task task) {
                                         startActivity(new Intent(getApplicationContext(), RateActivity.class).
@@ -2454,7 +2498,7 @@ private void settingTotalprice(double price) {
 
 
             HashMap hashMap = new HashMap();
-            hashMap.put("price", price);
+            hashMap.put("price", String.valueOf(price));
 
             db.push().updateChildren(hashMap);
         } catch (ParseException e) {
