@@ -45,7 +45,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="200dp"
         android:background="@drawable/cardview_background"
         android:layout_gravity="bottom"
         android:id="@+id/layout_accept"
@@ -101,58 +100,61 @@
 <include
     layout="@layout/activity_passenger_ride_details"
 />
-        <RelativeLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@android:color/transparent">
-            <androidx.cardview.widget.CardView
-                android:layout_width="130dp"
-                android:layout_centerVertical="true"
-                android:layout_height="40dp"
-                app:cardCornerRadius="8dp"
-                android:layout_marginHorizontal="10dp"
-                app:cardBackgroundColor="@color/red"
-                android:layout_gravity="bottom"
-                android:visibility="visible"
-
-
-                >
-            <Button
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/chip_decline"
-                android:background="@android:color/transparent"
-                android:text="Reject"/>
-            </androidx.cardview.widget.CardView>
 
 
 
+<!--        <RelativeLayout-->
+
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:background="@android:color/transparent">-->
+<!--   -->
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="130dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_height="40dp"-->
+<!--                app:cardCornerRadius="8dp"-->
+<!--                android:layout_marginHorizontal="10dp"-->
+<!--                app:cardBackgroundColor="@color/red"-->
+<!--                android:layout_gravity="bottom"-->
+<!--                android:visibility="visible"-->
 
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="130dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_height="40dp"
-                app:cardCornerRadius="8dp"
-                android:layout_marginHorizontal="10dp"
-                app:cardBackgroundColor="@color/lightgray"
-                android:layout_gravity="bottom"
-                android:visibility="visible"
+<!--                >-->
+<!--            <Button-->
+<!--                android:gravity="center"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:id="@+id/chip_decline"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:text="Reject"/>-->
+<!--            </androidx.cardview.widget.CardView>-->
+
+<!--            -->
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="130dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_height="40dp"-->
+<!--                app:cardCornerRadius="8dp"-->
+<!--                android:layout_marginHorizontal="10dp"-->
+<!--                app:cardBackgroundColor="@color/lightgray"-->
+<!--                android:layout_gravity="bottom"-->
+<!--                android:visibility="visible"-->
 
 
-                >
-                <Button
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/chip_acpt"
-                    android:background="@android:color/transparent"
-                    android:text="Accept"/>
-            </androidx.cardview.widget.CardView>
-        </RelativeLayout>
+<!--                >-->
+<!--                <Button-->
+<!--                    android:gravity="center"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:id="@+id/chip_acpt"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:text="Accept"/>-->
+<!--            </androidx.cardview.widget.CardView>-->
+<!--       -->
+<!--       -->
+<!--        </RelativeLayout>-->
 
 
 
@@ -309,11 +311,12 @@
     android:layout_height="wrap_content">
     <RelativeLayout
         android:id="@+id/startCancelButtonsLayout"
-
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_height="50dp"
         android:background="@android:color/transparent">
+
+
         <androidx.cardview.widget.CardView
             android:layout_width="130dp"
             android:layout_centerVertical="true"
@@ -349,8 +352,6 @@
             app:cardBackgroundColor="@color/lightgray"
             android:layout_gravity="bottom"
             android:visibility="visible"
-
-
             >
             <com.kusu.library.LoadingButton
                 android:id="@+id/btn_start_uber"

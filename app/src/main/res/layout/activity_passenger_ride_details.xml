@@ -1,156 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
 
 
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical"
     android:background="@android:color/transparent"
    android:paddingHorizontal="15dp"
     android:paddingTop="15dp">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageCus"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:civ_border_width="1dp"
-            app:civ_border_color="@color/lightgray"
-            app:civ_border_overlay="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center"  />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txt_rating"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:text="4.25"
-            android:layout_marginTop="9dp"
-            android:textColor="@color/lightgray"
-            android:layout_marginRight="2dp"
-            android:layout_toLeftOf="@+id/star"
-            android:textSize="14sp"
-
-            />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"
-            app:tint="@color/yellow"
-            android:tint="@color/yellow"
-            android:layout_marginTop="5dp"
-
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:id="@+id/star"
-            tools:ignore="UseAppTint" />
-
-        <TextView
-            android:layout_below="@+id/txt_rating"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/txt_type_uber"
-            android:text="uber"
-            android:textColor="@color/lightgray"
-            android:textSize="17sp" />
-
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="9dp"
-            android:layout_toRightOf="@+id/imageCus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textStyle="bold"
-            android:id="@+id/custmername"
-
-            android:text="Ali ahmad mistri"
-            android:textColor="@color/lightgray"
-            android:textSize="17sp"
-
-            />
 
 
 
-
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/imageCus"
-            android:layout_below="@+id/custmername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txt_estimate_distance"
-            android:layout_gravity="center_horizontal"
-            android:text="0.4 km"
-            android:textColor="@color/lightgray"
-            android:textSize="16sp"
-            />
-        <TextView
-            android:layout_marginTop="2dp"
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/custmername"
-            android:gravity="center"
-            android:textColor="@color/lightgray"
-            android:textStyle="bold"
-            android:layout_marginHorizontal="5dp"
-            android:layout_toEndOf="@+id/txt_estimate_distance"
-            android:background="@color/lightgray"
-            android:id="@+id/div"/>
-        <TextView
-            android:layout_toRightOf="@+id/div"
-            android:layout_width="wrap_content"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:id="@+id/txt_estimate_time"
-            android:layout_gravity="center_horizontal"
-            android:text="2 min"
-            android:layout_below="@+id/custmername"
-            android:textColor="@color/lightgray"
-            android:textSize="16sp"
-            />
-
-
-
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_below="@+id/imageCus"
-            android:layout_marginTop="9dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textStyle="bold"
-            android:id="@+id/pickup"
-            android:text="Pickup"
-            android:textColor="@color/lightgray"
-            android:textSize="16sp"
-
-            />
-
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_below="@+id/pickup"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:gravity="center_vertical"
-            android:layout_height="30dp"
-            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_ly"
+            >
 
-            android:layout_gravity="center_vertical"
 
-            android:id="@+id/pickupadd"
-            android:text="Shalamar Chowk، G. T. Road, Shalamar"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageCus"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="@color/lightgray"
+                    app:civ_border_overlay="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="center"  />
 
-            android:textColor="@color/lightgray"
-            android:textSize="15sp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_rating"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:text="4.25"
+                    android:layout_marginTop="9dp"
+                    android:textColor="@color/lightgray"
+                    android:layout_marginRight="2dp"
+                    android:layout_toLeftOf="@+id/star"
+                    android:textSize="14sp"
 
-            />
-    </RelativeLayout>
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star"
+                    app:tint="@color/yellow"
+                    android:tint="@color/yellow"
+                    android:layout_marginTop="5dp"
+
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/star"
+                    tools:ignore="UseAppTint" />
+
+                <TextView
+                    android:layout_below="@+id/txt_rating"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/txt_type_uber"
+                    android:text="uber"
+                    android:textColor="@color/lightgray"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="9dp"
+                    android:layout_toRightOf="@+id/imageCus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:id="@+id/custmername"
+
+                    android:text="Ali ahmad mistri"
+                    android:textColor="@color/lightgray"
+                    android:textSize="17sp"
+
+                    />
+
+
+
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/imageCus"
+                    android:layout_below="@+id/custmername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_estimate_distance"
+                    android:layout_gravity="center_horizontal"
+                    android:text=" km"
+                    android:textColor="@color/lightgray"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_marginTop="2dp"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/custmername"
+                    android:gravity="center"
+                    android:textColor="@color/lightgray"
+                    android:textStyle="bold"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_toEndOf="@+id/txt_estimate_distance"
+                    android:background="@color/lightgray"
+                    android:id="@+id/div"/>
+                <TextView
+                    android:layout_toRightOf="@+id/div"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_estimate_time"
+                    android:layout_gravity="center_horizontal"
+                    android:text=" min"
+                    android:layout_below="@+id/custmername"
+                    android:textColor="@color/lightgray"
+                    android:textSize="16sp"
+                    />
+
+
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_below="@+id/imageCus"
+                    android:layout_marginTop="9dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:id="@+id/pickup"
+                    android:text="Pickup"
+                    android:textColor="@color/lightgray"
+                    android:textSize="16sp"
+
+                    />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_below="@+id/pickup"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_height="30dp"
+                    android:maxLines="1"
+
+                    android:layout_gravity="center_vertical"
+
+                    android:id="@+id/pickupadd"
+                    android:text="Shalamar Chowk، G. T. Road, Shalamar"
+
+                    android:textColor="@color/lightgray"
+                    android:textSize="15sp"
+
+                    />
+
+        </RelativeLayout>
+
+
+
+
+
+
+
+                <RelativeLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:layout_below="@id/btn_ly"
+                    >
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="130dp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="40dp"
+                        app:cardCornerRadius="8dp"
+                        android:layout_marginHorizontal="10dp"
+                        app:cardBackgroundColor="@color/red"
+                        android:layout_gravity="bottom"
+                        android:visibility="visible"
+
+
+                        >
+                    <Button
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/chip_decline"
+                        android:background="@android:color/transparent"
+                        android:text="Reject"/>
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="130dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="40dp"
+                        app:cardCornerRadius="8dp"
+                        android:layout_marginHorizontal="10dp"
+                        app:cardBackgroundColor="@color/lightgray"
+                        android:layout_gravity="bottom"
+                        android:visibility="visible"
+
+
+                        >
+                        <Button
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/chip_acpt"
+                            android:background="@android:color/transparent"
+                            android:text="Accept"/>
+                    </androidx.cardview.widget.CardView>
+
+
+                </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>
 

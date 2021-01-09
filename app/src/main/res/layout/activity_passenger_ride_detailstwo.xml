@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/txt_estimate_timex"
             android:layout_gravity="center_horizontal"
-            android:text="2 min"
+            android:text=" min"
             android:layout_below="@+id/custmernamex"
             android:textColor="@color/lightgray"
             android:textSize="16sp"

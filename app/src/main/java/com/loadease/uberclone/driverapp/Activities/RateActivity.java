@@ -112,6 +112,8 @@ public class RateActivity extends AppCompatActivity {
         final AlertDialog alertDialog=new SpotsDialog.Builder().setContext(this).build();
         alertDialog.show();
 
+
+
          Rate rate=new Rate();
         rate.setRates(String.valueOf(ratingStars));
         rate.setComment(etComment.getText().toString());
@@ -121,28 +123,42 @@ public class RateActivity extends AppCompatActivity {
 
 
 
-        DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                String UserID=snapshot.child("Uid").getValue().toString();
-
-                rateDetailRef.child(UserID)
-                        .push()
-                        .setValue(rate)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+        if (TextUtils.isEmpty(etComment.getText().toString()))
+        {
 
 
+            if (alertDialog.isShowing())
+            {
+                alertDialog.dismiss();
+            }
+            Toast.makeText(this, "fill comment", Toast.LENGTH_SHORT).show();
 
-                                if (alertDialog.isShowing())
-                                    alertDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Thank you for submit", Toast.LENGTH_SHORT).show();
-                                finish();
+        }
+        else
+        {
+
+            DatabaseReference db=FirebaseDatabase.getInstance().getReference("DriverHaveUserID")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    String UserID=snapshot.child("Uid").getValue().toString();
+
+                    rateDetailRef.child(UserID)
+                            .push()
+                            .setValue(rate)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+
+
+                                    if (alertDialog.isShowing())
+                                        alertDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "Thank you for submit", Toast.LENGTH_SHORT).show();
+                                    finish();
 
 
 //d/./
@@ -150,25 +166,28 @@ public class RateActivity extends AppCompatActivity {
 
 
 
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        alertDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "Rate failed!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            alertDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Rate failed!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
 
-                //////////...............
+                    //////////...............
 
-            }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+
+        }
+
 
 
 
