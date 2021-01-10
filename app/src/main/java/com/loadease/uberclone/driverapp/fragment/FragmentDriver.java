@@ -786,12 +786,28 @@ Log.v("tripNumberId","----->"+tripNumberId);
         if (currentUserRef !=null)
         {
             currentUserRef.removeValue();
-
             setProcessLayout(false);
             layout_accept.setVisibility(View.GONE);
             layout_start_uber.setVisibility(View.VISIBLE);
 
             isTripStart=true;
+        }else {
+//            setOffLineModForDriver
+            // agar null ha tu tab tak do while chaly ga jab tak k currentUserRef fill na ho jy har itration py check hoga k if currentUserRef null ha tu duara req kary usko
+            //currentUserRef jab null ni hoga tu loop mai majood conditos work kary gi or loop break hojy ga
+            do {
+                makeDriverOnline();
+                if (currentUserRef !=null)
+                {
+                    currentUserRef.removeValue();
+                    setProcessLayout(false);
+                    layout_accept.setVisibility(View.GONE);
+                    layout_start_uber.setVisibility(View.VISIBLE);
+
+                    isTripStart=true;
+                }
+            }while (currentUserRef==null);
+
         }
 
 
