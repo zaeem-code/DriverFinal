@@ -10,7 +10,6 @@
 
 
                 />
-            <size android:height="20dp"/>
         </shape>
     </item>
 
@@ -23,7 +22,6 @@
 
 
                 />
-            <size android:height="20dp"/>
         </shape>
     </item>
 

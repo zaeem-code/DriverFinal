@@ -152,7 +152,7 @@ public class FragmentDriver extends FragmentActivity implements NavigationView.O
 boolean dataalredyloaded=false;
 DatabaseReference db_generate;
 String Count_x="0";
-
+TextView driverStatus;
     Uri pdf_uri;
     String imguri="";
 String chk="true";
@@ -864,7 +864,7 @@ Toolbar toolbar;
         SuscribingTOfcm();
 
         switchCompat=findViewById(R.id.locationSwitch);
-
+driverStatus=findViewById(R.id.stts);
         db_generate=FirebaseDatabase.getInstance().getReference("onlinedriver").child("count");
 
 
@@ -1590,10 +1590,13 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
 
                             db.child("count").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("true");
 
+
+
                     }else {
 
                         db.child("count").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("true");
                     }
+                    driverStatus.setText("Online");
 
            }
 
@@ -1622,7 +1625,7 @@ destinationGeoFire.setLocation(key, new GeoLocation(destination.latitude, destin
 
 
                     }
-
+                    driverStatus.setText("Offline");
 
                 }
 
